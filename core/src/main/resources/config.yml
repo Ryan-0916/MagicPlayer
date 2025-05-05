@@ -1,0 +1,6 @@
+# 缓存
+Cache:
+  # 玩家数据缓存时间 s
+  PlayerData: 3600
+  # 玩家头像数据缓存时间 s
+  Avatar: 3600

@@ -1,0 +1,11 @@
+name: MagicPlayer
+version: ${projectVersion}
+main: com.magicrealms.magicplayer.core.MagicPlayer
+api-version: 1.21
+author: Ryan0916
+commands:
+  MagicPlayer:
+    description: '魔法领域-玩家'
+depend:
+  - MagicLib
+  - SkinsRestorer
