@@ -6,6 +6,7 @@ import com.magicrealms.magiclib.bukkit.command.enums.PermissionType;
 import com.magicrealms.magiclib.core.dispatcher.MessageDispatcher;
 import com.magicrealms.magicplayer.common.player.DailyPlayerSession;
 import com.magicrealms.magicplayer.core.MagicPlayer;
+import com.magicrealms.magicplayer.core.menu.ClickAction;
 import com.magicrealms.magicplayer.core.menu.PlayerMenu;
 import com.magicrealms.magicplayer.core.player.PlayerData;
 import org.bukkit.entity.Player;
@@ -43,12 +44,17 @@ public class OnlineController {
 
     @Command(text = "^online$", permissionType = PermissionType.PLAYER)
     public void online(Player sender, String[] args) {
-        Optional<List<PlayerData>> dailyPlayerSessions = MagicPlayer.getInstance().getRedisStore()
+        Optional<List<PlayerData>> data = MagicPlayer.getInstance().getRedisStore()
                 .hGetAllObject(DAILY_PLAYERS_HASH_KEY, DailyPlayerSession.class)
                 .map(e -> e.stream()
                         .map(s -> MagicPlayer.getInstance().getPlayerDataRepository()
                                 .queryById(s.getName())).collect(Collectors.toList()));
-        new PlayerMenu(sender, dailyPlayerSessions.orElse(new ArrayList<>()));
+        new PlayerMenu.Builder()
+                .leftAction(ClickAction.of("左键做鸡", e -> e.clicker().sendMessage("你做了" + e.clickData().getName() + "的鸡")))
+                .rightAction(ClickAction.of("右键吃鸡", e -> e.clicker().sendMessage("你吃了" + e.clickData().getName() + "的鸡")))
+                .data(data.orElse(new ArrayList<>()))
+                .player(sender)
+                .open();
     }
 
 }

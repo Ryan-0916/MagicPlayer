@@ -40,7 +40,7 @@ public class PlayerListener implements Listener {
     public void onPlayerArmorChangeEvent(PlayerArmorChangeEvent e) {
         Player player = e.getPlayer();
         MagicPlayer.getInstance().getPlayerDataRepository().updateById(player.getName(), data -> {
-            switch (e.getSlotType()) {
+            switch (e.getSlot()) {
                 case HEAD:
                     data.getArmor().setHelmet(e.getNewItem());
                     break;

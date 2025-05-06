@@ -70,6 +70,7 @@ public class MagicPlayer extends MagicRealmsPlugin {
     public void onDisable() {
         super.onDisable();
         unsubscribe();
+        mongoDBStore.destroy();
     }
 
     public void setupRedisStore() {

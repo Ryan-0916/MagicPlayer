@@ -6,7 +6,7 @@ dependencies {
     implementation(project(":common"))
     testImplementation(platform("org.junit:junit-bom:5.9.1"))
     testImplementation("org.junit.jupiter:junit-jupiter")
-    compileOnly("io.papermc.paper:paper-api:1.20.4-R0.1-SNAPSHOT")
+    compileOnly("io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT")
     compileOnly("com.github.retrooper:packetevents-spigot:2.7.0")
     compileOnly("com.magicrealms:magiclib:1.0")
     compileOnly("net.skinsrestorer:skinsrestorer-api:15.6.2")

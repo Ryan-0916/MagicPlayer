@@ -9,6 +9,16 @@ Title:
     Text: '%max_page%'
     Offset: 0
 
+ClickLore:
+  Left:
+    - '左键 %desc%'
+  ShiftLeft:
+    - 'Shift + 左键 %desc%'
+  Right:
+    - '右键 %desc%'
+  ShiftRight:
+    - 'Shift + 右键 %desc%'
+
 Layout:
   - 'O######FX'
   - 'AAAAAAAAA'

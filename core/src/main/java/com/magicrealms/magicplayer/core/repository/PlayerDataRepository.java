@@ -35,7 +35,7 @@ public class PlayerDataRepository extends BaseRepository<PlayerData> {
             return cachedData.get();
         }
         try (MongoCursor<Document> cursor = super.getMongoDBStore()
-                .select(super.getTableName(), super.getIdFilter(id))) {
+                .find(super.getTableName(), super.getIdFilter(id))) {
             PlayerData data;
             if (cursor.hasNext()) {
                 data = MongoDBUtil.toObject(cursor.next(), PlayerData.class);
@@ -45,8 +45,6 @@ public class PlayerDataRepository extends BaseRepository<PlayerData> {
             }
             super.cacheEntity(id, data);
             return data;
-        } finally {
-            super.getMongoDBStore().close();
         }
     }
 
