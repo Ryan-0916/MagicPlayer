@@ -7,11 +7,12 @@ import com.magicrealms.magiclib.bukkit.manage.ConfigManager;
 import com.magicrealms.magiclib.bukkit.manage.PacketManager;
 import com.magicrealms.magiclib.bukkit.utils.ItemUtil;
 import com.magicrealms.magiclib.common.enums.ParseType;
+import com.magicrealms.magiclib.common.store.MongoDBStore;
 import com.magicrealms.magiclib.common.store.RedisStore;
 import com.magicrealms.magiclib.core.dispatcher.MessageDispatcher;
 import com.magicrealms.magicplayer.core.avatar.AvatarManager;
 import com.magicrealms.magicplayer.core.listener.PlayerListener;
-import com.magicrealms.magicplayer.core.store.MagicPlayerStore;
+import com.magicrealms.magicplayer.core.repository.PlayerDataRepository;
 import lombok.Getter;
 import net.skinsrestorer.api.SkinsRestorer;
 import net.skinsrestorer.api.SkinsRestorerProvider;
@@ -30,7 +31,10 @@ public class MagicPlayer extends MagicRealmsPlugin {
     private RedisStore redisStore;
 
     @Getter
-    private MagicPlayerStore magicPlayerStore;
+    private MongoDBStore mongoDBStore;
+
+    @Getter
+    PlayerDataRepository playerDataRepository;
 
     @Getter
     private BungeeMessageManager bungeeMessageManager;
@@ -55,6 +59,7 @@ public class MagicPlayer extends MagicRealmsPlugin {
             setupRedisStore();
             setupMongoDB();
             setupAvatar();
+            setupPlayerDataRepository();
             /* 皮肤插件前置 */
             skinsRestorer = SkinsRestorerProvider.get();
             Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
@@ -90,15 +95,21 @@ public class MagicPlayer extends MagicRealmsPlugin {
                 }).build();
     }
 
-    public void setupAvatar() {
-        avatarManager = new AvatarManager(this);
-    }
-
     public void setupMongoDB() {
         String host = getConfigManager().getYmlValue(YML_MONGODB, "DataSource.Host")
                 , database = getConfigManager().getYmlValue(YML_MONGODB, "DataSource.Database");
         int port = getConfigManager().getYmlValue(YML_MONGODB, "DataSource.Port", 27017, ParseType.INTEGER);
-        this.magicPlayerStore = new MagicPlayerStore(host, port, database);
+        this.mongoDBStore = new MongoDBStore(host, port, database);
+    }
+
+    public void setupPlayerDataRepository() {
+        this.playerDataRepository = new PlayerDataRepository(mongoDBStore,
+                MAGIC_PLAYERS_TABLE_NAME, redisStore, getConfigManager()
+                .getYmlValue(YML_CONFIG, "Cache.PlayerData", 3600L, ParseType.LONG));
+    }
+
+    public void setupAvatar() {
+        avatarManager = new AvatarManager(this);
     }
 
     private void unsubscribe() {

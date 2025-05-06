@@ -1,6 +1,6 @@
 package com.magicrealms.magicplayer.core.player;
 
-import com.magicrealms.magiclib.bukkit.utils.ItemStackConverter;
+import com.magicrealms.magiclib.bukkit.adapt.ItemStackFieldAdapter;
 import com.magicrealms.magiclib.common.annotations.MongoField;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,16 +21,16 @@ import org.bukkit.inventory.ItemStack;
 @NoArgsConstructor
 public class PlayerArmor {
     /* 头盔 */
-    @MongoField(converter = ItemStackConverter.class, name = "armor_helmet")
+    @MongoField(adapter = ItemStackFieldAdapter.class, name = "armor_helmet")
     private ItemStack helmet;
     /* 胸甲 */
-    @MongoField(converter = ItemStackConverter.class, name = "armor_chestplate")
+    @MongoField(adapter = ItemStackFieldAdapter.class, name = "armor_chestplate")
     private ItemStack chestplate;
     /* 护腿 */
-    @MongoField(converter = ItemStackConverter.class, name = "armor_leggings")
+    @MongoField(adapter = ItemStackFieldAdapter.class, name = "armor_leggings")
     private ItemStack leggings;
     /* 鞋子 */
-    @MongoField(converter = ItemStackConverter.class, name = "armor_boots")
+    @MongoField(adapter = ItemStackFieldAdapter.class, name = "armor_boots")
     private ItemStack boots;
 
     public PlayerArmor(Player player) {

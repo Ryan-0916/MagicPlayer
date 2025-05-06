@@ -1,9 +1,9 @@
 package com.magicrealms.magicplayer.core.player;
 
-import com.magicrealms.magiclib.bukkit.utils.ItemStackConverter;
+import com.magicrealms.magiclib.bukkit.adapt.ItemStackFieldAdapter;
 import com.magicrealms.magiclib.bukkit.utils.ItemUtil;
+import com.magicrealms.magiclib.common.adapt.UUIDFieldAdapter;
 import com.magicrealms.magiclib.common.annotations.MongoField;
-import com.magicrealms.magiclib.common.converter.UUIDConverter;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.bukkit.entity.Player;
@@ -21,15 +21,16 @@ import java.util.UUID;
  */
 @Data
 @AllArgsConstructor
+@SuppressWarnings("unused")
 public class PlayerData {
     /* id */
-    @MongoField(converter = UUIDConverter.class, name = "uuid")
+    @MongoField(adapter = UUIDFieldAdapter.class, name = "uuid")
     private UUID uniqueId;
     /* 名称 */
-    @MongoField
+    @MongoField(id = true)
     private String name;
     /* 头颅 */
-    @MongoField(converter = ItemStackConverter.class)
+    @MongoField(adapter = ItemStackFieldAdapter.class)
     private ItemStack headStack;
     /* 邮箱 */
     @MongoField
@@ -70,6 +71,6 @@ public class PlayerData {
         this.registerTime = System.currentTimeMillis();
         this.headStack = ItemUtil.getPlayerHead(player);
         armor = new PlayerArmor(player);
-        cosmetic = new PlayerCosmetic();
+        cosmetic = new PlayerCosmetic(player);
     }
 }

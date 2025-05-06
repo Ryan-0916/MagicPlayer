@@ -1,6 +1,6 @@
 package com.magicrealms.magicplayer.core.player;
 
-import com.magicrealms.magiclib.bukkit.utils.ItemStackConverter;
+import com.magicrealms.magiclib.bukkit.adapt.ItemStackFieldAdapter;
 import com.magicrealms.magiclib.common.annotations.MongoField;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,21 +16,22 @@ import org.bukkit.inventory.ItemStack;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@SuppressWarnings("unused")
 public class PlayerCosmetic {
     /* 帽子 */
-    @MongoField(converter = ItemStackConverter.class, name = "cosmetic_hat")
+    @MongoField(adapter = ItemStackFieldAdapter.class, name = "cosmetic_hat")
     private ItemStack hat;
     /* 背包 */
-    @MongoField(converter = ItemStackConverter.class, name = "cosmetic_bag")
+    @MongoField(adapter = ItemStackFieldAdapter.class, name = "cosmetic_bag")
     private ItemStack bag;
     /* 权杖 */
-    @MongoField(converter = ItemStackConverter.class, name = "cosmetic_walking_stick")
+    @MongoField(adapter = ItemStackFieldAdapter.class, name = "cosmetic_walking_stick")
     private ItemStack walkingStick;
     /* 气球 */
-    @MongoField(converter = ItemStackConverter.class, name = "cosmetic_balloon")
+    @MongoField(adapter = ItemStackFieldAdapter.class, name = "cosmetic_balloon")
     private ItemStack balloon;
     /* 喷漆 */
-    @MongoField(converter = ItemStackConverter.class, name = "cosmetic_spray")
+    @MongoField(adapter = ItemStackFieldAdapter.class, name = "cosmetic_spray")
     private ItemStack spray;
 
     public PlayerCosmetic(Player player) {}

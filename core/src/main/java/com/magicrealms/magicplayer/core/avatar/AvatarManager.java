@@ -5,7 +5,6 @@ import com.magicrealms.magiclib.common.utils.Base64Util;
 import com.magicrealms.magiclib.common.utils.StringUtil;
 import com.magicrealms.magicplayer.core.MagicPlayer;
 import com.magicrealms.magicplayer.core.player.PlayerData;
-import com.magicrealms.magicplayer.core.store.PlayerDataStorage;
 import org.apache.commons.lang3.StringUtils;
 
 import java.awt.*;
@@ -49,7 +48,7 @@ public class AvatarManager {
             return null;
         }
         /* 查找玩家的头像 Base64 编码并转换成 BufferedImage */
-        PlayerData data = PlayerDataStorage.getInstance().getPlayerData(name);
+        PlayerData data = MagicPlayer.getInstance().getPlayerDataRepository().queryById(name);
         try {
             BufferedImage avatar = Base64Util.base64ToImage(data != null && data.getAvatar() != null ? data.getAvatar() : DEFAULT_AVATAR);
             /* 拼接 Layout 的每个字并等待处理 */

@@ -30,10 +30,6 @@ public final class MagicPlayerConstant {
     public static final String DAILY_PLAYERS_HASH_KEY =  "MAGIC_PLAYER_DAILY_PLAYERS";
     /* 操作玩家列表（当日）时的分布式锁 */
     public static final String DAILY_PLAYER_LOCK =  "MAGIC_PLAYER_DAILY_PLAYER_LOCK_%s";
-    /* 玩家信息列表 */
-    public static final String PLAYERS_DATA_HASH_KEY =  "MAGIC_PLAYER_PLAYERS_DATA";
-    /* 操作玩家信息列表（当日）时的分布式锁 */
-    public static final String PLAYERS_DATA_LOCK =  "MAGIC_PLAYER_PLAYERS_DATA_LOCK_%s";
     /* 存储玩家头像的 Key */
     public static final String PLAYERS_AVATAR_LIKE = "MAGIC_PLAYER_PLAYERS_AVATAR";
     /* 存储玩家头像的 Key %s 代表的是头像 FormatId */

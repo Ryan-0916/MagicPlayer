@@ -3,13 +3,11 @@ package com.magicrealms.magicplayer.core.command;
 import com.magicrealms.magiclib.bukkit.command.annotations.Command;
 import com.magicrealms.magiclib.bukkit.command.annotations.CommandListener;
 import com.magicrealms.magiclib.bukkit.command.enums.PermissionType;
-import com.magicrealms.magiclib.core.MagicLib;
 import com.magicrealms.magiclib.core.dispatcher.MessageDispatcher;
 import com.magicrealms.magicplayer.common.player.DailyPlayerSession;
 import com.magicrealms.magicplayer.core.MagicPlayer;
 import com.magicrealms.magicplayer.core.menu.PlayerMenu;
 import com.magicrealms.magicplayer.core.player.PlayerData;
-import com.magicrealms.magicplayer.core.store.PlayerDataStorage;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -18,7 +16,6 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.magicrealms.magicplayer.common.MagicPlayerConstant.DAILY_PLAYERS_HASH_KEY;
-import static com.magicrealms.magicplayer.common.MagicPlayerConstant.DAILY_PLAYER_LOCK;
 
 /**
  * @author Ryan-0916
@@ -26,6 +23,7 @@ import static com.magicrealms.magicplayer.common.MagicPlayerConstant.DAILY_PLAYE
  * @date 2025-05-02
  */
 @CommandListener
+@SuppressWarnings("unused")
 public class OnlineController {
 
     @Command(text = "^avatar\\s\\S+$", permissionType = PermissionType.PLAYER)
@@ -44,12 +42,12 @@ public class OnlineController {
     }
 
     @Command(text = "^online$", permissionType = PermissionType.PLAYER)
-    public void online$(Player sender, String[] args) {
+    public void online(Player sender, String[] args) {
         Optional<List<PlayerData>> dailyPlayerSessions = MagicPlayer.getInstance().getRedisStore()
                 .hGetAllObject(DAILY_PLAYERS_HASH_KEY, DailyPlayerSession.class)
                 .map(e -> e.stream()
-                        .map(s -> PlayerDataStorage.getInstance()
-                                .getPlayerData(s.getName())).collect(Collectors.toList()));
+                        .map(s -> MagicPlayer.getInstance().getPlayerDataRepository()
+                                .queryById(s.getName())).collect(Collectors.toList()));
         new PlayerMenu(sender, dailyPlayerSessions.orElse(new ArrayList<>()));
     }
 
