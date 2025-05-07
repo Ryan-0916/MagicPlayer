@@ -1,7 +1,7 @@
 package com.magicrealms.magicplayer.core.player;
 
-import com.magicrealms.magiclib.bukkit.adapt.ItemStackFieldAdapter;
-import com.magicrealms.magiclib.bukkit.utils.ItemUtil;
+import com.magicrealms.magiclib.core.adapt.ItemStackFieldAdapter;
+import com.magicrealms.magiclib.core.utils.ItemUtil;
 import com.magicrealms.magiclib.common.adapt.UUIDFieldAdapter;
 import com.magicrealms.magiclib.common.annotations.MongoField;
 import lombok.AllArgsConstructor;

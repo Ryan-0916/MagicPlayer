@@ -5,7 +5,7 @@ import com.magicrealms.magiclib.bukkit.manage.BungeeMessageManager;
 import com.magicrealms.magiclib.bukkit.manage.CommandManager;
 import com.magicrealms.magiclib.bukkit.manage.ConfigManager;
 import com.magicrealms.magiclib.bukkit.manage.PacketManager;
-import com.magicrealms.magiclib.bukkit.utils.ItemUtil;
+import com.magicrealms.magiclib.core.utils.ItemUtil;
 import com.magicrealms.magiclib.common.enums.ParseType;
 import com.magicrealms.magiclib.common.store.MongoDBStore;
 import com.magicrealms.magiclib.common.store.RedisStore;

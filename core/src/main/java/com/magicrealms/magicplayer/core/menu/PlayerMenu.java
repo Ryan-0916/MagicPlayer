@@ -1,7 +1,7 @@
 package com.magicrealms.magicplayer.core.menu;
 
 import com.magicrealms.magiclib.bukkit.message.helper.AdventureHelper;
-import com.magicrealms.magiclib.bukkit.utils.ItemUtil;
+import com.magicrealms.magiclib.core.utils.ItemUtil;
 import com.magicrealms.magiclib.common.utils.StringUtil;
 import com.magicrealms.magiclib.core.dispatcher.MessageDispatcher;
 import com.magicrealms.magiclib.core.holder.PageMenuHolder;

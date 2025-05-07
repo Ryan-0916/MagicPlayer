@@ -1,6 +1,6 @@
 package com.magicrealms.magicplayer.core.listener;
 import com.destroystokyo.paper.event.player.PlayerArmorChangeEvent;
-import com.magicrealms.magiclib.bukkit.utils.ItemUtil;
+import com.magicrealms.magiclib.core.utils.ItemUtil;
 import com.magicrealms.magicplayer.core.MagicPlayer;
 import com.magicrealms.magicplayer.core.utils.SkinUtil;
 import org.bukkit.entity.Player;
