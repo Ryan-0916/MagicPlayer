@@ -4,7 +4,7 @@ import com.magicrealms.magiclib.common.repository.BaseRepository;
 import com.magicrealms.magiclib.common.store.MongoDBStore;
 import com.magicrealms.magiclib.common.store.RedisStore;
 import com.magicrealms.magiclib.common.utils.MongoDBUtil;
-import com.magicrealms.magicplayer.core.player.PlayerData;
+import com.magicrealms.magicplayer.core.entity.PlayerData;
 import com.mongodb.client.MongoCursor;
 import org.bson.Document;
 import org.bukkit.entity.Player;

@@ -22,7 +22,7 @@ public class CoreController {
 
     @Command(text = "^Reload$",
             permissionType = PermissionType.CONSOLE_OR_PERMISSION,
-            permission = "magic.command.magicchat.all||magic.command.magicchat.reload")
+            permission = "magic.command.magicchat.all||magic.command.magicchat.reload", label = "^magicPlayer$")
     public void reload(CommandSender sender, String[] args){
         MagicPlayer.getInstance().getConfigManager()
                 .reloadConfig(YML_REDIS, YML_MONGODB);
@@ -37,7 +37,7 @@ public class CoreController {
 
     @Command(text = "^Reload\\sAll$",
             permissionType = PermissionType.CONSOLE_OR_PERMISSION,
-            permission = "magic.command.magicchat.all||magic.command.magicchat.reload")
+            permission = "magic.command.magicchat.all||magic.command.magicchat.reload", label = "^magicPlayer$")
     public void reloadAll(CommandSender sender, String[] args){
         MagicPlayer.getInstance().getConfigManager().reloadAllConfig();
         /* 重置 Redis 部分 */
@@ -54,7 +54,7 @@ public class CoreController {
     }
 
     @Command(text = "^Reload\\s(?!all\\b)\\S+$", permissionType = PermissionType.CONSOLE_OR_PERMISSION,
-            permission = "magic.command.magicchat.all||magic.command.magicchat.reload")
+            permission = "magic.command.magicchat.all||magic.command.magicchat.reload", label = "^magicPlayer$")
     public void reloadBy(CommandSender sender, String[] args){
         MagicPlayer.getInstance().getConfigManager()
                 .reloadConfig(args[1], e -> {

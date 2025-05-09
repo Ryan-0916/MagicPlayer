@@ -1,9 +1,9 @@
-package com.magicrealms.magicplayer.core.player;
+package com.magicrealms.magicplayer.core.entity;
 
 import com.magicrealms.magiclib.core.adapt.ItemStackFieldAdapter;
-import com.magicrealms.magiclib.core.utils.ItemUtil;
 import com.magicrealms.magiclib.common.adapt.UUIDFieldAdapter;
 import com.magicrealms.magiclib.common.annotations.MongoField;
+import com.magicrealms.magicplayer.core.utils.SkinUtil;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.bukkit.entity.Player;
@@ -35,6 +35,9 @@ public class PlayerData {
     /* 邮箱 */
     @MongoField
     private String email;
+    /* 材质 */
+    @MongoField
+    private String textures;
     /* 皮肤 */
     @MongoField
     private String skin;
@@ -69,7 +72,10 @@ public class PlayerData {
         this.uniqueId = player.getUniqueId();
         this.name = player.getName();
         this.registerTime = System.currentTimeMillis();
-        this.headStack = ItemUtil.getPlayerHead(player);
+        this.textures = SkinUtil.getTextures(player);
+        this.headStack = SkinUtil.getHead(textures);
+        this.skin = SkinUtil.getSkin(textures);
+        this.avatar = SkinUtil.getAvatar(skin);
         armor = new PlayerArmor(player);
         cosmetic = new PlayerCosmetic(player);
     }

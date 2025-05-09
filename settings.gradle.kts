@@ -12,6 +12,8 @@ pluginManagement {
         /* PacketEvents */
         maven("https://repo.codemc.io/repository/maven-releases/")
         maven("https://repo.codemc.io/repository/maven-snapshots/")
+        /* Rtag */
+        maven("https://jitpack.io")
     }
 }
 

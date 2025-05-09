@@ -24,14 +24,14 @@ public class CoreTabController {
             = () -> Stream.of("all", "config", "language", "redis", "avatar", "playerMenu");
 
     @TabComplete(text = "^\\s?$", permissionType = PermissionType.CONSOLE_OR_PERMISSION,
-            permission = "magic.command.magicchat.all||magic.command.magicchat.reload")
+            permission = "magic.command.magicchat.all||magic.command.magicchat.reload", label = "^magicPlayer$")
     public List<String> first(CommandSender sender, String[] args) {
         return Stream.of("reload")
                 .collect(Collectors.toList());
     }
 
     @TabComplete(text = "^\\S+$", permissionType = PermissionType.CONSOLE_OR_PERMISSION,
-            permission = "magic.command.magicchat.all||magic.command.magicchat.reload")
+            permission = "magic.command.magicchat.all||magic.command.magicchat.reload", label = "^magicPlayer$")
     public List<String> firstTab(CommandSender sender, String[] args) {
         return Stream.of("reload")
                 .filter(e ->
@@ -40,13 +40,13 @@ public class CoreTabController {
     }
 
     @TabComplete(text = "^Reload\\s$", permissionType = PermissionType.CONSOLE_OR_PERMISSION,
-            permission = "magic.command.magicchat.all||magic.command.magicchat.reload")
+            permission = "magic.command.magicchat.all||magic.command.magicchat.reload", label = "^magicPlayer$")
     public List<String> reload(CommandSender sender, String[] args) {
         return fileNames.get().collect(Collectors.toList());
     }
 
     @TabComplete(text = "^Reload\\s\\S+$", permissionType = PermissionType.CONSOLE_OR_PERMISSION,
-            permission = "magic.command.magicchat.all||magic.command.magicchat.reload")
+            permission = "magic.command.magicchat.all||magic.command.magicchat.reload", label = "^magicPlayer$")
     public List<String> reloadTab(CommandSender sender, String[] args) {
         return fileNames.get().filter(e ->
                 StringUtils.startsWithIgnoreCase(e, args[1])).collect(Collectors.toList());

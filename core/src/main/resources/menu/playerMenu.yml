@@ -5,9 +5,29 @@ Title:
   Page:
     Text: '%page%'
     Offset: 0
+    Left: true
+  Mid:
+    Text: '/'
+    Offset: 0
   MaxPage:
     Text: '%max_page%'
     Offset: 0
+    Right: true
+  Pre:
+    Text: '%pre_page%'
+    Offset: 0
+  Next:
+    Text: '%next_page%'
+    Offset: 0
+
+CustomPapi:
+  PrePage:
+    Enable: '可以上一页'
+    UnEnable: '不可以上一页'
+  NextPage:
+    Enable: '可以下一页'
+    UnEnable: '不可以下一页'
+
 
 ClickLore:
   Left:

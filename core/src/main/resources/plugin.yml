@@ -6,6 +6,9 @@ author: Ryan0916
 commands:
   MagicPlayer:
     description: '魔法领域-玩家'
+    aliases:
+      - online
+      - avatar
 depend:
   - MagicLib
   - SkinsRestorer

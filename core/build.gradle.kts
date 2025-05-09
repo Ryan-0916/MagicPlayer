@@ -10,6 +10,8 @@ dependencies {
     compileOnly("com.github.retrooper:packetevents-spigot:2.7.0")
     compileOnly("com.magicrealms:magiclib:1.0")
     compileOnly("net.skinsrestorer:skinsrestorer-api:15.6.2")
+    compileOnly("com.saicone.rtag:rtag:1.5.9")
+    compileOnly("com.saicone.rtag:rtag-item:1.5.9")
 }
 
 repositories {

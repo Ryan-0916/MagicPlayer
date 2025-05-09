@@ -6,7 +6,9 @@ import com.magicrealms.magiclib.common.utils.StringUtil;
 import com.magicrealms.magiclib.core.dispatcher.MessageDispatcher;
 import com.magicrealms.magiclib.core.holder.PageMenuHolder;
 import com.magicrealms.magicplayer.core.MagicPlayer;
-import com.magicrealms.magicplayer.core.player.PlayerData;
+import com.magicrealms.magicplayer.core.entity.ClickAction;
+import com.magicrealms.magicplayer.core.entity.ClickHandler;
+import com.magicrealms.magicplayer.core.entity.PlayerData;
 import net.kyori.adventure.text.Component;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
@@ -82,7 +84,7 @@ public class PlayerMenu extends PageMenuHolder {
     }
 
     @Override
-    protected String handleTitleMore(String title) {
+    protected LinkedHashMap<String, String> processHandTitle(LinkedHashMap<String, String> title) {
         return title;
     }
 

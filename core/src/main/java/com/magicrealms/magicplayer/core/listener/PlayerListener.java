@@ -1,8 +1,6 @@
 package com.magicrealms.magicplayer.core.listener;
 import com.destroystokyo.paper.event.player.PlayerArmorChangeEvent;
-import com.magicrealms.magiclib.core.utils.ItemUtil;
 import com.magicrealms.magicplayer.core.MagicPlayer;
-import com.magicrealms.magicplayer.core.utils.SkinUtil;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -18,16 +16,10 @@ public class PlayerListener implements Listener {
 
     @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerJoinEvent(PlayerJoinEvent e) {
-        /* 修改玩家一些属性, 使用分布式锁防止异步问题 */
-        Player player = e.getPlayer();
-        MagicPlayer.getInstance().getPlayerDataRepository().updateByPlayer(player, data -> {
-            /* 修改玩家头颅 */
-            data.setHeadStack(ItemUtil.getPlayerHead(player));
-            /* 修改玩家皮肤 */
-            data.setSkin(SkinUtil.getPlayerSkin(player));
-            /* 修改玩家头像 */
-            data.setAvatar(SkinUtil.getPlayerAvatar(data.getSkin()));
-        });
+        /* 初始化玩家的一些属性 */
+        MagicPlayer.getInstance()
+                .getPlayerDataRepository()
+                .queryByPlayer(e.getPlayer());
     }
 
     /**
@@ -39,7 +31,8 @@ public class PlayerListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerArmorChangeEvent(PlayerArmorChangeEvent e) {
         Player player = e.getPlayer();
-        MagicPlayer.getInstance().getPlayerDataRepository().updateById(player.getName(), data -> {
+        MagicPlayer.getInstance().getPlayerDataRepository()
+                .updateById(player.getName(), data -> {
             switch (e.getSlot()) {
                 case HEAD:
                     data.getArmor().setHelmet(e.getNewItem());

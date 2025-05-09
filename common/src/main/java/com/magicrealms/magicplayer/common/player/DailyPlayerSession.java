@@ -33,4 +33,9 @@ public class DailyPlayerSession {
     private long startAfkTime;
     /* 今日游玩时间 */
     private long playTime;
+
+    public boolean isOnline() {
+        return status != PlayerStatus.OFFLINE && status != PlayerStatus.HIDDEN;
+    }
+
 }

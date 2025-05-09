@@ -13,10 +13,14 @@ import com.magicrealms.magiclib.core.dispatcher.MessageDispatcher;
 import com.magicrealms.magicplayer.core.avatar.AvatarManager;
 import com.magicrealms.magicplayer.core.listener.PlayerListener;
 import com.magicrealms.magicplayer.core.repository.PlayerDataRepository;
+import com.magicrealms.magicplayer.core.utils.SkinUtil;
 import lombok.Getter;
 import net.skinsrestorer.api.SkinsRestorer;
 import net.skinsrestorer.api.SkinsRestorerProvider;
+import net.skinsrestorer.api.event.SkinApplyEvent;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 import java.util.Optional;
 
@@ -62,6 +66,21 @@ public class MagicPlayer extends MagicRealmsPlugin {
             setupPlayerDataRepository();
             /* 皮肤插件前置 */
             skinsRestorer = SkinsRestorerProvider.get();
+            skinsRestorer.getEventBus()
+                    .subscribe(this, SkinApplyEvent.class, event -> {
+                        Player player = event.getPlayer(Player.class);
+                        MagicPlayer.getInstance().getPlayerDataRepository().updateByPlayer(event.getPlayer(Player.class), data -> {
+                            data.setTextures(SkinUtil.getTextures(player));
+                            data.setHeadStack(SkinUtil.getHead(data.getTextures()));
+                            data.setSkin(SkinUtil.getSkin(data.getTextures()));
+                            String subKey = StringUtils.upperCase(player.getName());
+                            /* 清理掉这个皮肤玩家的缓存 */
+                            redisStore.getKeyByPrefix(PLAYERS_AVATAR_LIKE).forEach(
+                                    key -> redisStore.removeHkey(key, subKey)
+                            );
+                            data.setAvatar(SkinUtil.getAvatar(data.getSkin()));
+                        });
+                    });
             Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
         }, "SkinsRestorer");
     }
