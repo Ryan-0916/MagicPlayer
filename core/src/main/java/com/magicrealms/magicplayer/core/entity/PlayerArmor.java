@@ -2,6 +2,7 @@ package com.magicrealms.magicplayer.core.entity;
 
 import com.magicrealms.magiclib.core.adapt.ItemStackFieldAdapter;
 import com.magicrealms.magiclib.common.annotations.MongoField;
+import com.magicrealms.magiclib.core.utils.ItemUtil;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -38,5 +39,21 @@ public class PlayerArmor {
         this.chestplate = player.getInventory().getChestplate();
         this.leggings = player.getInventory().getLeggings();
         this.boots = player.getInventory().getBoots();
+    }
+
+    public boolean isEquippedHelmet() {
+        return ItemUtil.isNotAirOrNull(helmet);
+    }
+
+    public boolean isEquippedChestplate() {
+        return ItemUtil.isNotAirOrNull(chestplate);
+    }
+
+    public boolean isEquippedLeggings() {
+        return ItemUtil.isNotAirOrNull(leggings);
+    }
+
+    public boolean isEquippedBoots() {
+        return ItemUtil.isNotAirOrNull(boots);
     }
 }

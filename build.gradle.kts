@@ -10,6 +10,7 @@ subprojects {
     apply(plugin = "com.gradleup.shadow")
 
     dependencies {
+        compileOnly("com.google.guava:guava:31.1-jre")
         compileOnly("org.projectlombok:lombok:1.18.30")
         annotationProcessor("org.projectlombok:lombok:1.18.30")
         testAnnotationProcessor("org.projectlombok:lombok:1.18.30")

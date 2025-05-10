@@ -4,6 +4,7 @@ import com.magicrealms.magiclib.common.store.RedisStore;
 import com.magicrealms.magiclib.common.utils.RedissonUtil;
 import com.magicrealms.magicplayer.common.player.DailyPlayerSession;
 import com.magicrealms.magicplayer.common.player.PlayerStatus;
+import com.magicrealms.magicplayer.common.util.PlayerSessionUtil;
 import com.magicrealms.magicplayer.velocity.MagicPlayer;
 import com.velocitypowered.api.event.EventTask;
 import com.velocitypowered.api.event.Subscribe;
@@ -53,9 +54,7 @@ public class DailyPlayerListener {
                 subKey,
                 LOCK_TIMEOUT,
                 () -> {
-                    Optional<DailyPlayerSession>
-                            optionalDailyPlayer =
-                            store.hGetObject(DAILY_PLAYERS_HASH_KEY, subKey, DailyPlayerSession.class);
+                    Optional<DailyPlayerSession> optionalDailyPlayer = PlayerSessionUtil.getPlayerSession(store, subKey);
                     if (optionalDailyPlayer.isEmpty()) {
                         addDailyPlayerSession(player);
                         return;

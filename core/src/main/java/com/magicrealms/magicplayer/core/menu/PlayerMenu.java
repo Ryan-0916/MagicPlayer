@@ -95,21 +95,14 @@ public class PlayerMenu extends PageMenuHolder {
         int appearIndex = ((super.getPage() - 1) * PAGE_COUNT) - 1;
         for (int i = 0; i < size; i++){
             switch (layout.charAt(i)) {
-                case 'A':
+                case 'A' -> {
                     if (DATA.size() > ++appearIndex) {
                         setHead(i, DATA.get(appearIndex));
-                        break;
                     }
-                case 'B':
-                case 'C':
-                    super.setButtonSlot(i, !(super.getPage() > 1));
-                    break;
-                case 'D':
-                case 'E':
-                    super.setButtonSlot(i, !(super.getPage() < super.getMaxPage()));
-                    break;
-                default:
-                    super.setItemSlot(i);
+                }
+                case 'B', 'C' -> super.setButtonSlot(i, !(super.getPage() > 1));
+                case 'D', 'E' -> super.setButtonSlot(i, !(super.getPage() < super.getMaxPage()));
+                default -> super.setItemSlot(i);
             }
         }
     }
@@ -151,28 +144,18 @@ public class PlayerMenu extends PageMenuHolder {
         char c = super.getLayout().charAt(slot);
         asyncPlaySound("Icons." + c + ".Display.Sound");
         switch (c) {
-            case 'X':
-                asyncCloseMenu();
-                break;
-            case 'B':
-            case 'C':
-                super.changePage(- 1,b -> {
-                    asyncPlaySound(b ? "Icons." + c + ".ActiveDisplay.Sound" : "Icons." + c + ".DisabledDisplay.Sound");
-                    super.handleMenu(super.getLayout());
-                    super.asyncUpdateTitle();
-                });
-                break;
-            case 'D':
-            case 'E':
-                super.changePage(1, b -> {
-                    asyncPlaySound(b ? "Icons." + c + ".ActiveDisplay.Sound" : "Icons." + c + ".DisabledDisplay.Sound");
-                    super.handleMenu(super.getLayout());
-                    super.asyncUpdateTitle();
-                });
-                break;
-            case 'A':
-                clickHead(event, slot);
-                break;
+            case 'X'-> asyncCloseMenu();
+            case 'B', 'C' -> super.changePage(- 1, b -> {
+                asyncPlaySound(b ? "Icons." + c + ".ActiveDisplay.Sound" : "Icons." + c + ".DisabledDisplay.Sound");
+                super.handleMenu(super.getLayout());
+                super.asyncUpdateTitle();
+            });
+            case 'D', 'E' -> super.changePage(1, b -> {
+                asyncPlaySound(b ? "Icons." + c + ".ActiveDisplay.Sound" : "Icons." + c + ".DisabledDisplay.Sound");
+                super.handleMenu(super.getLayout());
+                super.asyncUpdateTitle();
+            });
+            case 'A' -> clickHead(event, slot);
         }
     }
 

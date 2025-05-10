@@ -144,7 +144,9 @@ public class MagicPlayer extends MagicRealmsPlugin {
                 YML_REDIS,
                 YML_MONGODB,
                 YML_AVATAR,
-                YML_PLAYER_MENU);
+                YML_PLAYER_MENU,
+                YML_PROFILE_MENU
+        );
     }
 
     @Override

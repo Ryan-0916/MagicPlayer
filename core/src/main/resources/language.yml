@@ -94,6 +94,7 @@ PlayerMessage:
     NoAnyPlayer: "没有找到任何玩家数据"
     ButtonCooldown: "按钮正在冷却中"
     UnKnowAvatarId: "未知的头像 ID"
+    UnKnow: "未知异常"
   Success:
     ReloadFile: "重载文件成功"
 ConsoleMessage:

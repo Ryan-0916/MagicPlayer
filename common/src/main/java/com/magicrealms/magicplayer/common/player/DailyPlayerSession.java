@@ -38,4 +38,8 @@ public class DailyPlayerSession {
         return status != PlayerStatus.OFFLINE && status != PlayerStatus.HIDDEN;
     }
 
+    public boolean isAfk() {
+        return status == PlayerStatus.AFK;
+    }
+
 }

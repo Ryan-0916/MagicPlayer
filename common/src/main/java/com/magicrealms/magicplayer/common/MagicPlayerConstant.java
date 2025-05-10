@@ -22,6 +22,7 @@ public final class MagicPlayerConstant {
     public static final String YML_MONGODB = "mongodb";
     public static final String YML_AVATAR = "avatar";
     public static final String YML_PLAYER_MENU = "menu/playerMenu";
+    public static final String YML_PROFILE_MENU = "menu/profileMenu";
 
     /** Redis 相关 key */
     /* 跨服通讯频道 */

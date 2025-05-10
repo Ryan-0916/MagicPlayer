@@ -79,4 +79,5 @@ public class PlayerData {
         armor = new PlayerArmor(player);
         cosmetic = new PlayerCosmetic(player);
     }
+
 }

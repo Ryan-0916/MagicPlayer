@@ -2,6 +2,7 @@ package com.magicrealms.magicplayer.core.entity;
 
 import com.magicrealms.magiclib.core.adapt.ItemStackFieldAdapter;
 import com.magicrealms.magiclib.common.annotations.MongoField;
+import com.magicrealms.magiclib.core.utils.ItemUtil;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -35,4 +36,24 @@ public class PlayerCosmetic {
     private ItemStack spray;
 
     public PlayerCosmetic(Player player) {}
+
+    public boolean isEquippedHat() {
+        return ItemUtil.isNotAirOrNull(hat);
+    }
+
+    public boolean isEquippedBag() {
+        return ItemUtil.isNotAirOrNull(bag);
+    }
+
+    public boolean isEquippedWalkingStick() {
+        return ItemUtil.isNotAirOrNull(walkingStick);
+    }
+
+    public boolean isEquippedBalloon() {
+        return ItemUtil.isNotAirOrNull(balloon);
+    }
+
+    public boolean isEquippedSpray() {
+        return ItemUtil.isNotAirOrNull(spray);
+    }
 }

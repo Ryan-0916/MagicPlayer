@@ -27,7 +27,7 @@ import static com.magicrealms.magicplayer.common.MagicPlayerConstant.DAILY_PLAYE
 public class OnlineController {
 
     @Command(text = "^\\s?$", permissionType = PermissionType.PLAYER,
-            permission = "magic.command.magicchat.all||magic.command.magicchat.online", label = "^online$")
+            permission = "magic.command.magicplayer.all||magic.command.magicplayer.online", label = "^online$")
     public void online(Player sender, String[] args) {
         Optional<List<PlayerData>> data = MagicPlayer.getInstance().getRedisStore()
                 .hGetAllObject(DAILY_PLAYERS_HASH_KEY, DailyPlayerSession.class)

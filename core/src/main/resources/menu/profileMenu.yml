@@ -1,0 +1,266 @@
+Title:
+  Background:
+    Text: '资料卡'
+    Offset: 0
+  Helmet:
+    Text: '%helmet%'
+    Offset: 0
+  Chestplate:
+    Text: '%chestplate%'
+    Offset: 0
+  Leggings:
+    Text: '%leggings%'
+    Offset: 0
+  Boots:
+    Text: '%boots%'
+    Offset: 0
+  Hat:
+    Text: '%hat%'
+    Offset: 0
+  Bag:
+    Text: '%bag%'
+    Offset: 0
+  WalkingStick:
+    Text: '%walking_stick%'
+    Offset: 0
+  Balloon:
+    Text: '%balloon%'
+    Offset: 0
+
+CustomPapi:
+  Helmet:
+    Enable: '玩家有头盔'
+    UnEnable: '玩家没有头盔'
+  Chestplate:
+    Enable: '玩家有胸甲'
+    UnEnable: '玩家没有胸甲'
+  Leggings:
+    Enable: '玩家有护腿'
+    UnEnable: '玩家没有护腿'
+  Boots:
+    Enable: '玩家有靴子'
+    UnEnable: '玩家没有靴子'
+  Hat:
+    Enable: '玩家有帽子'
+    UnEnable: '玩家没有帽子'
+  Bag:
+    Enable: '玩家有背包'
+    UnEnable: '玩家没有背包'
+  WalkingStick:
+    Enable: '玩家有权杖'
+    UnEnable: '玩家没有权杖'
+  Balloon:
+    Enable: '玩家有气球'
+    UnEnable: '玩家没有气球'
+
+# # 默认材质
+# A 头盔
+# B 胸甲
+# C 护腿
+# D 靴子
+# E 帽子
+# F 背包
+# G 权杖
+# H 气球
+# I 在线状态
+# J 家园
+# K 组队
+# L 好友管理 - 本人信息面板时为好友列表，好友面板时为移除好友，非好友面板时为添加好友
+# M 单挑
+# N 交易
+# O 邮箱
+# P 拍卖
+# Q 头像
+# R 头像 （隐藏部分）
+# S 设置
+# T 勋章
+
+Layout:
+  - 'AE#######'
+  - 'BF####QR#'
+  - 'CG####RR#'
+  - 'DH#######'
+
+Icons:
+  I:
+    OnlineDisplay:
+      Mats: GLASS_PANE
+      ModelData: 0
+      Name: '&E&L在线'
+      Lore:
+        - '&6&L在线'
+    OfflineDisplay:
+      Mats: GLASS_PANE
+      ModelData: 0
+      Name: '&E&L离线'
+      Lore:
+        - '&6&L离线'
+    AfkDisplay:
+      Mats: GLASS_PANE
+      ModelData: 0
+      Name: '&E&L挂机'
+      Lore:
+        - '&6&L挂机'
+  J:
+    ActiveDisplay:
+      Mats: GLASS_PANE
+      ModelData: 0
+      Name: '&E&L家园'
+      Lore:
+        - '&6&L家园'
+    DisabledDisplay:
+      Mats: GLASS_PANE
+      ModelData: 0
+      Name: '&E&L家园'
+      Lore:
+        - '&6&L家园'
+  K:
+    ActiveDisplay:
+      Mats: GLASS_PANE
+      ModelData: 0
+      Name: '&E&L组队'
+      Lore:
+        - '&6&L组队'
+    DisabledDisplay:
+      Mats: GLASS_PANE
+      ModelData: 0
+      Name: '&E&L组队'
+      Lore:
+        - '&6&L组队'
+  L:
+    HolderDisplay:
+      Mats: GLASS_PANE
+      ModelData: 0
+      Name: '&E&L好友菜单'
+      Lore:
+        - '&6&L好友菜单'
+    FriendDisplay:
+      Mats: GLASS_PANE
+      ModelData: 0
+      Name: '&E&L删除好友'
+      Lore:
+        - '&6&L点击移除好友'
+    PlayerDisplay:
+      Allow:
+        Mats: GLASS_PANE
+        ModelData: 0
+        Name: '&E&L添加好友'
+        Lore:
+          - '&6&L点击添加好友'
+      Deny:
+        Mats: GLASS_PANE
+        ModelData: 0
+        Name: '&E&L添加好友'
+        Lore:
+          - '&6&L对方拒绝好友申请'
+  M:
+    ActiveDisplay:
+      Mats: GLASS_PANE
+      ModelData: 0
+      Name: '&E&L单挑'
+      Lore:
+        - '&6&L单挑'
+    DisabledDisplay:
+      Mats: GLASS_PANE
+      ModelData: 0
+      Name: '&E&L组队'
+      Lore:
+        - '&6&L组队'
+  N:
+    HolderDisplay:
+      Mats: GLASS_PANE
+      ModelData: 0
+      Name: '&E&L交易菜单'
+      Lore:
+        - '&6&L交易菜单'
+    ActiveDisplay:
+      Mats: GLASS_PANE
+      ModelData: 0
+      Name: '&E&L交易请求'
+      Lore:
+        - '&6&L点击发送交易请求'
+    DisabledDisplay:
+      Allow:
+        Mats: GLASS_PANE
+        ModelData: 0
+        Name: '&E&L您与对方的距离太远'
+        Lore:
+          - '&6&L您与对方的距离太远'
+      Deny:
+        Mats: GLASS_PANE
+        ModelData: 0
+        Name: '&E&L对方拒绝交易请求'
+        Lore:
+          - '&6&L对方拒绝交易请求'
+  O:
+    HolderDisplay:
+      Mats: GLASS_PANE
+      ModelData: 0
+      Name: '&E&L邮箱菜单'
+      Lore:
+        - '&6&L邮箱菜单'
+    ActiveDisplay:
+      Mats: GLASS_PANE
+      ModelData: 0
+      Name: '&E&L发送邮件'
+      Lore:
+        - '&6&L点击发送邮件'
+    DisabledDisplay:
+      Allow:
+        Mats: GLASS_PANE
+        ModelData: 0
+        Name: '&E&L您与对方不是好友'
+        Lore:
+          - '&6&L您与对方不是好友'
+      Deny:
+        Mats: GLASS_PANE
+        ModelData: 0
+        Name: '&E&L对方拒绝接收邮件'
+        Lore:
+          - '&6&L对方拒绝接收邮件'
+  P:
+    ActiveDisplay:
+      Mats: GLASS_PANE
+      ModelData: 0
+      Name: '&E&L拍卖'
+      Lore:
+        - '&6&L拍卖'
+    DisabledDisplay:
+      Mats: GLASS_PANE
+      ModelData: 0
+      Name: '&E&L禁止拍卖'
+      Lore:
+        - '&6&L禁止拍卖'
+  Q:
+    Display:
+      ModelData: 0
+      Name: '&E&L头像'
+      Lore:
+        - '&6&L头像'
+  R:
+    Display:
+      Mats: GLASS_PANE
+      ModelData: 0
+      Name: '&E&L头像变量'
+      Lore:
+        - '&6&L头像变量'
+  S:
+    Display:
+      Mats: GLASS_PANE
+      ModelData: 0
+      Name: '&E&L设置'
+      Lore:
+        - '&6&L设置'
+  T:
+    ActiveDisplay:
+      Mats: GLASS_PANE
+      ModelData: 0
+      Name: '&E&L勋章'
+      Lore:
+        - '&6&L勋章'
+    DisabledDisplay:
+      Mats: GLASS_PANE
+      ModelData: 0
+      Name: '&E&L禁止'
+      Lore:
+        - '&6&L禁止'

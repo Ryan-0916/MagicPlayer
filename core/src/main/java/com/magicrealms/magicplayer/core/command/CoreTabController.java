@@ -21,17 +21,17 @@ import java.util.stream.Stream;
 public class CoreTabController {
 
     private static final Supplier<Stream<String>> fileNames
-            = () -> Stream.of("all", "config", "language", "redis", "avatar", "playerMenu");
+            = () -> Stream.of("all", "config", "language", "redis", "avatar", "playerMenu", "profileMenu");
 
     @TabComplete(text = "^\\s?$", permissionType = PermissionType.CONSOLE_OR_PERMISSION,
-            permission = "magic.command.magicchat.all||magic.command.magicchat.reload", label = "^magicPlayer$")
+            permission = "magic.command.magicplayer.all||magic.command.magicplayer.reload", label = "^magicPlayer$")
     public List<String> first(CommandSender sender, String[] args) {
         return Stream.of("reload")
                 .collect(Collectors.toList());
     }
 
     @TabComplete(text = "^\\S+$", permissionType = PermissionType.CONSOLE_OR_PERMISSION,
-            permission = "magic.command.magicchat.all||magic.command.magicchat.reload", label = "^magicPlayer$")
+            permission = "magic.command.magicplayer.all||magic.command.magicplayer.reload", label = "^magicPlayer$")
     public List<String> firstTab(CommandSender sender, String[] args) {
         return Stream.of("reload")
                 .filter(e ->
@@ -40,13 +40,13 @@ public class CoreTabController {
     }
 
     @TabComplete(text = "^Reload\\s$", permissionType = PermissionType.CONSOLE_OR_PERMISSION,
-            permission = "magic.command.magicchat.all||magic.command.magicchat.reload", label = "^magicPlayer$")
+            permission = "magic.command.magicplayer.all||magic.command.magicplayer.reload", label = "^magicPlayer$")
     public List<String> reload(CommandSender sender, String[] args) {
         return fileNames.get().collect(Collectors.toList());
     }
 
     @TabComplete(text = "^Reload\\s\\S+$", permissionType = PermissionType.CONSOLE_OR_PERMISSION,
-            permission = "magic.command.magicchat.all||magic.command.magicchat.reload", label = "^magicPlayer$")
+            permission = "magic.command.magicplayer.all||magic.command.magicplayer.reload", label = "^magicPlayer$")
     public List<String> reloadTab(CommandSender sender, String[] args) {
         return fileNames.get().filter(e ->
                 StringUtils.startsWithIgnoreCase(e, args[1])).collect(Collectors.toList());

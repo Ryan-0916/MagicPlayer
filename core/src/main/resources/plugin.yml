@@ -9,6 +9,7 @@ commands:
     aliases:
       - online
       - avatar
+      - profile
 depend:
   - MagicLib
   - SkinsRestorer
