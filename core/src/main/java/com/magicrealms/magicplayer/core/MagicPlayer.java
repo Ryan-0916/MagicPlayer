@@ -12,6 +12,7 @@ import com.magicrealms.magiclib.common.store.RedisStore;
 import com.magicrealms.magiclib.core.dispatcher.MessageDispatcher;
 import com.magicrealms.magicplayer.core.avatar.AvatarManager;
 import com.magicrealms.magicplayer.core.listener.PlayerListener;
+import com.magicrealms.magicplayer.core.placeholder.Avatar;
 import com.magicrealms.magicplayer.core.repository.PlayerDataRepository;
 import com.magicrealms.magicplayer.core.utils.SkinUtil;
 import lombok.Getter;
@@ -81,6 +82,10 @@ public class MagicPlayer extends MagicRealmsPlugin {
                             data.setAvatar(SkinUtil.getAvatar(data.getSkin()));
                         });
                     });
+            /* 变量部分注册 */
+            if (dependenciesCheck("PlaceholderAPI")) {
+                new Avatar().register();
+            }
             Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
         }, "SkinsRestorer");
     }

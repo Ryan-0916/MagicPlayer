@@ -26,6 +26,7 @@ public class ProfileController {
                 .getPlayerDataRepository()
                 .queryByPlayer(sender));
     }
+
     @Command(text = "^\\S+$", permissionType = PermissionType.PLAYER,
             permission = "magic.command.magicplayer.all||magic.command.magicplayer.profile.see", label = "^profile$")
     public void profileSee(Player sender, String[] args) {

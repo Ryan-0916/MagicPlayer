@@ -1,9 +1,9 @@
 package com.magicrealms.magicplayer.core.menu;
 
 import com.magicrealms.magiclib.common.utils.StringUtil;
-import com.magicrealms.magiclib.core.dispatcher.MessageDispatcher;
 import com.magicrealms.magiclib.core.holder.BaseMenuHolder;
 import com.magicrealms.magiclib.core.utils.ItemUtil;
+import com.magicrealms.magiclib.core.utils.PlaceholderUtil;
 import com.magicrealms.magicplayer.common.player.DailyPlayerSession;
 import com.magicrealms.magicplayer.common.util.PlayerSessionUtil;
 import com.magicrealms.magicplayer.core.MagicPlayer;
@@ -19,7 +19,6 @@ import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
-import static com.magicrealms.magicplayer.common.MagicPlayerConstant.YML_LANGUAGE;
 import static com.magicrealms.magicplayer.common.MagicPlayerConstant.YML_PROFILE_MENU;
 
 /**
@@ -31,14 +30,8 @@ import static com.magicrealms.magicplayer.common.MagicPlayerConstant.YML_PROFILE
 public class ProfileMenu extends BaseMenuHolder {
     /* 自定义变量相关 */
     private final static String CUSTOM_PAPI_PATH = "CustomPapi.%s.%s";
-    /* 查看者本人 */
-    private final boolean IS_HOLDER;
-    /* 查看者基本信息  */
-    private final PlayerData HOLDER_DATA;
     /* 资料卡者信息 */
     private final PlayerData PROFILE_DATA;
-    /* 查看者今日信息  */
-    private final DailyPlayerSession HOLDER_SESSION;
     /* 资料卡者今日信息  */
     private final DailyPlayerSession PROFILE_SESSION;
 
@@ -46,43 +39,30 @@ public class ProfileMenu extends BaseMenuHolder {
         super(MagicPlayer.getInstance(), player, YML_PROFILE_MENU,
                 "AE#######BF####QR#CG####RR#DH#######");
         Objects.requireNonNull(profileData);
-        this.IS_HOLDER = player.getUniqueId().equals(profileData.getUniqueId());
         this.PROFILE_DATA = profileData;
-        this.HOLDER_DATA = MagicPlayer.getInstance()
-                .getPlayerDataRepository().queryByPlayer(player);
-        this.HOLDER_SESSION = PlayerSessionUtil
-                .getPlayerSession(MagicPlayer.getInstance().getRedisStore(),
-                        player.getName()).orElse(null);
         this.PROFILE_SESSION = PlayerSessionUtil
                 .getPlayerSession(MagicPlayer.getInstance().getRedisStore(),
                         profileData.getName()).orElse(null);
-        if (HOLDER_SESSION == null) {
-            MessageDispatcher.getInstance().sendMessage(super.getPlugin()
-                    , player, super.getPlugin().getConfigManager().getYmlValue(YML_LANGUAGE,
-                            "PlayerMessage.Error.UnKnow"));
-            return;
-        }
         asyncOpenMenu();
-//        this.time = System.currentTimeMillis();
-//        this.setting = MagicPlayerSettingUtil.getMagicPlayerSetting(data.getName());
-//        this.localSetting = MagicPlayerLocalSettingUtil.getMagicPlayerLocalSetting(data.getName(), player.getUniqueId());
-//        final OfflinePlayer offlinePlayer = isHolder ? player : Bukkit.getOfflinePlayer(data.getUniqueId());
-//        placeholderMap.put("money", StringUtil.replacePlaceholder("%xconomy_balance_value%", offlinePlayer));
-//        placeholderMap.put("name", data.getName());
-//        placeholderMap.put("friend_number", String.valueOf(data.getFriendNumber()));
-//        placeholderMap.put("email", data.getEmail() != null ? data.getEmail() : "未绑定邮箱");
-//        Map<String, String> registerTimeMap = DateTimeUtil.getFormatDateTime(data.getRegisterTime());
-//        placeholderMap.put("register_time_yyyy", registerTimeMap.getOrDefault("yyyy", "????"));
-//        placeholderMap.put("register_time_yy", registerTimeMap.getOrDefault("yy", "??"));
-//        placeholderMap.put("register_time_MM", registerTimeMap.getOrDefault("MM", "??"));
-//        placeholderMap.put("register_time_dd", registerTimeMap.getOrDefault("dd", "??"));
-//        placeholderMap.put("register_time_HH", registerTimeMap.getOrDefault("HH", "??"));
-//        placeholderMap.put("register_time_mm", registerTimeMap.getOrDefault("mm", "??"));
-//        placeholderMap.put("register_time_ss", registerTimeMap.getOrDefault("ss", "??"));
-//        Map<String, String> playtimeMap = DateTimeUtil.getFormatMillisecond(data.getPlaytime() + (magicData == null || magicData.isOffline() ? 0 : time - magicData.getUpTime()));
-//        placeholderMap.put("playtime_HH", playtimeMap.getOrDefault("HH", "00"));
-//        placeholderMap.put("playtime_mm", playtimeMap.getOrDefault("mm", "00"));
-//        placeholderMap.put("playtime_ss", playtimeMap.getOrDefault("ss", "00"));
+    }
+
+    @Override
+    protected LinkedHashMap<String, String> initTitle() {
+        OfflinePlayer player = Bukkit.getOfflinePlayer(PROFILE_DATA.getUniqueId());
+        return getPlugin().getConfigManager()
+                .getYmlSubKeys(getConfigPath(), "Title", false)
+                .map(keys -> keys.stream()
+                        .collect(Collectors.toMap(
+                                key -> key,
+                                key -> PlaceholderUtil.replacePlaceholders(
+                                        getPlugin().getConfigManager()
+                                                .getYmlValue(getConfigPath(), String.format(TITLE_TEXT_PATH, key)),
+                                        player
+                                ),
+                                (oldVal, newVal) -> oldVal,  // 合并函数（避免重复键冲突）
+                                LinkedHashMap::new           // 指定使用 LinkedHashMap
+                        )))
+                .orElseGet(LinkedHashMap::new);  // 默认也用 LinkedHashMap
     }
 
     @Override

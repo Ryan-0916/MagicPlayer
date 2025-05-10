@@ -5,6 +5,7 @@ import com.magicrealms.magiclib.bukkit.command.annotations.TabComplete;
 import com.magicrealms.magiclib.bukkit.command.enums.PermissionType;
 import com.magicrealms.magicplayer.common.util.PlayerSessionUtil;
 import com.magicrealms.magicplayer.core.MagicPlayer;
+import org.apache.commons.lang3.StringUtils;
 import org.bukkit.command.CommandSender;
 
 import java.util.List;
@@ -19,14 +20,25 @@ import java.util.List;
 @SuppressWarnings("unused")
 public class ProfileTabController {
 
-    @TabComplete(text = "^\\s?\\S+$", permissionType = PermissionType.PLAYER,
+    @TabComplete(text = "^\\s?$", permissionType = PermissionType.PLAYER,
             permission = "magic.command.magicplayer.all||magic.command.magicplayer.profile.see",
             label = "^profile$")
-    public List<String> firstTab(CommandSender sender, String[] args) {
+    public List<String> first(CommandSender sender, String[] args) {
         return PlayerSessionUtil.getOnlinePlayerNames(MagicPlayer
                 .getInstance()
                 .getRedisStore());
     }
 
+    @TabComplete(text = "^\\S+$", permissionType = PermissionType.CONSOLE_OR_PERMISSION,
+            permission = "magic.command.magicplayer.all||magic.command.magicplayer.profile.see", label = "^profile$")
+    public List<String> firstTab(CommandSender sender, String[] args) {
+        return PlayerSessionUtil.getOnlinePlayerNames(MagicPlayer
+                        .getInstance()
+                        .getRedisStore())
+                .stream()
+                .filter(e ->
+                        StringUtils.startsWithIgnoreCase(e, args[0]))
+                .toList();
+    }
 
 }

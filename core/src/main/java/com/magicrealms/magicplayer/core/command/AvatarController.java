@@ -26,7 +26,7 @@ public class AvatarController {
                     MagicPlayer.getInstance(),
                     sender,
                     MagicPlayer.getInstance().getAvatarManager()
-                            .getPlayerAvatar(sender.getName(), i)
+                            .getAvatar(sender.getName(), i)
             );
         } catch (Exception exception) {
             MessageDispatcher.getInstance().sendMessage(
@@ -35,6 +35,26 @@ public class AvatarController {
                     MagicPlayer.getInstance().getConfigManager().getYmlValue(YML_LANGUAGE, "PlayerMessage.Error.UnKnowAvatarId")
             );
             MagicPlayer.getInstance().getLogger().warning("尝试获取头像失败，原因：未知的头像 ID " + args[0]);
+        }
+    }
+
+    @Command(text = "^\\S+\\s\\S+$", permissionType = PermissionType.OP, label = "^avatar$")
+    public void avatarSee(Player sender, String[] args) {
+        try {
+            int i = Integer.parseInt(args[1]);
+            MessageDispatcher.getInstance().sendMessage(
+                    MagicPlayer.getInstance(),
+                    sender,
+                    MagicPlayer.getInstance().getAvatarManager()
+                            .getAvatar(args[0], i)
+            );
+        } catch (Exception exception) {
+            MessageDispatcher.getInstance().sendMessage(
+                    MagicPlayer.getInstance(),
+                    sender,
+                    MagicPlayer.getInstance().getConfigManager().getYmlValue(YML_LANGUAGE, "PlayerMessage.Error.UnKnowAvatarId")
+            );
+            MagicPlayer.getInstance().getLogger().warning("尝试获取头像失败，原因：未知的头像 ID " + args[1]);
         }
     }
 

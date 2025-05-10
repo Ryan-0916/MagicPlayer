@@ -32,7 +32,7 @@ public class AvatarManager {
         this.configLoader = new AvatarConfigLoader(plugin);
     }
 
-    public String getPlayerAvatar(String name, int id) {
+    public String getAvatar(String name, int id) {
         String key =StringUtils.upperCase(name);
         /* 从缓存中寻找 */
         String avatarCatch = MagicPlayer.getInstance().getRedisStore()
@@ -85,5 +85,4 @@ public class AvatarManager {
         }
         return null;
     }
-
 }

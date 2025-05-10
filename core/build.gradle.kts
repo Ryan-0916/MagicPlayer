@@ -12,6 +12,7 @@ dependencies {
     compileOnly("net.skinsrestorer:skinsrestorer-api:15.6.2")
     compileOnly("com.saicone.rtag:rtag:1.5.9")
     compileOnly("com.saicone.rtag:rtag-item:1.5.9")
+    compileOnly("me.clip:placeholderapi:2.11.6")
 }
 
 repositories {
