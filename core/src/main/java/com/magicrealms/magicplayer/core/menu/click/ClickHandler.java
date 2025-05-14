@@ -1,4 +1,4 @@
-package com.magicrealms.magicplayer.core.entity;
+package com.magicrealms.magicplayer.core.menu.click;
 
 import com.magicrealms.magicplayer.api.player.PlayerData;
 import org.bukkit.entity.Player;

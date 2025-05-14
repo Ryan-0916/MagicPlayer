@@ -1,4 +1,4 @@
-package com.magicrealms.magicplayer.core.entity;
+package com.magicrealms.magicplayer.core.menu.click;
 
 import java.util.function.Consumer;
 
