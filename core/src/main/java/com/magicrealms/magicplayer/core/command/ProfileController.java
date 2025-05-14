@@ -4,8 +4,8 @@ import com.magicrealms.magiclib.bukkit.command.annotations.Command;
 import com.magicrealms.magiclib.bukkit.command.annotations.CommandListener;
 import com.magicrealms.magiclib.bukkit.command.enums.PermissionType;
 import com.magicrealms.magiclib.core.dispatcher.MessageDispatcher;
-import com.magicrealms.magicplayer.core.MagicPlayer;
-import com.magicrealms.magicplayer.core.entity.PlayerData;
+import com.magicrealms.magicplayer.core.BukkitMagicPlayer;
+import com.magicrealms.magicplayer.api.player.PlayerData;
 import com.magicrealms.magicplayer.core.menu.ProfileMenu;
 import org.bukkit.entity.Player;
 
@@ -22,7 +22,7 @@ public class ProfileController {
     @Command(text = "^\\s?$", permissionType = PermissionType.PLAYER,
             permission = "magic.command.magicplayer.all||magic.command.magicplayer.profile", label = "^profile$")
     public void profile(Player sender, String[] args) {
-        new ProfileMenu(sender, MagicPlayer.getInstance()
+        new ProfileMenu(sender, BukkitMagicPlayer.getInstance()
                 .getPlayerDataRepository()
                 .queryByPlayer(sender));
     }
@@ -30,12 +30,12 @@ public class ProfileController {
     @Command(text = "^\\S+$", permissionType = PermissionType.PLAYER,
             permission = "magic.command.magicplayer.all||magic.command.magicplayer.profile.see", label = "^profile$")
     public void profileSee(Player sender, String[] args) {
-        PlayerData profileData = MagicPlayer.getInstance()
+        PlayerData profileData = BukkitMagicPlayer.getInstance()
                 .getPlayerDataRepository()
                 .queryById(args[0]);
         if (profileData == null) {
-            MessageDispatcher.getInstance().sendMessage(MagicPlayer.getInstance()
-                    , sender, MagicPlayer.getInstance().getConfigManager().getYmlValue(YML_LANGUAGE,
+            MessageDispatcher.getInstance().sendMessage(BukkitMagicPlayer.getInstance()
+                    , sender, BukkitMagicPlayer.getInstance().getConfigManager().getYmlValue(YML_LANGUAGE,
                             "PlayerMessage.Error.NoAnyPlayer"));
             return;
         }

@@ -8,15 +8,13 @@ import java.util.UUID;
 
 /**
  * @author Ryan-0916
- * @Desc 当日在线过的玩家记录
- * 记录当日在线过的玩家相关信息
- * 并存放至 Redis Hash 中
+ * @Desc 缓存玩家相关信息
  * @date 2025-04-27
  */
 @Data
-@SuppressWarnings("unused")
 @Builder
-public class DailyPlayerSession {
+@SuppressWarnings("unused")
+public class PlayerSession {
     /* 玩家ID */
     private UUID uuid;
     /* 玩家名称 */

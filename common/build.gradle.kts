@@ -7,10 +7,9 @@ java {
 }
 
 dependencies {
-    testImplementation(platform("org.junit:junit-bom:5.9.1"))
-    testImplementation("org.junit.jupiter:junit-jupiter")
-    compileOnly("com.magicrealms:magiclib:1.0")
-    compileOnly("org.apache.commons:commons-lang3:3.12.0")
+    compileOnly("io.papermc.paper:paper-api:${rootProject.properties["paper_version"]}-R0.1-SNAPSHOT")
+    compileOnly("com.magicrealms:magiclib:${rootProject.properties["magic_lib_velocity_version"]}")
+    compileOnly("org.apache.commons:commons-lang3:${rootProject.properties["apache_lang3_version"]}")
 }
 
 tasks.withType<JavaCompile> {

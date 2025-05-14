@@ -1,0 +1,39 @@
+Setting:
+  # Type
+  # ACCOUNT 个人设置
+  # OTHER 他人设置
+  # MAIL 邮箱偏好设置
+  # PROFILE 明信片设置
+  # AVATAR_FRAME 头像框设置
+  # MARKET 市场设置
+  ACCOUNT:
+    # Weight 越大排序越靠后
+    Weight: 0
+    Title: '个人中心'
+    Name: '个人中心'
+    Desc: '个人中心'
+  OTHER:
+    Weight: 1
+    Title: '他人设置'
+    Name: '他人设置'
+    Desc: '他人设置'
+  MAIL:
+    Weight: 2
+    Title: '邮箱设置'
+    Name: '邮箱设置'
+    Desc: '邮箱设置'
+  PROFILE:
+    Weight: 3
+    Title: '明信片设置'
+    Name: '明信片设置'
+    Desc: '明信片设置'
+  AVATAR_FRAME:
+    Weight: 4
+    Title: '头像框设置'
+    Name: '头像框设置'
+    Desc: '头像框设置'
+  MARKET:
+    Weight: 5
+    Title: '市场设置'
+    Name: '市场设置'
+    Desc: '市场设置'

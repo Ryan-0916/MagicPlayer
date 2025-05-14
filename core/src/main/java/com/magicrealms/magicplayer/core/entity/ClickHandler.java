@@ -1,5 +1,6 @@
 package com.magicrealms.magicplayer.core.entity;
 
+import com.magicrealms.magicplayer.api.player.PlayerData;
 import org.bukkit.entity.Player;
 
 /**

@@ -4,15 +4,14 @@ val projectArtifactId : String by project
 
 dependencies {
     implementation(project(":common"))
-    testImplementation(platform("org.junit:junit-bom:5.9.1"))
-    testImplementation("org.junit.jupiter:junit-jupiter")
-    compileOnly("io.papermc.paper:paper-api:1.21.4-R0.1-SNAPSHOT")
-    compileOnly("com.github.retrooper:packetevents-spigot:2.7.0")
-    compileOnly("com.magicrealms:magiclib:1.0")
-    compileOnly("net.skinsrestorer:skinsrestorer-api:15.6.2")
-    compileOnly("com.saicone.rtag:rtag:1.5.9")
-    compileOnly("com.saicone.rtag:rtag-item:1.5.9")
-    compileOnly("me.clip:placeholderapi:2.11.6")
+    implementation(project(":api"))
+    compileOnly("io.papermc.paper:paper-api:${rootProject.properties["paper_version"]}-R0.1-SNAPSHOT")
+    compileOnly("com.github.retrooper:packetevents-spigot:${rootProject.properties["packetevents_version"]}")
+    compileOnly("com.magicrealms:magiclib:${rootProject.properties["magic_lib_version"]}")
+    compileOnly("net.skinsrestorer:skinsrestorer-api:${rootProject.properties["skinsrestorer_version"]}")
+    compileOnly("com.saicone.rtag:rtag:${rootProject.properties["rtag_version"]}")
+    compileOnly("com.saicone.rtag:rtag-item:${rootProject.properties["rtag_version"]}")
+    compileOnly("me.clip:placeholderapi:${rootProject.properties["placeholder_version"]}")
 }
 
 repositories {

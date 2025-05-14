@@ -1,6 +1,6 @@
 name: MagicPlayer
 version: ${projectVersion}
-main: com.magicrealms.magicplayer.core.MagicPlayer
+main: com.magicrealms.magicplayer.core.BukkitMagicPlayer
 api-version: 1.21
 author: Ryan0916
 commands:
@@ -10,6 +10,7 @@ commands:
       - online
       - avatar
       - profile
+      - setting
 depend:
   - MagicLib
   - SkinsRestorer

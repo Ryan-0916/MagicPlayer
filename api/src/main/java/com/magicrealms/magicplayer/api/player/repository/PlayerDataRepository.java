@@ -1,10 +1,10 @@
-package com.magicrealms.magicplayer.core.repository;
+package com.magicrealms.magicplayer.api.player.repository;
 
 import com.magicrealms.magiclib.common.repository.BaseRepository;
 import com.magicrealms.magiclib.common.store.MongoDBStore;
 import com.magicrealms.magiclib.common.store.RedisStore;
 import com.magicrealms.magiclib.common.utils.MongoDBUtil;
-import com.magicrealms.magicplayer.core.entity.PlayerData;
+import com.magicrealms.magicplayer.api.player.PlayerData;
 import com.mongodb.client.MongoCursor;
 import org.bson.Document;
 import org.bukkit.entity.Player;
@@ -15,7 +15,7 @@ import java.util.function.Consumer;
 
 /**
  * @author Ryan-0916
- * @Desc TODO：一段话介绍该类对象
+ * @Desc 玩家数据存储类
  * @date 2025-05-06
  */
 public class PlayerDataRepository extends BaseRepository<PlayerData> {

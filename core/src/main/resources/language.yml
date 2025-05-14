@@ -97,6 +97,9 @@ PlayerMessage:
     UnKnow: "未知异常"
   Success:
     ReloadFile: "重载文件成功"
+Menu:
+  FrameMenu:
+    PreviewLock: '您未解锁此头像框'
 ConsoleMessage:
   Error:
     NotPlayer: "此命令仅玩家可用"

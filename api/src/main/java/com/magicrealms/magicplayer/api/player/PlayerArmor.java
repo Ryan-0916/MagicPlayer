@@ -1,4 +1,4 @@
-package com.magicrealms.magicplayer.core.entity;
+package com.magicrealms.magicplayer.api.player;
 
 import com.magicrealms.magiclib.core.adapt.ItemStackFieldAdapter;
 import com.magicrealms.magiclib.common.annotations.MongoField;

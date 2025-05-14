@@ -3,11 +3,11 @@ package com.magicrealms.magicplayer.core.command;
 import com.magicrealms.magiclib.bukkit.command.annotations.Command;
 import com.magicrealms.magiclib.bukkit.command.annotations.CommandListener;
 import com.magicrealms.magiclib.bukkit.command.enums.PermissionType;
-import com.magicrealms.magicplayer.common.player.DailyPlayerSession;
-import com.magicrealms.magicplayer.core.MagicPlayer;
+import com.magicrealms.magicplayer.common.player.PlayerSession;
+import com.magicrealms.magicplayer.core.BukkitMagicPlayer;
 import com.magicrealms.magicplayer.core.entity.ClickAction;
 import com.magicrealms.magicplayer.core.menu.PlayerMenu;
-import com.magicrealms.magicplayer.core.entity.PlayerData;
+import com.magicrealms.magicplayer.api.player.PlayerData;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -29,11 +29,11 @@ public class OnlineController {
     @Command(text = "^\\s?$", permissionType = PermissionType.PLAYER,
             permission = "magic.command.magicplayer.all||magic.command.magicplayer.online", label = "^online$")
     public void online(Player sender, String[] args) {
-        Optional<List<PlayerData>> data = MagicPlayer.getInstance().getRedisStore()
-                .hGetAllObject(DAILY_PLAYERS_HASH_KEY, DailyPlayerSession.class)
+        Optional<List<PlayerData>> data = BukkitMagicPlayer.getInstance().getRedisStore()
+                .hGetAllObject(DAILY_PLAYERS_HASH_KEY, PlayerSession.class)
                 .map(e -> e.stream()
-                        .filter(DailyPlayerSession::isOnline)
-                        .map(s -> MagicPlayer.getInstance().getPlayerDataRepository()
+                        .filter(PlayerSession::isOnline)
+                        .map(s -> BukkitMagicPlayer.getInstance().getPlayerDataRepository()
                                 .queryById(s.getName())).collect(Collectors.toList()));
         new PlayerMenu.Builder()
                 .leftAction(ClickAction.of("左键做鸡", e -> e.clicker().sendMessage("你做了" + e.clickData().getName() + "的鸡")))

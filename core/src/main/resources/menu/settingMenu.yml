@@ -1,0 +1,117 @@
+Title:
+  Background:
+    Text: '设置'
+    Offset: 0
+  Pre:
+    Text: '%pre_page%'
+    Offset: 0
+  Next:
+    Text: '%next_page%'
+    Offset: 0
+  HasSetting_N:
+    Text: '%has_setting_N%'
+    Offset: 0
+
+CustomPapi:
+  # N 为你每页的个数 1 - N 例如你每页有 4个设置配置(J)
+  # 那么请你为 CustomPapi 设置 Title_1 - Title_4
+  PrePage:
+    Enable: '可以上一页'
+    UnEnable: '不可以上一页'
+  NextPage:
+    Enable: '可以下一页'
+    UnEnable: '不可以下一页'
+  HasSetting_N:
+    Enable: '可以下一页'
+    UnEnable: '不可以下一页'
+
+# # 默认材质
+# A 返回 / 关闭
+# B 头颅
+# C 头颅预留
+# D 预留快捷设置
+# E 预留快捷设置
+# F 预留快捷设置
+# G 预留快捷设置
+# H 上一夜
+# I 下一页
+# J 个人设置
+# K 个人设置预留
+
+Layout:
+  - 'A########'
+  - 'BC##HJKKK'
+  - 'CC###JKKK'
+  - 'DEFG#JKKK'
+  - '#####JKKK'
+  - '####IJKKK'
+
+Icons:
+  A:
+    OpenDisplay:
+      Mats: GLASS_PANE
+      ModelData: 0
+      Name: '&E&L返回'
+      Lore:
+        - '&6&L返回'
+    CloseDisplay:
+      Mats: GLASS_PANE
+      ModelData: 0
+      Name: '&E&L关闭'
+      Lore:
+        - '&6&L关闭'
+  B:
+    Display:
+      ModelData: 0
+      Name: '&E&L头像'
+      Lore:
+        - '&6&L头像'
+  C:
+    Display:
+      Mats: GLASS_PANE
+      ModelData: 0
+      Name: '&E&L头像变量'
+      Lore:
+        - '&6&L头像变量'
+  H:
+    ActiveDisplay:
+      Mats: GLASS_PANE
+      ModelData: 0
+      Name: '&E&L上一页'
+      Lore:
+        - '&6&L上一页'
+    DisabledDisplay:
+      Mats: GLASS_PANE
+      ModelData: 0
+      Name: '&E&L上一页'
+      Lore:
+        - '&6&L上一页'
+  I:
+    ActiveDisplay:
+      Mats: GLASS_PANE
+      ModelData: 0
+      Name: '&E&L下一页'
+      Lore:
+        - '&6&L下一页'
+    DisabledDisplay:
+      Mats: GLASS_PANE
+      ModelData: 0
+      Name: '&E&L下一页'
+      Lore:
+        - '&6&L下一页'
+  J:
+    Display:
+      Mats: GLASS_PANE
+      ModelData: 0
+      Name: '&E&L%setting_name%'
+      Lore:
+        - '&6&L%setting_desc%'
+        - '&6&L点击打开%setting_name%'
+  K:
+    Display:
+      Mats: GLASS_PANE
+      ModelData: 0
+      Name: '&E&L%setting_name%'
+      Lore:
+        - '&6&L%setting_desc%'
+        - '&6&L点击打开%setting_name%'

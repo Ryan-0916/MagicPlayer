@@ -3,8 +3,8 @@ package com.magicrealms.magicplayer.core.command;
 import com.magicrealms.magiclib.bukkit.command.annotations.CommandListener;
 import com.magicrealms.magiclib.bukkit.command.annotations.TabComplete;
 import com.magicrealms.magiclib.bukkit.command.enums.PermissionType;
-import com.magicrealms.magicplayer.common.util.PlayerSessionUtil;
-import com.magicrealms.magicplayer.core.MagicPlayer;
+import com.magicrealms.magicplayer.common.storage.PlayerSessionStorage;
+import com.magicrealms.magicplayer.core.BukkitMagicPlayer;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.command.CommandSender;
 
@@ -24,7 +24,7 @@ public class ProfileTabController {
             permission = "magic.command.magicplayer.all||magic.command.magicplayer.profile.see",
             label = "^profile$")
     public List<String> first(CommandSender sender, String[] args) {
-        return PlayerSessionUtil.getOnlinePlayerNames(MagicPlayer
+        return PlayerSessionStorage.getOnlinePlayerNames(BukkitMagicPlayer
                 .getInstance()
                 .getRedisStore());
     }
@@ -32,7 +32,7 @@ public class ProfileTabController {
     @TabComplete(text = "^\\S+$", permissionType = PermissionType.CONSOLE_OR_PERMISSION,
             permission = "magic.command.magicplayer.all||magic.command.magicplayer.profile.see", label = "^profile$")
     public List<String> firstTab(CommandSender sender, String[] args) {
-        return PlayerSessionUtil.getOnlinePlayerNames(MagicPlayer
+        return PlayerSessionStorage.getOnlinePlayerNames(BukkitMagicPlayer
                         .getInstance()
                         .getRedisStore())
                 .stream()

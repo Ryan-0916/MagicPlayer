@@ -1,9 +1,9 @@
 rootProject.name = "MagicPlayer"
-include(":core")
-include(":setting")
-include(":velocity")
 include(":common")
 include(":api")
+
+include(":core")
+include(":velocity")
 pluginManagement {
     repositories {
         gradlePluginPortal()

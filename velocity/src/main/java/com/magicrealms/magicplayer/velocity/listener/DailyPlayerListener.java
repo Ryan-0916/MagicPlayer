@@ -2,9 +2,9 @@
 
 import com.magicrealms.magiclib.common.store.RedisStore;
 import com.magicrealms.magiclib.common.utils.RedissonUtil;
-import com.magicrealms.magicplayer.common.player.DailyPlayerSession;
+import com.magicrealms.magicplayer.common.player.PlayerSession;
 import com.magicrealms.magicplayer.common.player.PlayerStatus;
-import com.magicrealms.magicplayer.common.util.PlayerSessionUtil;
+import com.magicrealms.magicplayer.common.storage.PlayerSessionStorage;
 import com.magicrealms.magicplayer.velocity.MagicPlayer;
 import com.velocitypowered.api.event.EventTask;
 import com.velocitypowered.api.event.Subscribe;
@@ -36,7 +36,7 @@ public class DailyPlayerListener {
         String subKey = StringUtils.upperCase(player.getUsername());
         long time = System.currentTimeMillis();
         MagicPlayer.getINSTANCE().getRedisStore().hSetObject(DAILY_PLAYERS_HASH_KEY, subKey,
-                DailyPlayerSession.builder()
+                PlayerSession.builder()
                         .uuid(player.getUniqueId())
                         .name(player.getUsername())
                         .upTime(time)
@@ -46,7 +46,7 @@ public class DailyPlayerListener {
     }
 
 
-    private void updatePlayerSession(Player player, Consumer<DailyPlayerSession> updater) {
+    private void updatePlayerSession(Player player, Consumer<PlayerSession> updater) {
         RedisStore store = MagicPlayer.getINSTANCE().getRedisStore();
         String subKey = StringUtils.upperCase(player.getUsername());
         RedissonUtil.doAsyncWithLock(store,
@@ -54,18 +54,18 @@ public class DailyPlayerListener {
                 subKey,
                 LOCK_TIMEOUT,
                 () -> {
-                    Optional<DailyPlayerSession> optionalDailyPlayer = PlayerSessionUtil.getPlayerSession(store, subKey);
+                    Optional<PlayerSession> optionalDailyPlayer = PlayerSessionStorage.getPlayerSession(store, subKey);
                     if (optionalDailyPlayer.isEmpty()) {
                         addDailyPlayerSession(player);
                         return;
                     }
-                    DailyPlayerSession dailyPlayer = optionalDailyPlayer.get();
+                    PlayerSession dailyPlayer = optionalDailyPlayer.get();
                     updater.accept(dailyPlayer);
                     store.hSetObject(DAILY_PLAYERS_HASH_KEY, subKey, dailyPlayer, EXPIRE);
                 });
     }
 
-    private void updateLoginSession(DailyPlayerSession session) {
+    private void updateLoginSession(PlayerSession session) {
         session.setStatus(PlayerStatus.ONLINE);
         session.setStartAfkTime(0);
         session.setUpTime(System.currentTimeMillis());
@@ -85,7 +85,7 @@ public class DailyPlayerListener {
         });
     }
 
-    private void updateServerConnectedSession(DailyPlayerSession session,
+    private void updateServerConnectedSession(PlayerSession session,
                                               ServerConnectedEvent event) {
         if (session.getStatus() != PlayerStatus.ONLINE &&
                 session.getStatus() != PlayerStatus.HIDDEN) {
@@ -108,7 +108,7 @@ public class DailyPlayerListener {
         });
     }
 
-    private void updateDisconnectSession(DailyPlayerSession session) {
+    private void updateDisconnectSession(PlayerSession session) {
         session.setStatus(PlayerStatus.OFFLINE);
         session.setServerName(null);
         session.setStartAfkTime(0);

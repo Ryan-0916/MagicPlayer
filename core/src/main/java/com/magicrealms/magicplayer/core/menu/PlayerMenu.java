@@ -5,10 +5,10 @@ import com.magicrealms.magiclib.core.utils.ItemUtil;
 import com.magicrealms.magiclib.common.utils.StringUtil;
 import com.magicrealms.magiclib.core.dispatcher.MessageDispatcher;
 import com.magicrealms.magiclib.core.holder.PageMenuHolder;
-import com.magicrealms.magicplayer.core.MagicPlayer;
+import com.magicrealms.magicplayer.core.BukkitMagicPlayer;
 import com.magicrealms.magicplayer.core.entity.ClickAction;
 import com.magicrealms.magicplayer.core.entity.ClickHandler;
-import com.magicrealms.magicplayer.core.entity.PlayerData;
+import com.magicrealms.magicplayer.api.player.PlayerData;
 import net.kyori.adventure.text.Component;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
@@ -51,7 +51,7 @@ public class PlayerMenu extends PageMenuHolder {
     private final List<Component> CLICK_LORE;
 
     public PlayerMenu(Builder builder) {
-        super(MagicPlayer.getInstance(), builder.player, YML_PLAYER_MENU,
+        super(BukkitMagicPlayer.getInstance(), builder.player, YML_PLAYER_MENU,
                 "O######FXAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABC#####DE");
         /* 玩家数据 */
         this.DATA = builder.data.stream()
@@ -98,6 +98,8 @@ public class PlayerMenu extends PageMenuHolder {
                 case 'A' -> {
                     if (DATA.size() > ++appearIndex) {
                         setHead(i, DATA.get(appearIndex));
+                    } else {
+                        super.setItemSlot(i, ItemUtil.AIR);
                     }
                 }
                 case 'B', 'C' -> super.setButtonSlot(i, !(super.getPage() > 1));
@@ -134,11 +136,9 @@ public class PlayerMenu extends PageMenuHolder {
 
     @Override
     public void topInventoryClickEvent(InventoryClickEvent event, int slot) {
-        if (!super.getCooldownManager().tryCooldown(slot)) {
-            MessageDispatcher.getInstance().sendMessage(super.getPlugin(),
-                    super.getPlayer(), super.getPlugin().getConfigManager()
-                            .getYmlValue(YML_LANGUAGE,
-                                    "PlayerMessage.Error.ButtonCooldown"));
+        if (!super.tryCooldown(slot, super.getPlugin().getConfigManager()
+                .getYmlValue(YML_LANGUAGE,
+                        "PlayerMessage.Error.ButtonCooldown"))) {
             return;
         }
         char c = super.getLayout().charAt(slot);
@@ -147,11 +147,13 @@ public class PlayerMenu extends PageMenuHolder {
             case 'X'-> asyncCloseMenu();
             case 'B', 'C' -> super.changePage(- 1, b -> {
                 asyncPlaySound(b ? "Icons." + c + ".ActiveDisplay.Sound" : "Icons." + c + ".DisabledDisplay.Sound");
+                if (!b) return;
                 super.handleMenu(super.getLayout());
                 super.asyncUpdateTitle();
             });
             case 'D', 'E' -> super.changePage(1, b -> {
                 asyncPlaySound(b ? "Icons." + c + ".ActiveDisplay.Sound" : "Icons." + c + ".DisabledDisplay.Sound");
+                if (!b) return;
                 super.handleMenu(super.getLayout());
                 super.asyncUpdateTitle();
             });

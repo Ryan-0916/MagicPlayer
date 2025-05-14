@@ -4,7 +4,7 @@ import com.magicrealms.magiclib.bukkit.command.annotations.Command;
 import com.magicrealms.magiclib.bukkit.command.annotations.CommandListener;
 import com.magicrealms.magiclib.bukkit.command.enums.PermissionType;
 import com.magicrealms.magiclib.core.dispatcher.MessageDispatcher;
-import com.magicrealms.magicplayer.core.MagicPlayer;
+import com.magicrealms.magicplayer.core.BukkitMagicPlayer;
 import org.bukkit.entity.Player;
 
 import static com.magicrealms.magicplayer.common.MagicPlayerConstant.YML_LANGUAGE;
@@ -23,18 +23,18 @@ public class AvatarController {
         try {
             int i = Integer.parseInt(args[0]);
             MessageDispatcher.getInstance().sendMessage(
-                    MagicPlayer.getInstance(),
+                    BukkitMagicPlayer.getInstance(),
                     sender,
-                    MagicPlayer.getInstance().getAvatarManager()
-                            .getAvatar(sender.getName(), i)
+                    BukkitMagicPlayer.getInstance().getAvatarManager()
+                            .getAvatar(i, sender.getName())
             );
         } catch (Exception exception) {
             MessageDispatcher.getInstance().sendMessage(
-                    MagicPlayer.getInstance(),
+                    BukkitMagicPlayer.getInstance(),
                     sender,
-                    MagicPlayer.getInstance().getConfigManager().getYmlValue(YML_LANGUAGE, "PlayerMessage.Error.UnKnowAvatarId")
+                    BukkitMagicPlayer.getInstance().getConfigManager().getYmlValue(YML_LANGUAGE, "PlayerMessage.Error.UnKnowAvatarId")
             );
-            MagicPlayer.getInstance().getLogger().warning("尝试获取头像失败，原因：未知的头像 ID " + args[0]);
+            BukkitMagicPlayer.getInstance().getLogger().warning("尝试获取头像失败，原因：未知的头像 ID " + args[0]);
         }
     }
 
@@ -43,18 +43,18 @@ public class AvatarController {
         try {
             int i = Integer.parseInt(args[1]);
             MessageDispatcher.getInstance().sendMessage(
-                    MagicPlayer.getInstance(),
+                    BukkitMagicPlayer.getInstance(),
                     sender,
-                    MagicPlayer.getInstance().getAvatarManager()
-                            .getAvatar(args[0], i)
+                    BukkitMagicPlayer.getInstance().getAvatarManager()
+                            .getAvatar(i, args[0])
             );
         } catch (Exception exception) {
             MessageDispatcher.getInstance().sendMessage(
-                    MagicPlayer.getInstance(),
+                    BukkitMagicPlayer.getInstance(),
                     sender,
-                    MagicPlayer.getInstance().getConfigManager().getYmlValue(YML_LANGUAGE, "PlayerMessage.Error.UnKnowAvatarId")
+                    BukkitMagicPlayer.getInstance().getConfigManager().getYmlValue(YML_LANGUAGE, "PlayerMessage.Error.UnKnowAvatarId")
             );
-            MagicPlayer.getInstance().getLogger().warning("尝试获取头像失败，原因：未知的头像 ID " + args[1]);
+            BukkitMagicPlayer.getInstance().getLogger().warning("尝试获取头像失败，原因：未知的头像 ID " + args[1]);
         }
     }
 

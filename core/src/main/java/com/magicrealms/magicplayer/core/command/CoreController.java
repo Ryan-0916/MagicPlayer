@@ -4,7 +4,7 @@ import com.magicrealms.magiclib.bukkit.command.annotations.Command;
 import com.magicrealms.magiclib.bukkit.command.annotations.CommandListener;
 import com.magicrealms.magiclib.bukkit.command.enums.PermissionType;
 import com.magicrealms.magiclib.core.dispatcher.MessageDispatcher;
-import com.magicrealms.magicplayer.core.MagicPlayer;
+import com.magicrealms.magicplayer.core.BukkitMagicPlayer;
 import org.bukkit.command.CommandSender;
 
 import java.util.Locale;
@@ -24,13 +24,17 @@ public class CoreController {
             permissionType = PermissionType.CONSOLE_OR_PERMISSION,
             permission = "magic.command.magicplayer.all||magic.command.magicplayer.reload", label = "^magicPlayer$")
     public void reload(CommandSender sender, String[] args){
-        MagicPlayer.getInstance().getConfigManager()
+        BukkitMagicPlayer.getInstance().getConfigManager()
                 .reloadConfig(YML_REDIS, YML_MONGODB);
         /* 重置 Avatar 部分 */
-        MagicPlayer.getInstance().setupAvatar();
+        BukkitMagicPlayer.getInstance().setupAvatar();
+        /* 重置 Setting 部分 */
+        BukkitMagicPlayer.getInstance().setupSetting();
+        /* 重置 头像框 部分 */
+        BukkitMagicPlayer.getInstance().setupFrame();
         MessageDispatcher.getInstance()
-                .sendMessage(MagicPlayer.getInstance(), sender,
-                        MagicPlayer.getInstance().getConfigManager()
+                .sendMessage(BukkitMagicPlayer.getInstance(), sender,
+                        BukkitMagicPlayer.getInstance().getConfigManager()
                                 .getYmlValue(YML_LANGUAGE,
                         "PlayerMessage.Success.ReloadFile"));
     }
@@ -39,16 +43,20 @@ public class CoreController {
             permissionType = PermissionType.CONSOLE_OR_PERMISSION,
             permission = "magic.command.magicplayer.all||magic.command.magicplayer.reload", label = "^magicPlayer$")
     public void reloadAll(CommandSender sender, String[] args){
-        MagicPlayer.getInstance().getConfigManager().reloadAllConfig();
+        BukkitMagicPlayer.getInstance().getConfigManager().reloadAllConfig();
         /* 重置 Redis 部分 */
-        MagicPlayer.getInstance().setupRedisStore();
+        BukkitMagicPlayer.getInstance().setupRedisStore();
         /* 重置 MongoDB 部分 */
-        MagicPlayer.getInstance().setupMongoDB();
+        BukkitMagicPlayer.getInstance().setupMongoDB();
         /* 重置 Avatar 部分 */
-        MagicPlayer.getInstance().setupAvatar();
+        BukkitMagicPlayer.getInstance().setupAvatar();
+        /* 重置 Setting 部分 */
+        BukkitMagicPlayer.getInstance().setupSetting();
+        /* 重置 头像框 部分 */
+        BukkitMagicPlayer.getInstance().setupFrame();
         MessageDispatcher.getInstance()
-                .sendMessage(MagicPlayer.getInstance(), sender,
-                        MagicPlayer.getInstance().getConfigManager()
+                .sendMessage(BukkitMagicPlayer.getInstance(), sender,
+                        BukkitMagicPlayer.getInstance().getConfigManager()
                                 .getYmlValue(YML_LANGUAGE,
                                         "PlayerMessage.Success.ReloadFile"));
     }
@@ -56,21 +64,23 @@ public class CoreController {
     @Command(text = "^Reload\\s(?!all\\b)\\S+$", permissionType = PermissionType.CONSOLE_OR_PERMISSION,
             permission = "magic.command.magicplayer.all||magic.command.magicplayer.reload", label = "^magicPlayer$")
     public void reloadBy(CommandSender sender, String[] args){
-        MagicPlayer.getInstance().getConfigManager()
+        BukkitMagicPlayer.getInstance().getConfigManager()
                 .reloadConfig(args[1], e -> {
             if (!e) {
-                MessageDispatcher.getInstance().sendMessage(MagicPlayer.getInstance(), sender,
-                        MagicPlayer.getInstance().getConfigManager().getYmlValue(YML_LANGUAGE,
+                MessageDispatcher.getInstance().sendMessage(BukkitMagicPlayer.getInstance(), sender,
+                        BukkitMagicPlayer.getInstance().getConfigManager().getYmlValue(YML_LANGUAGE,
                                 "PlayerMessage.Error.ReloadFile"));
                 return;
             }
             switch (args[1].toLowerCase(Locale.ROOT)) {
-                case "redis" ->  MagicPlayer.getInstance().setupRedisStore();
-                case "mongodb" -> MagicPlayer.getInstance().setupMongoDB();
-                case "avatar" ->  MagicPlayer.getInstance().setupAvatar();
+                case "redis" ->  BukkitMagicPlayer.getInstance().setupRedisStore();
+                case "mongodb" -> BukkitMagicPlayer.getInstance().setupMongoDB();
+                case "avatar" ->  BukkitMagicPlayer.getInstance().setupAvatar();
+                case "setting" ->  BukkitMagicPlayer.getInstance().setupSetting();
+                case "avatarframe" ->  BukkitMagicPlayer.getInstance().setupFrame();
             }
-            MessageDispatcher.getInstance().sendMessage(MagicPlayer.getInstance(), sender,
-                    MagicPlayer.getInstance().getConfigManager()
+            MessageDispatcher.getInstance().sendMessage(BukkitMagicPlayer.getInstance(), sender,
+                    BukkitMagicPlayer.getInstance().getConfigManager()
                             .getYmlValue(YML_LANGUAGE,
                             "PlayerMessage.Success.ReloadFile"));
         });

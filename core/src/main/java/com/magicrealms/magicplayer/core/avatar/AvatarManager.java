@@ -2,87 +2,111 @@ package com.magicrealms.magicplayer.core.avatar;
 
 import com.magicrealms.magiclib.common.enums.ParseType;
 import com.magicrealms.magiclib.common.utils.Base64Util;
-import com.magicrealms.magiclib.common.utils.StringUtil;
-import com.magicrealms.magicplayer.core.MagicPlayer;
-import com.magicrealms.magicplayer.core.entity.PlayerData;
+import com.magicrealms.magiclib.core.MagicLib;
+import com.magicrealms.magicplayer.api.avatar.IAvatarManager;
+import com.magicrealms.magicplayer.api.exception.UnknownAvatarTemplate;
+import com.magicrealms.magicplayer.core.BukkitMagicPlayer;
+import com.magicrealms.magicplayer.api.player.PlayerData;
 import org.apache.commons.lang3.StringUtils;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 import static com.magicrealms.magicplayer.common.MagicPlayerConstant.*;
 
 /**
  * @author Ryan-0916
- * @Desc 头像管理器，管理玩家头像相关信息
- * 提供获取玩家头像等方法
+ * @Desc 提供头像等相关操作类
  * @date 2025-05-02
  */
-public class AvatarManager {
+public class AvatarManager implements IAvatarManager {
 
     private final AvatarConfigLoader configLoader;
 
-
-    public AvatarManager(MagicPlayer plugin) {
+    public AvatarManager(BukkitMagicPlayer plugin) {
         /* 移除 Redis 头像相关缓存 */
-        plugin.getRedisStore()
-                .removeKeyByPrefix(PLAYERS_AVATAR_LIKE);
-        /* 加载头像相关的配置 */
+        plugin.getRedisStore().removeKeyByPrefix(PLAYERS_AVATAR_LIKE);
         this.configLoader = new AvatarConfigLoader(plugin);
     }
 
-    public String getAvatar(String name, int id) {
-        String key =StringUtils.upperCase(name);
-        /* 从缓存中寻找 */
-        String avatarCatch = MagicPlayer.getInstance().getRedisStore()
-                        .hGetValue(String.format(PLAYERS_AVATAR, id),
-                                key).orElse(null);
-        if (StringUtils.isNotBlank(avatarCatch)) {
-            return avatarCatch;
+    @Override
+    public String getAvatar(String playerName) throws UnknownAvatarTemplate {
+        int defaultTemplateId = configLoader.getTemplates().values().
+                stream().filter(AvatarTemplate::isDefault).findFirst()
+                .map(AvatarTemplate::getId).orElse(-1);
+
+        if (defaultTemplateId == -1) {
+            throw new UnknownAvatarTemplate("绘制玩家" + playerName + "头像失败，" +
+                    "原因：找不到默认头像模板");
         }
-        List<String> layout = configLoader.getFormats().get(id).getFormat();
-        String font = configLoader.getFormats().get(id).getFont();
-        String offsetChar = configLoader.getFormats().get(id).getOffsetChar();
-        if (layout == null) {
+
+        return getAvatar(defaultTemplateId, playerName);
+    }
+
+    @Override
+    public String getAvatar(int templateId, String playerName) throws UnknownAvatarTemplate {
+        AvatarTemplate template = configLoader
+                .getTemplates().get(templateId);
+        if (template == null) {
+            throw new UnknownAvatarTemplate("绘制玩家" + playerName + "头像失败，" +
+                    "原因：找不到头像模板编号为：" + templateId + "的模板");
+        }
+        return getAvatar(template, playerName);
+    }
+
+    public String getAvatar(AvatarTemplate template, String playerName) {
+        Objects.requireNonNull(template, "AvatarTemplate cannot be null");
+        Objects.requireNonNull(playerName, "Player name cannot be null");
+        BukkitMagicPlayer plugin = BukkitMagicPlayer.getInstance();
+        String cacheKey = String.format(PLAYERS_AVATAR, template.getId());
+        String subKey = StringUtils.upperCase(playerName);
+        /* 尝试从缓存获取 */
+        Optional<String> cachedAvatar = plugin.getRedisStore().hGetValue(cacheKey, subKey);
+        if (cachedAvatar.isPresent() && StringUtils.isNotBlank(cachedAvatar.get())) {
+            return cachedAvatar.get();
+        }
+        try {
+            PlayerData data = plugin.getPlayerDataRepository().queryById(playerName);
+            String avatarBase64 = (data != null && data.getAvatar() != null) ? data.getAvatar() : DEFAULT_AVATAR;
+            BufferedImage avatar = Base64Util.base64ToImage(avatarBase64);
+            String processedAvatar = processAvatarLayout(template, avatar);
+            long cacheTime = plugin.getConfigManager().getYmlValue(YML_CONFIG, "Cache.Avatar", 3600L, ParseType.LONG);
+            plugin.getRedisStore().hSetValue(cacheKey, subKey, processedAvatar, cacheTime);
+            return processedAvatar;
+        } catch (Exception e) {
+            plugin.getLoggerManager().warning(
+                    String.format("绘制玩家头像时出现异常 [模板ID: %s, 玩家: %s]: %s",
+                            template.getId(), playerName, e.getMessage())
+            );
             return null;
         }
-        /* 查找玩家的头像 Base64 编码并转换成 BufferedImage */
-        PlayerData data = MagicPlayer.getInstance().getPlayerDataRepository().queryById(name);
-        try {
-            BufferedImage avatar = Base64Util.base64ToImage(data != null && data.getAvatar() != null ? data.getAvatar() : DEFAULT_AVATAR);
-            /* 拼接 Layout 的每个字并等待处理 */
-            StringBuilder builder = layout.stream()
-                    .collect(StringBuilder::new, StringBuilder::append, StringBuilder::append),
-                    avatarBuilder = new StringBuilder();
-            /* 确认每个点的 16 进制颜色值*/
-            for (int i = 0; i < Math.min(64, builder.length()); i++) {
-                int x = i % 8, y = i / 8;
-                Color color = new Color(avatar.getRGB(x, y));
-                String hexColor = String.format("%02x%02x%02x", color.getRed(), color.getGreen(), color.getBlue());
-                avatarBuilder.append("<reset>")
-                        .append(i != 0 && x == 0 ? offsetChar
-                                : StringUtil.EMPTY)
-                        .append("<reset>")
-                        .append(String.format("<#%s>", hexColor))
-                        .append(String.format("<font:%s>", font))
-                        .append(builder.charAt(i))
-                        .append("</reset>");
-            }
-            /* 最终处理的结果 */
-            String avatarStr = avatarBuilder.toString();
-            MagicPlayer.getInstance().getRedisStore()
-                    .hSetValue(String.format(PLAYERS_AVATAR, id),
-                            key,
-                            avatarStr,
-                            MagicPlayer.getInstance().getConfigManager().getYmlValue(YML_CONFIG, "Cache.Avatar", 3600, ParseType.INTEGER)
-                    );
-            return avatarStr;
-        } catch (Exception e) {
-            MagicPlayer.getInstance()
-                    .getLoggerManager()
-                    .warning("获取玩家头像时出现未知异常头像ID：", id);
-        }
-        return null;
     }
+
+    private String processAvatarLayout(AvatarTemplate template, BufferedImage avatar) {
+        StringBuilder avatarBuilder = new StringBuilder();
+        String layout = StringUtils.join(template.getFormat(), "");
+        MagicLib magicLib = MagicLib.getInstance();
+        for (int i = 0; i < Math.min(64, layout.length()); i++) {
+            int x = i % 8;
+            int y = i / 8;
+            /* 获取像素颜色 */
+            Color color = new Color(avatar.getRGB(x, y));
+            String hexColor = String.format("%02x%02x%02x",
+                    color.getRed(), color.getGreen(), color.getBlue());
+            avatarBuilder.append("<reset>");
+            if (i != 0 && x == 0) {
+                avatarBuilder.append(magicLib.getOffsetManager()
+                        .format(template.getOffset(), StringUtils.EMPTY));
+            }
+            /* 添加样式和字符 */
+            avatarBuilder.append(String.format("<#%s>", hexColor))
+                    .append(String.format("<font:%s>", template.getFont()))
+                    .append(layout.charAt(i))
+                    .append("</reset>");
+        }
+        return avatarBuilder.toString();
+    }
+
 }

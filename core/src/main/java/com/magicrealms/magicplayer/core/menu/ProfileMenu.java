@@ -4,13 +4,14 @@ import com.magicrealms.magiclib.common.utils.StringUtil;
 import com.magicrealms.magiclib.core.holder.BaseMenuHolder;
 import com.magicrealms.magiclib.core.utils.ItemUtil;
 import com.magicrealms.magiclib.core.utils.PlaceholderUtil;
-import com.magicrealms.magicplayer.common.player.DailyPlayerSession;
-import com.magicrealms.magicplayer.common.util.PlayerSessionUtil;
-import com.magicrealms.magicplayer.core.MagicPlayer;
-import com.magicrealms.magicplayer.core.entity.PlayerData;
+import com.magicrealms.magicplayer.common.player.PlayerSession;
+import com.magicrealms.magicplayer.common.storage.PlayerSessionStorage;
+import com.magicrealms.magicplayer.core.BukkitMagicPlayer;
+import com.magicrealms.magicplayer.api.player.PlayerData;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.LinkedHashMap;
@@ -19,6 +20,7 @@ import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
+import static com.magicrealms.magicplayer.common.MagicPlayerConstant.YML_LANGUAGE;
 import static com.magicrealms.magicplayer.common.MagicPlayerConstant.YML_PROFILE_MENU;
 
 /**
@@ -33,15 +35,15 @@ public class ProfileMenu extends BaseMenuHolder {
     /* 资料卡者信息 */
     private final PlayerData PROFILE_DATA;
     /* 资料卡者今日信息  */
-    private final DailyPlayerSession PROFILE_SESSION;
+    private final PlayerSession PROFILE_SESSION;
 
     public ProfileMenu(Player player, PlayerData profileData) {
-        super(MagicPlayer.getInstance(), player, YML_PROFILE_MENU,
+        super(BukkitMagicPlayer.getInstance(), player, YML_PROFILE_MENU,
                 "AE#######BF####QR#CG####RR#DH#######");
         Objects.requireNonNull(profileData);
         this.PROFILE_DATA = profileData;
-        this.PROFILE_SESSION = PlayerSessionUtil
-                .getPlayerSession(MagicPlayer.getInstance().getRedisStore(),
+        this.PROFILE_SESSION = PlayerSessionStorage
+                .getPlayerSession(BukkitMagicPlayer.getInstance().getRedisStore(),
                         profileData.getName()).orElse(null);
         asyncOpenMenu();
     }
@@ -69,7 +71,8 @@ public class ProfileMenu extends BaseMenuHolder {
     protected void handleMenu(String layout) {
         int size =  layout.length();
         for (int i = 0; i < size; i++){
-            switch (layout.charAt(i)) {
+            char c = layout.charAt(i);
+            switch (c) {
                 case 'A' -> super.setItemSlot(i, PROFILE_DATA.getArmor().getHelmet());
                 case 'B' -> super.setItemSlot(i, PROFILE_DATA.getArmor().getChestplate());
                 case 'C' -> super.setItemSlot(i, PROFILE_DATA.getArmor().getLeggings());
@@ -80,13 +83,13 @@ public class ProfileMenu extends BaseMenuHolder {
                 case 'H' -> super.setItemSlot(i, PROFILE_DATA.getCosmetic().getBalloon());
                 case 'I' -> super.setItemSlot(i, ItemUtil
                         .getItemStackByConfig(
-                                MagicPlayer.getInstance().getConfigManager(), YML_PROFILE_MENU,
+                                BukkitMagicPlayer.getInstance().getConfigManager(), YML_PROFILE_MENU,
                                 PROFILE_SESSION == null
                                         || !PROFILE_SESSION.isOnline() ? "Icons.I.OfflineDisplay" :
                                         PROFILE_SESSION.isAfk()
                                         ? "Icons.I.AfkDisplay"
                                         : "Icons.I.OnlineDisplay"));
-                case 'Q', 'R' -> setHead(i, layout.charAt(i));
+                case 'Q', 'R' -> setHead(i, c);
                 default -> super.setItemSlot(i);
             }
         }
@@ -117,7 +120,6 @@ public class ProfileMenu extends BaseMenuHolder {
                         -> StringUtil.replacePlaceholders(entry.getValue(), createPlaceholders()), (oldVal, newVal) -> oldVal, LinkedHashMap::new));
     }
 
-
     private Map<String, String> createPlaceholders() {
         return Map.of("helmet",
                 this.getCustomPapi("Helmet", PROFILE_DATA.getArmor().isEquippedHelmet()),
@@ -135,14 +137,26 @@ public class ProfileMenu extends BaseMenuHolder {
                 this.getCustomPapi("WalkingStick", PROFILE_DATA.getCosmetic().isEquippedWalkingStick()),
                 "balloon",
                 this.getCustomPapi("Balloon", PROFILE_DATA.getCosmetic().isEquippedBalloon())
-
         );
     }
 
     private String getCustomPapi(String path, boolean enabled) {
-        return MagicPlayer.getInstance().getConfigManager()
+        return BukkitMagicPlayer.getInstance().getConfigManager()
                 .getYmlValue(YML_PROFILE_MENU, String.format(CUSTOM_PAPI_PATH, path, enabled ? "Enable" : "UnEnable"));
     }
 
-
+    @Override
+    public void topInventoryClickEvent(InventoryClickEvent event, int slot) {
+        if (!super.tryCooldown(slot, super.getPlugin().getConfigManager()
+                .getYmlValue(YML_LANGUAGE,
+                        "PlayerMessage.Error.ButtonCooldown"))) {
+            return;
+        }
+        char c = super.getLayout().charAt(slot);
+        asyncPlaySound("Icons." + c + ".Display.Sound");
+        switch (c) {
+            case 'S'-> new SettingMenu(getPlayer(), this::asyncOpenMenu);
+            case 'A' -> System.out.println(StringUtil.EMPTY);
+        }
+    }
 }

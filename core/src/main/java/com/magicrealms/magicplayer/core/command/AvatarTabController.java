@@ -3,8 +3,8 @@ package com.magicrealms.magicplayer.core.command;
 import com.magicrealms.magiclib.bukkit.command.annotations.CommandListener;
 import com.magicrealms.magiclib.bukkit.command.annotations.TabComplete;
 import com.magicrealms.magiclib.bukkit.command.enums.PermissionType;
-import com.magicrealms.magicplayer.common.util.PlayerSessionUtil;
-import com.magicrealms.magicplayer.core.MagicPlayer;
+import com.magicrealms.magicplayer.common.storage.PlayerSessionStorage;
+import com.magicrealms.magicplayer.core.BukkitMagicPlayer;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.command.CommandSender;
 
@@ -23,7 +23,7 @@ public class AvatarTabController {
     @TabComplete(text = "^\\s?$", permissionType = PermissionType.OP, label = "^avatar$")
     public List<String> first(CommandSender sender, String[] args) {
         return Stream.concat(Stream.of("id"),
-                PlayerSessionUtil.getOnlinePlayerNames(MagicPlayer
+                PlayerSessionStorage.getOnlinePlayerNames(BukkitMagicPlayer
                                 .getInstance()
                                 .getRedisStore()).stream())
                 .toList();
@@ -32,7 +32,7 @@ public class AvatarTabController {
     @TabComplete(text = "^\\S+$", permissionType = PermissionType.OP, label = "^avatar$")
     public List<String> firstTab(CommandSender sender, String[] args) {
         return Stream.concat(Stream.of("id"),
-                        PlayerSessionUtil.getOnlinePlayerNames(MagicPlayer
+                        PlayerSessionStorage.getOnlinePlayerNames(BukkitMagicPlayer
                                 .getInstance()
                                 .getRedisStore()).stream())
                 .filter(e ->

@@ -4,9 +4,9 @@ val projectArtifactId : String by project
 
 dependencies {
     implementation(project(":common"))
-    compileOnly("com.magicrealms:magiclib-velocity:1.0")
-    compileOnly("com.velocitypowered:velocity-api:3.4.0-SNAPSHOT")
-    annotationProcessor("com.velocitypowered:velocity-api:3.4.0-SNAPSHOT")
+    compileOnly("com.magicrealms:magiclib-velocity:${rootProject.properties["magic_lib_velocity_version"]}")
+    compileOnly("com.velocitypowered:velocity-api:${rootProject.properties["velocity_version"]}-SNAPSHOT")
+    annotationProcessor("com.velocitypowered:velocity-api:${rootProject.properties["velocity_version"]}-SNAPSHOT")
 }
 
 java {

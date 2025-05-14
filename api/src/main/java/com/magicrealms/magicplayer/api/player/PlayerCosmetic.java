@@ -1,4 +1,4 @@
-package com.magicrealms.magicplayer.core.entity;
+package com.magicrealms.magicplayer.api.player;
 
 import com.magicrealms.magiclib.core.adapt.ItemStackFieldAdapter;
 import com.magicrealms.magiclib.common.annotations.MongoField;
@@ -17,7 +17,6 @@ import org.bukkit.inventory.ItemStack;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@SuppressWarnings("unused")
 public class PlayerCosmetic {
     /* 帽子 */
     @MongoField(adapter = ItemStackFieldAdapter.class, name = "cosmetic_hat")

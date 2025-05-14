@@ -1,6 +1,5 @@
 package com.magicrealms.magicplayer.core;
 
-import com.magicrealms.magiclib.bukkit.MagicRealmsPlugin;
 import com.magicrealms.magiclib.bukkit.manage.BungeeMessageManager;
 import com.magicrealms.magiclib.bukkit.manage.CommandManager;
 import com.magicrealms.magiclib.bukkit.manage.ConfigManager;
@@ -10,47 +9,38 @@ import com.magicrealms.magiclib.common.enums.ParseType;
 import com.magicrealms.magiclib.common.store.MongoDBStore;
 import com.magicrealms.magiclib.common.store.RedisStore;
 import com.magicrealms.magiclib.core.dispatcher.MessageDispatcher;
+import com.magicrealms.magicplayer.api.MagicPlayer;
+import com.magicrealms.magicplayer.api.MagicPlayerAPI;
 import com.magicrealms.magicplayer.core.avatar.AvatarManager;
+import com.magicrealms.magicplayer.core.avatar.frame.AvatarFrameManager;
 import com.magicrealms.magicplayer.core.listener.PlayerListener;
-import com.magicrealms.magicplayer.core.placeholder.Avatar;
-import com.magicrealms.magicplayer.core.repository.PlayerDataRepository;
-import com.magicrealms.magicplayer.core.utils.SkinUtil;
+import com.magicrealms.magicplayer.core.placeholder.AvatarPapi;
+import com.magicrealms.magicplayer.core.placeholder.PlayerDataPapi;
+import com.magicrealms.magicplayer.api.player.repository.PlayerDataRepository;
+import com.magicrealms.magicplayer.core.setting.SettingManager;
+import com.magicrealms.magicplayer.core.skin.SkinManager;
 import lombok.Getter;
-import net.skinsrestorer.api.SkinsRestorer;
-import net.skinsrestorer.api.SkinsRestorerProvider;
-import net.skinsrestorer.api.event.SkinApplyEvent;
-import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 
 import java.util.Optional;
 
 import static com.magicrealms.magicplayer.common.MagicPlayerConstant.*;
 
-public class MagicPlayer extends MagicRealmsPlugin {
+public class BukkitMagicPlayer extends MagicPlayer {
 
     @Getter
-    private static MagicPlayer instance;
-
-    @Getter
-    private RedisStore redisStore;
-
-    @Getter
-    private MongoDBStore mongoDBStore;
-
-    @Getter
-    PlayerDataRepository playerDataRepository;
+    private static BukkitMagicPlayer instance;
 
     @Getter
     private BungeeMessageManager bungeeMessageManager;
 
     @Getter
-    private SkinsRestorer skinsRestorer;
+    private SettingManager settingManager;
 
     @Getter
-    private AvatarManager avatarManager;
+    private AvatarFrameManager frameManager;
 
-    public MagicPlayer() {
+    public BukkitMagicPlayer() {
         instance = this;
     }
 
@@ -58,43 +48,38 @@ public class MagicPlayer extends MagicRealmsPlugin {
     public void onEnable() {
         super.onEnable();
         dependenciesCheck(() -> {
-            loadConfig(getConfigManager());
+            /* 加载配置文件 */
+            loadConfig(configManager);
+            /* 注册指令 */
             registerCommand(commandManager);
+            /* 注册数据包监听器 */
             registerPacketListener(packetManager);
+            /* 初始化 Redis */
             setupRedisStore();
+            /* 初始化 MongoDB */
             setupMongoDB();
+            /* 初始化头像 */
             setupAvatar();
+            /* 初始化皮肤 */
+            setupSkin();
+
+
+//            setupSetting();
+//            setupFrame();
+            /* 初始化玩家数据持久层 */
             setupPlayerDataRepository();
-            /* 皮肤插件前置 */
-            skinsRestorer = SkinsRestorerProvider.get();
-            skinsRestorer.getEventBus()
-                    .subscribe(this, SkinApplyEvent.class, event -> {
-                        Player player = event.getPlayer(Player.class);
-                        MagicPlayer.getInstance().getPlayerDataRepository().updateByPlayer(event.getPlayer(Player.class), data -> {
-                            data.setTextures(SkinUtil.getTextures(player));
-                            data.setHeadStack(SkinUtil.getHead(data.getTextures()));
-                            data.setSkin(SkinUtil.getSkin(data.getTextures()));
-                            String subKey = StringUtils.upperCase(player.getName());
-                            /* 清理掉这个皮肤玩家的缓存 */
-                            redisStore.getKeyByPrefix(PLAYERS_AVATAR_LIKE).forEach(
-                                    key -> redisStore.removeHkey(key, subKey)
-                            );
-                            data.setAvatar(SkinUtil.getAvatar(data.getSkin()));
-                        });
-                    });
+            /* 初始化 API */
+            setupApi();
+
+
+
             /* 变量部分注册 */
             if (dependenciesCheck("PlaceholderAPI")) {
-                new Avatar().register();
+                new AvatarPapi().register();
+                new PlayerDataPapi().register();
             }
             Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
         }, "SkinsRestorer");
-    }
-
-    @Override
-    public void onDisable() {
-        super.onDisable();
-        unsubscribe();
-        mongoDBStore.destroy();
     }
 
     public void setupRedisStore() {
@@ -127,19 +112,36 @@ public class MagicPlayer extends MagicRealmsPlugin {
         this.mongoDBStore = new MongoDBStore(host, port, database);
     }
 
+    public void setupAvatar() { this.avatarManager = new AvatarManager(this); }
+
+    private void setupSkin() { this.skinManager = new SkinManager(this); }
+
     public void setupPlayerDataRepository() {
         this.playerDataRepository = new PlayerDataRepository(mongoDBStore,
-                MAGIC_PLAYERS_TABLE_NAME, redisStore, getConfigManager()
-                .getYmlValue(YML_CONFIG, "Cache.PlayerData", 3600L, ParseType.LONG));
+                MAGIC_PLAYERS_TABLE_NAME, redisStore, configManager.getYmlValue(YML_CONFIG, "Cache.PlayerData", 3600L, ParseType.LONG));
     }
 
-    public void setupAvatar() {
-        avatarManager = new AvatarManager(this);
-    }
+    private void setupApi() { this.api = new MagicPlayerAPI(this); }
+
+
+
+    public void setupSetting() { settingManager = new SettingManager(this); }
+
+    public void setupFrame() { frameManager = new AvatarFrameManager(this); }
+
+
+
 
     private void unsubscribe() {
         Optional.ofNullable(bungeeMessageManager)
                 .ifPresent(BungeeMessageManager::unsubscribe);
+    }
+
+    @Override
+    public void onDisable() {
+        super.onDisable();
+        unsubscribe();
+        mongoDBStore.destroy();
     }
 
     @Override
@@ -149,8 +151,12 @@ public class MagicPlayer extends MagicRealmsPlugin {
                 YML_REDIS,
                 YML_MONGODB,
                 YML_AVATAR,
+                YML_SETTING,
+                YML_AVATAR_FRAME,
                 YML_PLAYER_MENU,
-                YML_PROFILE_MENU
+                YML_PROFILE_MENU,
+                YML_SETTING_MENU,
+                YML_AVATAR_FRAME_MENU
         );
     }
 

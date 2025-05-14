@@ -1,0 +1,25 @@
+Frame:
+  CustomFrame:
+    Id: 1
+    # 在 Profile 里的文本
+    Profile: 'Profile Frame'
+    # 在 Setting 里的文本
+    Setting: 'Setting Frame'
+    # 在 Frame 里的文本
+    Frame: 'Frame Frame'
+    # 权重越靠后
+    Weight: 0
+    # 拥有的时候在 Gui 里的样子
+    ActiveDisplay:
+      Mats: GLASS_PANE
+      ModelData: 0
+      Name: '&E&L拥有'
+      Lore:
+        - '&6&L拥有'
+    # 未用有的时候在 Gui 里的样子
+    DisabledDisplay:
+      Mats: GLASS_PANE
+      ModelData: 0
+      Name: '&E&L未拥有'
+      Lore:
+        - '&6&L未拥有'

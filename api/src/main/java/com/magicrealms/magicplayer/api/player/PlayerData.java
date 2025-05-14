@@ -1,9 +1,9 @@
-package com.magicrealms.magicplayer.core.entity;
+package com.magicrealms.magicplayer.api.player;
 
 import com.magicrealms.magiclib.core.adapt.ItemStackFieldAdapter;
 import com.magicrealms.magiclib.common.adapt.UUIDFieldAdapter;
 import com.magicrealms.magiclib.common.annotations.MongoField;
-import com.magicrealms.magicplayer.core.utils.SkinUtil;
+import com.magicrealms.magicplayer.api.MagicPlayerAPI;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.bukkit.entity.Player;
@@ -21,7 +21,6 @@ import java.util.UUID;
  */
 @Data
 @AllArgsConstructor
-@SuppressWarnings("unused")
 public class PlayerData {
     /* id */
     @MongoField(adapter = UUIDFieldAdapter.class, name = "uuid")
@@ -72,10 +71,10 @@ public class PlayerData {
         this.uniqueId = player.getUniqueId();
         this.name = player.getName();
         this.registerTime = System.currentTimeMillis();
-        this.textures = SkinUtil.getTextures(player);
-        this.headStack = SkinUtil.getHead(textures);
-        this.skin = SkinUtil.getSkin(textures);
-        this.avatar = SkinUtil.getAvatar(skin);
+        this.textures = MagicPlayerAPI.getInstance().getTextures(player);
+        this.headStack = MagicPlayerAPI.getInstance().getSkull(textures);
+        this.skin = MagicPlayerAPI.getInstance().getSkin(textures);
+        this.avatar = MagicPlayerAPI.getInstance().getAvatar(skin);
         armor = new PlayerArmor(player);
         cosmetic = new PlayerCosmetic(player);
     }
