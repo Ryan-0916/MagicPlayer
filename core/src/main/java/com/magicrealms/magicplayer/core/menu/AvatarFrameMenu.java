@@ -2,10 +2,11 @@ package com.magicrealms.magicplayer.core.menu;
 
 import com.magicrealms.magiclib.common.utils.StringUtil;
 import com.magicrealms.magiclib.core.utils.ItemUtil;
+import com.magicrealms.magicplayer.api.setting.SettingPrams;
 import com.magicrealms.magicplayer.core.BukkitMagicPlayer;
 import com.magicrealms.magicplayer.api.player.PlayerData;
-import com.magicrealms.magicplayer.core.avatar.frame.AvatarFrame;
-import com.magicrealms.magicplayer.core.setting.Setting;
+import com.magicrealms.magicplayer.core.avatar.frame.AvatarFrameTemplate;
+import com.magicrealms.magicplayer.api.setting.Setting;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -29,9 +30,9 @@ import static com.magicrealms.magicplayer.common.MagicPlayerConstant.YML_LANGUAG
  */
 public class AvatarFrameMenu extends AbstractSubSettingMenu{
 
-    private final List<AvatarFrame> FRAMES;
+    private final List<AvatarFrameTemplate> FRAMES;
 
-    private AvatarFrame previewFrame;
+    private AvatarFrameTemplate previewFrame;
 
     private String previewPrompt;
 
@@ -40,6 +41,10 @@ public class AvatarFrameMenu extends AbstractSubSettingMenu{
     private final PlayerData HOLDER_DATA;
 
     private final String ICON_DISPLAY = "Icons.%s.Display";
+
+    public AvatarFrameMenu(SettingPrams settingPrams) {
+        this(settingPrams.player(), settingPrams.backRunnable(), settingPrams.settings(), settingPrams.page(), settingPrams.settingCount(), settingPrams.selectedIndex());
+    }
 
     public AvatarFrameMenu(Player player,
                            @Nullable Runnable backRunnable,
@@ -51,7 +56,7 @@ public class AvatarFrameMenu extends AbstractSubSettingMenu{
                 "A#####B##CDD#EEE##DDD#EEE##DDD#EEE##FG###HI##",
                 backRunnable, settings, settingPage, settingPageCount, selectSettingIndex);
         this.FRAMES = BukkitMagicPlayer.getInstance()
-                .getFrameManager().getFrames();
+                .getAvatarFrameManager().getFrames();
         this.previewPrompt = StringUtils.EMPTY;
         /* 获取菜单布局中每页显示的设置数量 */
         this.PAGE_COUNT = StringUtils
@@ -65,7 +70,6 @@ public class AvatarFrameMenu extends AbstractSubSettingMenu{
                         this.FRAMES.size() / PAGE_COUNT : this.FRAMES.size() / PAGE_COUNT + 1);
         asyncOpenMenu();
     }
-
 
     @Override
     protected void handleMenuUnCache(String layout) {
@@ -90,7 +94,7 @@ public class AvatarFrameMenu extends AbstractSubSettingMenu{
         }
     }
 
-    private void setFrame(int i, AvatarFrame frame) {
+    private void setFrame(int i, AvatarFrameTemplate frame) {
         super.setItemSlot(i, frame.getDisabledItem());
     }
 

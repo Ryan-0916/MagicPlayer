@@ -5,6 +5,7 @@ import com.magicrealms.magiclib.common.store.MongoDBStore;
 import com.magicrealms.magiclib.common.store.RedisStore;
 import com.magicrealms.magicplayer.api.avatar.IAvatarManager;
 import com.magicrealms.magicplayer.api.player.repository.PlayerDataRepository;
+import com.magicrealms.magicplayer.api.setting.ISettingRegistry;
 import com.magicrealms.magicplayer.api.skin.ISkinManager;
 import lombok.Getter;
 
@@ -28,6 +29,9 @@ public abstract class MagicPlayer extends MagicRealmsPlugin {
 
     @Getter
     protected ISkinManager skinManager;
+
+    @Getter
+    protected ISettingRegistry settingRegistry;
 
     @Getter
     protected PlayerDataRepository playerDataRepository;

@@ -2,6 +2,8 @@ package com.magicrealms.magicplayer.api;
 
 import com.magicrealms.magicplayer.api.avatar.IAvatarManager;
 import com.magicrealms.magicplayer.api.exception.UnknownAvatarTemplate;
+import com.magicrealms.magicplayer.api.setting.ISettingRegistry;
+import com.magicrealms.magicplayer.api.setting.Setting;
 import com.magicrealms.magicplayer.api.skin.ISkinManager;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -76,5 +78,20 @@ public record MagicPlayerAPI(MagicPlayer plugin) {
         return plugin.getSkinManager().getSkull(base64Texture);
     }
 
+    /**
+     * Registry a custom setting model
+     * {@link ISettingRegistry#registry(Setting)}
+     */
+    public void registerSetting(Setting setting) {
+        plugin.getSettingRegistry().registry(setting);
+    }
+
+    /**
+     * Destroy a custom setting model
+     * {@link ISettingRegistry#destroy(Setting)}
+     */
+    public void destroySetting(Setting setting) {
+        plugin.getSettingRegistry().destroy(setting);
+    }
 
 }

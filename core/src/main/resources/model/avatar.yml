@@ -2,7 +2,7 @@ Template:
   # 您也可以自己任意添加多种尺寸，但是请保证他们 ID 唯一
   SmallHead:
     Id: 1
-    # 为每行 ■ 提供偏移量
+    # 为每行提供偏移量
     Offset: 0
     # 默认
     IsDefault: true

@@ -1,4 +1,11 @@
-Frame:
+Setting:
+  Enable: false
+  Weight: 4
+  Title: '头像框设置'
+  Name: '头像框设置'
+  Desc: '头像框设置'
+
+Template:
   CustomFrame:
     Id: 1
     # 在 Profile 里的文本

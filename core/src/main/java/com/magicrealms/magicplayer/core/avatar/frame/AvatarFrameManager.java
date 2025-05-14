@@ -11,14 +11,29 @@ import java.util.List;
  */
 public class AvatarFrameManager {
 
-    private final AvararFrameConfigLoader configLoader;
+    private final BukkitMagicPlayer plugin;
+
+    private final AvatarFrameConfigLoader configLoader;
 
     public AvatarFrameManager(BukkitMagicPlayer plugin) {
+        this.plugin = plugin;
         /* 加载头像相关的配置 */
-        this.configLoader = new AvararFrameConfigLoader(plugin);
+        this.configLoader = new AvatarFrameConfigLoader(plugin);
     }
 
-    public List<AvatarFrame> getFrames() {
+    public void registrySetting() {
+        configLoader.getAvatarFrameSetting().ifPresent(
+                setting -> plugin.getSettingRegistry().registry(setting)
+        );
+    }
+
+    public void destroySetting() {
+        configLoader.getAvatarFrameSetting().ifPresent(
+                setting -> plugin.getSettingRegistry().destroy(setting)
+        );
+    }
+
+    public List<AvatarFrameTemplate> getFrames() {
         return configLoader.getFrames();
     }
 }

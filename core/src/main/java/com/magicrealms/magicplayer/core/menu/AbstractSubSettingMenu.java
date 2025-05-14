@@ -2,7 +2,7 @@ package com.magicrealms.magicplayer.core.menu;
 
 import com.magicrealms.magiclib.bukkit.MagicRealmsPlugin;
 import com.magicrealms.magiclib.core.holder.PageMenuHolder;
-import com.magicrealms.magicplayer.core.setting.Setting;
+import com.magicrealms.magicplayer.api.setting.Setting;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;

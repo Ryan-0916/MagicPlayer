@@ -21,7 +21,6 @@ public final class MagicPlayerConstant {
     public static final String YML_LANGUAGE = "language";
     public static final String YML_MONGODB = "mongodb";
     public static final String YML_AVATAR = "model/avatar";
-    public static final String YML_SETTING = "model/setting";
     public static final String YML_AVATAR_FRAME = "model/avatarFrame";
     public static final String YML_PLAYER_MENU = "menu/playerMenu";
     public static final String YML_PROFILE_MENU = "menu/profileMenu";

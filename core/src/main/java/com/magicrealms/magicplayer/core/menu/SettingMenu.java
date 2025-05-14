@@ -5,8 +5,8 @@ import com.magicrealms.magiclib.core.holder.PageMenuHolder;
 import com.magicrealms.magiclib.core.utils.ItemUtil;
 import com.magicrealms.magicplayer.core.BukkitMagicPlayer;
 import com.magicrealms.magicplayer.api.player.PlayerData;
-import com.magicrealms.magicplayer.core.setting.Setting;
-import com.magicrealms.magicplayer.core.setting.SettingType;
+import com.magicrealms.magicplayer.api.setting.Setting;
+import com.magicrealms.magicplayer.api.setting.SettingPrams;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -42,7 +42,7 @@ public class SettingMenu extends PageMenuHolder {
         super(BukkitMagicPlayer.getInstance(), player, YML_SETTING_MENU,
                 "A########BC##HJKKKCC###JKKKDEFG#JKKK####IJKKK", backRunnable);
         this.SETTINGS = BukkitMagicPlayer.getInstance()
-                .getSettingManager().getSettings();
+                .getSettingRegistry().getSettings();
         /* 获取菜单布局中每页显示的设置数量 */
         this.PAGE_COUNT = StringUtils
                 .countMatches(super.getLayout(), "J");
@@ -190,10 +190,11 @@ public class SettingMenu extends PageMenuHolder {
         }
         if (index < 0) return;
         int selectedIndex = (super.getPage() - 1) * PAGE_COUNT + index;
-        switch (SETTINGS.get(selectedIndex).getType()) {
-            case ACCOUNT -> System.out.println(1);
-            case SettingType.AVATAR_FRAME -> new AvatarFrameMenu(super.getPlayer(), this::asyncOpenMenu, SETTINGS, super.getPage(), PAGE_COUNT, selectedIndex);
-            default -> System.out.println(2);
-        }
+        SETTINGS.get(selectedIndex).getClickAction().accept(
+                SettingPrams.of(super.getPlayer(),
+                        SETTINGS,
+                super.getPage(),
+                PAGE_COUNT,
+                selectedIndex, this::asyncOpenMenu));
     }
 }

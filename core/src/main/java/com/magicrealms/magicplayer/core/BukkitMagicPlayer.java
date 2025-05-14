@@ -17,7 +17,7 @@ import com.magicrealms.magicplayer.core.listener.PlayerListener;
 import com.magicrealms.magicplayer.core.placeholder.AvatarPapi;
 import com.magicrealms.magicplayer.core.placeholder.PlayerDataPapi;
 import com.magicrealms.magicplayer.api.player.repository.PlayerDataRepository;
-import com.magicrealms.magicplayer.core.setting.SettingManager;
+import com.magicrealms.magicplayer.core.setting.SettingRegistry;
 import com.magicrealms.magicplayer.core.skin.SkinManager;
 import lombok.Getter;
 import org.bukkit.Bukkit;
@@ -35,10 +35,7 @@ public class BukkitMagicPlayer extends MagicPlayer {
     private BungeeMessageManager bungeeMessageManager;
 
     @Getter
-    private SettingManager settingManager;
-
-    @Getter
-    private AvatarFrameManager frameManager;
+    private AvatarFrameManager avatarFrameManager;
 
     public BukkitMagicPlayer() {
         instance = this;
@@ -62,17 +59,14 @@ public class BukkitMagicPlayer extends MagicPlayer {
             setupAvatar();
             /* 初始化皮肤 */
             setupSkin();
-
-
-//            setupSetting();
-//            setupFrame();
+            /* 初始化设置 */
+            setupSetting();
+            /* 初始化头像框 */
+            setupAvatarFrame();
             /* 初始化玩家数据持久层 */
             setupPlayerDataRepository();
             /* 初始化 API */
             setupApi();
-
-
-
             /* 变量部分注册 */
             if (dependenciesCheck("PlaceholderAPI")) {
                 new AvatarPapi().register();
@@ -116,21 +110,23 @@ public class BukkitMagicPlayer extends MagicPlayer {
 
     private void setupSkin() { this.skinManager = new SkinManager(this); }
 
+    private void setupSetting() { this.settingRegistry = new SettingRegistry(); }
+
+    public void setupAvatarFrame() {
+        this.avatarFrameManager = new AvatarFrameManager(this);
+        this.avatarFrameManager.registrySetting();
+    }
+
+    public void destroyAvatarFrame() {
+        this.avatarFrameManager.destroySetting();
+    }
+
     public void setupPlayerDataRepository() {
         this.playerDataRepository = new PlayerDataRepository(mongoDBStore,
                 MAGIC_PLAYERS_TABLE_NAME, redisStore, configManager.getYmlValue(YML_CONFIG, "Cache.PlayerData", 3600L, ParseType.LONG));
     }
 
     private void setupApi() { this.api = new MagicPlayerAPI(this); }
-
-
-
-    public void setupSetting() { settingManager = new SettingManager(this); }
-
-    public void setupFrame() { frameManager = new AvatarFrameManager(this); }
-
-
-
 
     private void unsubscribe() {
         Optional.ofNullable(bungeeMessageManager)
@@ -151,7 +147,6 @@ public class BukkitMagicPlayer extends MagicPlayer {
                 YML_REDIS,
                 YML_MONGODB,
                 YML_AVATAR,
-                YML_SETTING,
                 YML_AVATAR_FRAME,
                 YML_PLAYER_MENU,
                 YML_PROFILE_MENU,

@@ -28,10 +28,9 @@ public class CoreController {
                 .reloadConfig(YML_REDIS, YML_MONGODB);
         /* 重置 Avatar 部分 */
         BukkitMagicPlayer.getInstance().setupAvatar();
-        /* 重置 Setting 部分 */
-        BukkitMagicPlayer.getInstance().setupSetting();
         /* 重置 头像框 部分 */
-        BukkitMagicPlayer.getInstance().setupFrame();
+        BukkitMagicPlayer.getInstance().destroyAvatarFrame();
+        BukkitMagicPlayer.getInstance().setupAvatarFrame();
         MessageDispatcher.getInstance()
                 .sendMessage(BukkitMagicPlayer.getInstance(), sender,
                         BukkitMagicPlayer.getInstance().getConfigManager()
@@ -50,10 +49,9 @@ public class CoreController {
         BukkitMagicPlayer.getInstance().setupMongoDB();
         /* 重置 Avatar 部分 */
         BukkitMagicPlayer.getInstance().setupAvatar();
-        /* 重置 Setting 部分 */
-        BukkitMagicPlayer.getInstance().setupSetting();
         /* 重置 头像框 部分 */
-        BukkitMagicPlayer.getInstance().setupFrame();
+        BukkitMagicPlayer.getInstance().destroyAvatarFrame();
+        BukkitMagicPlayer.getInstance().setupAvatarFrame();
         MessageDispatcher.getInstance()
                 .sendMessage(BukkitMagicPlayer.getInstance(), sender,
                         BukkitMagicPlayer.getInstance().getConfigManager()
@@ -76,8 +74,10 @@ public class CoreController {
                 case "redis" ->  BukkitMagicPlayer.getInstance().setupRedisStore();
                 case "mongodb" -> BukkitMagicPlayer.getInstance().setupMongoDB();
                 case "avatar" ->  BukkitMagicPlayer.getInstance().setupAvatar();
-                case "setting" ->  BukkitMagicPlayer.getInstance().setupSetting();
-                case "avatarframe" ->  BukkitMagicPlayer.getInstance().setupFrame();
+                case "avatarframe" -> {
+                    BukkitMagicPlayer.getInstance().destroyAvatarFrame();
+                    BukkitMagicPlayer.getInstance().setupAvatarFrame();
+                }
             }
             MessageDispatcher.getInstance().sendMessage(BukkitMagicPlayer.getInstance(), sender,
                     BukkitMagicPlayer.getInstance().getConfigManager()
