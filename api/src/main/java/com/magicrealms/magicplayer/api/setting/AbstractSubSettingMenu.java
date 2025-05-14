@@ -1,11 +1,8 @@
-package com.magicrealms.magicplayer.core.menu;
+package com.magicrealms.magicplayer.api.setting;
 
 import com.magicrealms.magiclib.bukkit.MagicRealmsPlugin;
 import com.magicrealms.magiclib.core.holder.PageMenuHolder;
-import com.magicrealms.magicplayer.api.setting.Setting;
 import org.apache.commons.lang3.StringUtils;
-import org.bukkit.entity.Player;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.HashMap;
 import java.util.List;
@@ -29,19 +26,14 @@ public abstract class AbstractSubSettingMenu extends PageMenuHolder {
     private final int SELECT_SETTING_INDEX;
 
     public AbstractSubSettingMenu(MagicRealmsPlugin plugin,
-                                  Player player,
                                   String configPath,
                                   String defLayout,
-                                  @Nullable Runnable backRunnable,
-                                  List<Setting> settings,
-                                  int settingPage,
-                                  int settingPageCount,
-                                  int selectSettingIndex) {
-        super(plugin, player, configPath, defLayout, backRunnable);
-        this.SETTINGS = settings;
-        this.SETTING_PAGE_COUNT = settingPageCount;
-        this.SETTING_PAGE = settingPage;
-        this.SELECT_SETTING_INDEX = selectSettingIndex;
+                                  SettingParam param) {
+        super(plugin, param.player(), configPath, defLayout, param.backRunnable());
+        this.SETTINGS = param.settings();
+        this.SETTING_PAGE_COUNT = param.settingCount();
+        this.SETTING_PAGE = param.page();
+        this.SELECT_SETTING_INDEX = param.selectedIndex();
     }
 
     protected Map<String, String> createPlaceholders() {

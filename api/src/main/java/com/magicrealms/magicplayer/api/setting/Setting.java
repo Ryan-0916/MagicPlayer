@@ -21,6 +21,6 @@ public class Setting {
     protected String name;
     /* 介绍 */
     protected String description;
-    /* 点击后执行的操作 SettingPrams 为 Setting 菜单的一些属性 */
-    protected Consumer<SettingPrams> clickAction;
+    /* 点击后执行的操作 SettingParam 为 Setting 菜单的一些属性 */
+    protected Consumer<SettingParam> clickAction;
 }

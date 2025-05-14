@@ -6,7 +6,7 @@ import com.magicrealms.magiclib.core.utils.ItemUtil;
 import com.magicrealms.magicplayer.core.BukkitMagicPlayer;
 import com.magicrealms.magicplayer.api.player.PlayerData;
 import com.magicrealms.magicplayer.api.setting.Setting;
-import com.magicrealms.magicplayer.api.setting.SettingPrams;
+import com.magicrealms.magicplayer.api.setting.SettingParam;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -191,7 +191,7 @@ public class SettingMenu extends PageMenuHolder {
         if (index < 0) return;
         int selectedIndex = (super.getPage() - 1) * PAGE_COUNT + index;
         SETTINGS.get(selectedIndex).getClickAction().accept(
-                SettingPrams.of(super.getPlayer(),
+                SettingParam.of(super.getPlayer(),
                         SETTINGS,
                 super.getPage(),
                 PAGE_COUNT,

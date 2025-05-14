@@ -9,18 +9,18 @@ import java.util.List;
  * @Desc 子菜单所需参数
  * @date 2025-05-14
  */
-public record SettingPrams(Player player,
+public record SettingParam(Player player,
                            List<Setting> settings,
                            int page,
                            int settingCount,
                            int selectedIndex,
                            Runnable backRunnable) {
-    public static SettingPrams of(Player player,
+    public static SettingParam of(Player player,
                                   List<Setting> settings,
                                   int page,
                                   int settingCount,
                                   int selectedIndex,
                                   Runnable backRunnable) {
-        return new SettingPrams(player, settings, page, settingCount, selectedIndex, backRunnable);
+        return new SettingParam(player, settings, page, settingCount, selectedIndex, backRunnable);
     }
 }

@@ -2,16 +2,14 @@ package com.magicrealms.magicplayer.core.menu;
 
 import com.magicrealms.magiclib.common.utils.StringUtil;
 import com.magicrealms.magiclib.core.utils.ItemUtil;
-import com.magicrealms.magicplayer.api.setting.SettingPrams;
+import com.magicrealms.magicplayer.api.setting.AbstractSubSettingMenu;
+import com.magicrealms.magicplayer.api.setting.SettingParam;
 import com.magicrealms.magicplayer.core.BukkitMagicPlayer;
 import com.magicrealms.magicplayer.api.player.PlayerData;
 import com.magicrealms.magicplayer.core.avatar.frame.AvatarFrameTemplate;
-import com.magicrealms.magicplayer.api.setting.Setting;
 import org.apache.commons.lang3.StringUtils;
-import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -28,7 +26,7 @@ import static com.magicrealms.magicplayer.common.MagicPlayerConstant.YML_LANGUAG
  * @Desc 头像框菜单
  * @date 2025-05-12
  */
-public class AvatarFrameMenu extends AbstractSubSettingMenu{
+public class AvatarFrameMenu extends AbstractSubSettingMenu {
 
     private final List<AvatarFrameTemplate> FRAMES;
 
@@ -42,19 +40,11 @@ public class AvatarFrameMenu extends AbstractSubSettingMenu{
 
     private final String ICON_DISPLAY = "Icons.%s.Display";
 
-    public AvatarFrameMenu(SettingPrams settingPrams) {
-        this(settingPrams.player(), settingPrams.backRunnable(), settingPrams.settings(), settingPrams.page(), settingPrams.settingCount(), settingPrams.selectedIndex());
-    }
-
-    public AvatarFrameMenu(Player player,
-                           @Nullable Runnable backRunnable,
-                           List<Setting> settings,
-                           int settingPage,
-                           int settingPageCount,
-                           int selectSettingIndex) {
-        super(BukkitMagicPlayer.getInstance(), player, YML_AVATAR_FRAME_MENU,
+    public AvatarFrameMenu(SettingParam param) {
+        super(BukkitMagicPlayer.getInstance(),
+                YML_AVATAR_FRAME_MENU,
                 "A#####B##CDD#EEE##DDD#EEE##DDD#EEE##FG###HI##",
-                backRunnable, settings, settingPage, settingPageCount, selectSettingIndex);
+                param);
         this.FRAMES = BukkitMagicPlayer.getInstance()
                 .getAvatarFrameManager().getFrames();
         this.previewPrompt = StringUtils.EMPTY;
@@ -64,7 +54,7 @@ public class AvatarFrameMenu extends AbstractSubSettingMenu{
         /* 玩家的个人信息 */
         this.HOLDER_DATA = BukkitMagicPlayer.getInstance()
                 .getPlayerDataRepository()
-                .queryByPlayer(player);
+                .queryByPlayer(param.player());
         super.setMaxPage(PAGE_COUNT <= 0 ? 1 :
                 this.FRAMES.size() % PAGE_COUNT == 0 ?
                         this.FRAMES.size() / PAGE_COUNT : this.FRAMES.size() / PAGE_COUNT + 1);
