@@ -1,5 +1,6 @@
 package com.magicrealms.magicplayer.api.player;
 
+import com.magicrealms.magiclib.common.annotations.FieldId;
 import com.magicrealms.magiclib.core.adapt.ItemStackFieldAdapter;
 import com.magicrealms.magiclib.common.adapt.UUIDFieldAdapter;
 import com.magicrealms.magiclib.common.annotations.MongoField;
@@ -26,7 +27,7 @@ public class PlayerData {
     @MongoField(adapter = UUIDFieldAdapter.class, name = "uuid")
     private UUID uniqueId;
     /* 名称 */
-    @MongoField(id = true)
+    @MongoField(id = @FieldId(enable = true, ignoreCase = true))
     private String name;
     /* 头颅 */
     @MongoField(adapter = ItemStackFieldAdapter.class)
