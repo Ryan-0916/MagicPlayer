@@ -14,14 +14,14 @@ import static com.magicrealms.magicplayer.common.MagicPlayerConstant.YML_AVATAR;
  * @Desc 头像配置文件加载器
  * @date 2025-05-02
  */
-public class AvatarConfigLoader {
+public class AvatarLoader {
 
     @Getter
     private final Map<Integer, AvatarTemplate> templates = new HashMap<>();
 
     private final ConfigManager configManager;
 
-    public AvatarConfigLoader(BukkitMagicPlayer plugin) {
+    public AvatarLoader(BukkitMagicPlayer plugin) {
         this.configManager = plugin.getConfigManager();
         this.loadAllTemplate();
     }

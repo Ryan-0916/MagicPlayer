@@ -13,27 +13,27 @@ public class AvatarFrameManager {
 
     private final BukkitMagicPlayer plugin;
 
-    private final AvatarFrameConfigLoader configLoader;
+    private final AvatarFrameLoader loader;
 
     public AvatarFrameManager(BukkitMagicPlayer plugin) {
         this.plugin = plugin;
         /* 加载头像相关的配置 */
-        this.configLoader = new AvatarFrameConfigLoader(plugin);
+        this.loader = new AvatarFrameLoader(plugin);
     }
 
     public void registrySetting() {
-        configLoader.getAvatarFrameSetting().ifPresent(
+        loader.getAvatarFrameSetting().ifPresent(
                 setting -> plugin.getSettingRegistry().registry(setting)
         );
     }
 
     public void destroySetting() {
-        configLoader.getAvatarFrameSetting().ifPresent(
+        loader.getAvatarFrameSetting().ifPresent(
                 setting -> plugin.getSettingRegistry().destroy(setting)
         );
     }
 
     public List<AvatarFrameTemplate> getFrames() {
-        return configLoader.getFrames();
+        return loader.getFrames();
     }
 }

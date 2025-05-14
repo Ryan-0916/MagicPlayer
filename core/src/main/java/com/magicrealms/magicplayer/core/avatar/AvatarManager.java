@@ -23,17 +23,17 @@ import static com.magicrealms.magicplayer.common.MagicPlayerConstant.*;
  */
 public class AvatarManager implements IAvatarManager {
 
-    private final AvatarConfigLoader configLoader;
+    private final AvatarLoader loader;
 
     public AvatarManager(BukkitMagicPlayer plugin) {
         /* 移除 Redis 头像相关缓存 */
         plugin.getRedisStore().removeKeyByPrefix(PLAYERS_AVATAR_LIKE);
-        this.configLoader = new AvatarConfigLoader(plugin);
+        this.loader = new AvatarLoader(plugin);
     }
 
     @Override
     public String getAvatar(String playerName) throws UnknownAvatarTemplate {
-        int defaultTemplateId = configLoader.getTemplates().values().
+        int defaultTemplateId = loader.getTemplates().values().
                 stream().filter(AvatarTemplate::isDefault).findFirst()
                 .map(AvatarTemplate::getId).orElse(-1);
 
@@ -47,7 +47,7 @@ public class AvatarManager implements IAvatarManager {
 
     @Override
     public String getAvatar(int templateId, String playerName) throws UnknownAvatarTemplate {
-        AvatarTemplate template = configLoader
+        AvatarTemplate template = loader
                 .getTemplates().get(templateId);
         if (template == null) {
             throw new UnknownAvatarTemplate("绘制玩家" + playerName + "头像失败，" +

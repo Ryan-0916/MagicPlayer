@@ -20,7 +20,7 @@ import static com.magicrealms.magicplayer.common.MagicPlayerConstant.*;
  * @Desc 头像框加载器
  * @date 2025-05-12
  */
-public class AvatarFrameConfigLoader {
+public class AvatarFrameLoader {
 
     private final ConfigManager configManager;
 
@@ -29,7 +29,7 @@ public class AvatarFrameConfigLoader {
     @Getter
     private final List<AvatarFrameTemplate> frames = new ArrayList<>();
 
-    public AvatarFrameConfigLoader(BukkitMagicPlayer plugin) {
+    public AvatarFrameLoader(BukkitMagicPlayer plugin) {
         this.configManager = plugin.getConfigManager();
         this.loadAllTemplate();
         if (!configManager.getYmlValue(YML_AVATAR_FRAME, "Setting.Enable", false, ParseType.BOOLEAN)) {
