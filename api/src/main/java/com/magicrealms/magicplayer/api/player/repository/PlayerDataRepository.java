@@ -6,6 +6,7 @@ import com.magicrealms.magiclib.common.store.RedisStore;
 import com.magicrealms.magiclib.common.utils.MongoDBUtil;
 import com.magicrealms.magicplayer.api.player.PlayerData;
 import com.mongodb.client.MongoCursor;
+import org.apache.commons.lang3.StringUtils;
 import org.bson.Document;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.Nullable;
@@ -28,7 +29,7 @@ public class PlayerDataRepository extends BaseRepository<PlayerData> {
     }
 
     public PlayerData queryByPlayer(Player player) {
-        String id = player.getName();
+        String id = StringUtils.upperCase(player.getName());
         Optional<PlayerData> cachedData = super.getRedisStore().
                 hGetObject(super.getCacheHkey(), id, PlayerData.class);
         if (cachedData.isPresent()) {
@@ -48,9 +49,16 @@ public class PlayerDataRepository extends BaseRepository<PlayerData> {
         }
     }
 
+    public void asyncUpdateByPlayer(Player player, Consumer<PlayerData> consumer) {
+        asyncUpdateById(queryByPlayer(player)
+                .getName(), consumer);
+    }
+
     public void updateByPlayer(Player player, Consumer<PlayerData> consumer) {
         updateById(queryByPlayer(player)
                 .getName(), consumer);
     }
+
+
 
 }

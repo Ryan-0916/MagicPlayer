@@ -41,7 +41,7 @@ public class SkinManager implements ISkinManager {
         this.skinsRestorer = SkinsRestorerProvider.get();
         this.skinsRestorer.getEventBus().subscribe(plugin, SkinApplyEvent.class, event -> {
             Player player = event.getPlayer(Player.class);
-            BukkitMagicPlayer.getInstance().getPlayerDataRepository().updateByPlayer(event.getPlayer(Player.class), data -> {
+            BukkitMagicPlayer.getInstance().getPlayerDataRepository().asyncUpdateByPlayer(event.getPlayer(Player.class), data -> {
                 data.setTextures(getTextures(player));
                 data.setHeadStack(getSkull(data.getTextures()));
                 data.setSkin(getSkin(data.getTextures()));

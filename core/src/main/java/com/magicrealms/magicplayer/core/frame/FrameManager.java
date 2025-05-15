@@ -1,24 +1,26 @@
-package com.magicrealms.magicplayer.core.avatar.frame;
+package com.magicrealms.magicplayer.core.frame;
 
+import com.magicrealms.magicplayer.api.setting.SettingParam;
 import com.magicrealms.magicplayer.core.BukkitMagicPlayer;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 /**
  * @author Ryan-0916
  * @Desc 头像框管理器
  * @date 2025-05-12
  */
-public class AvatarFrameManager {
+public class FrameManager {
 
     private final BukkitMagicPlayer plugin;
 
-    private final AvatarFrameLoader loader;
+    private final FrameLoader loader;
 
-    public AvatarFrameManager(BukkitMagicPlayer plugin) {
+    public FrameManager(BukkitMagicPlayer plugin, String configPath, Consumer<SettingParam> clickAction) {
         this.plugin = plugin;
         /* 加载头像相关的配置 */
-        this.loader = new AvatarFrameLoader(plugin);
+        this.loader = new FrameLoader(plugin, configPath, clickAction);
     }
 
     public void registrySetting() {
@@ -33,7 +35,7 @@ public class AvatarFrameManager {
         );
     }
 
-    public List<AvatarFrameTemplate> getFrames() {
+    public List<FrameTemplate> getFrames() {
         return loader.getFrames();
     }
 }

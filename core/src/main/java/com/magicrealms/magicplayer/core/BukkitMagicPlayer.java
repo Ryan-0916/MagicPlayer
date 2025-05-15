@@ -12,9 +12,13 @@ import com.magicrealms.magiclib.core.dispatcher.MessageDispatcher;
 import com.magicrealms.magicplayer.api.MagicPlayer;
 import com.magicrealms.magicplayer.api.MagicPlayerAPI;
 import com.magicrealms.magicplayer.core.avatar.AvatarManager;
-import com.magicrealms.magicplayer.core.avatar.frame.AvatarFrameManager;
+import com.magicrealms.magicplayer.core.frame.FrameManager;
 import com.magicrealms.magicplayer.core.listener.PlayerListener;
+import com.magicrealms.magicplayer.core.menu.AvatarFrameMenu;
+import com.magicrealms.magicplayer.core.menu.BackgroundFrameMenu;
+import com.magicrealms.magicplayer.core.placeholder.AvatarFramePapi;
 import com.magicrealms.magicplayer.core.placeholder.AvatarPapi;
+import com.magicrealms.magicplayer.core.placeholder.BackgroundFramePapi;
 import com.magicrealms.magicplayer.core.placeholder.PlayerDataPapi;
 import com.magicrealms.magicplayer.api.player.repository.PlayerDataRepository;
 import com.magicrealms.magicplayer.core.setting.SettingRegistry;
@@ -35,7 +39,10 @@ public class BukkitMagicPlayer extends MagicPlayer {
     private BungeeMessageManager bungeeMessageManager;
 
     @Getter
-    private AvatarFrameManager avatarFrameManager;
+    private FrameManager avatarFrameManager;
+
+    @Getter
+    private FrameManager backgroundFrameManager;
 
     public BukkitMagicPlayer() {
         instance = this;
@@ -63,17 +70,25 @@ public class BukkitMagicPlayer extends MagicPlayer {
             setupSetting();
             /* 初始化头像框 */
             setupAvatarFrame();
+            /* 初始化背景框 */
+            setupBackgroundFrame();
             /* 初始化玩家数据持久层 */
             setupPlayerDataRepository();
             /* 初始化 API */
             setupApi();
-            /* 变量部分注册 */
-            if (dependenciesCheck("PlaceholderAPI")) {
-                new AvatarPapi().register();
-                new PlayerDataPapi().register();
-            }
+            /* 变量部分 */
+            setupPapi();
             Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
         }, "SkinsRestorer");
+    }
+
+    public void setupPapi() {
+        if (dependenciesCheck("PlaceholderAPI")) {
+            new AvatarPapi(this);
+            new PlayerDataPapi(this);
+            new AvatarFramePapi(this);
+            new BackgroundFramePapi(this);
+        }
     }
 
     public void setupRedisStore() {
@@ -113,12 +128,21 @@ public class BukkitMagicPlayer extends MagicPlayer {
     private void setupSetting() { this.settingRegistry = new SettingRegistry(); }
 
     public void setupAvatarFrame() {
-        this.avatarFrameManager = new AvatarFrameManager(this);
+        this.avatarFrameManager = new FrameManager(this, YML_AVATAR_FRAME, AvatarFrameMenu::new);
         this.avatarFrameManager.registrySetting();
+    }
+
+    public void setupBackgroundFrame() {
+        this.backgroundFrameManager = new FrameManager(this, YML_BACKGROUND_FRAME, BackgroundFrameMenu::new);
+        this.backgroundFrameManager.registrySetting();
     }
 
     public void destroyAvatarFrame() {
         this.avatarFrameManager.destroySetting();
+    }
+
+    public void destroyBackgroundFrame() {
+        this.backgroundFrameManager.destroySetting();
     }
 
     public void setupPlayerDataRepository() {
@@ -148,10 +172,12 @@ public class BukkitMagicPlayer extends MagicPlayer {
                 YML_MONGODB,
                 YML_AVATAR,
                 YML_AVATAR_FRAME,
+                YML_BACKGROUND_FRAME,
                 YML_PLAYER_MENU,
                 YML_PROFILE_MENU,
                 YML_SETTING_MENU,
-                YML_AVATAR_FRAME_MENU
+                YML_AVATAR_FRAME_MENU,
+                YML_BACKGROUND_FRAME_MENU
         );
     }
 

@@ -1,9 +1,9 @@
 Setting:
   Enable: false
-  Weight: 0
-  Title: '头像框设置'
-  Name: '头像框设置'
-  Desc: '头像框设置'
+  Weight: 1
+  Title: '背景框设置'
+  Name: '背景框设置'
+  Desc: '背景框设置'
 
 Template:
   CustomFrame:

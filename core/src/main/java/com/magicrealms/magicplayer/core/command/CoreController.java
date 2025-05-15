@@ -31,6 +31,9 @@ public class CoreController {
         /* 重置 头像框 部分 */
         BukkitMagicPlayer.getInstance().destroyAvatarFrame();
         BukkitMagicPlayer.getInstance().setupAvatarFrame();
+        /* 重置 背景框 部分 */
+        BukkitMagicPlayer.getInstance().destroyBackgroundFrame();
+        BukkitMagicPlayer.getInstance().setupBackgroundFrame();
         MessageDispatcher.getInstance()
                 .sendMessage(BukkitMagicPlayer.getInstance(), sender,
                         BukkitMagicPlayer.getInstance().getConfigManager()
@@ -52,6 +55,9 @@ public class CoreController {
         /* 重置 头像框 部分 */
         BukkitMagicPlayer.getInstance().destroyAvatarFrame();
         BukkitMagicPlayer.getInstance().setupAvatarFrame();
+        /* 重置 背景框 部分 */
+        BukkitMagicPlayer.getInstance().destroyBackgroundFrame();
+        BukkitMagicPlayer.getInstance().setupBackgroundFrame();
         MessageDispatcher.getInstance()
                 .sendMessage(BukkitMagicPlayer.getInstance(), sender,
                         BukkitMagicPlayer.getInstance().getConfigManager()
@@ -77,6 +83,11 @@ public class CoreController {
                 case "avatarframe" -> {
                     BukkitMagicPlayer.getInstance().destroyAvatarFrame();
                     BukkitMagicPlayer.getInstance().setupAvatarFrame();
+                }
+                case "bgframe" -> {
+                    /* 重置 背景框 部分 */
+                    BukkitMagicPlayer.getInstance().destroyBackgroundFrame();
+                    BukkitMagicPlayer.getInstance().setupBackgroundFrame();
                 }
             }
             MessageDispatcher.getInstance().sendMessage(BukkitMagicPlayer.getInstance(), sender,

@@ -49,25 +49,6 @@ public class ProfileMenu extends BaseMenuHolder {
     }
 
     @Override
-    protected LinkedHashMap<String, String> initTitle() {
-        OfflinePlayer player = Bukkit.getOfflinePlayer(PROFILE_DATA.getUniqueId());
-        return getPlugin().getConfigManager()
-                .getYmlSubKeys(getConfigPath(), "Title", false)
-                .map(keys -> keys.stream()
-                        .collect(Collectors.toMap(
-                                key -> key,
-                                key -> PlaceholderUtil.replacePlaceholders(
-                                        getPlugin().getConfigManager()
-                                                .getYmlValue(getConfigPath(), String.format(TITLE_TEXT_PATH, key)),
-                                        player
-                                ),
-                                (oldVal, newVal) -> oldVal,  // 合并函数（避免重复键冲突）
-                                LinkedHashMap::new           // 指定使用 LinkedHashMap
-                        )))
-                .orElseGet(LinkedHashMap::new);  // 默认也用 LinkedHashMap
-    }
-
-    @Override
     protected void handleMenu(String layout) {
         int size =  layout.length();
         for (int i = 0; i < size; i++){
@@ -109,6 +90,18 @@ public class ProfileMenu extends BaseMenuHolder {
                     , player);
             setItemSlot(slot, itemStack);
         });
+    }
+
+    @Override
+    protected LinkedHashMap<String, String> buildTitle(LinkedHashMap<String, String> title) {
+        OfflinePlayer player = Bukkit.getOfflinePlayer(PROFILE_DATA.getUniqueId());
+        return title.entrySet().stream()
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        entry -> PlaceholderUtil.replacePlaceholders(entry.getValue(), player),
+                        (oldVal, newVal) -> newVal,  // 处理 key 冲突（可选）
+                        LinkedHashMap::new            // 保持顺序
+                ));
     }
 
     @Override

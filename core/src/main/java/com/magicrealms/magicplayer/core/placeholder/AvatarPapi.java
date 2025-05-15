@@ -4,8 +4,6 @@ import com.magicrealms.magiclib.core.holder.AbstractPaPiHolder;
 import com.magicrealms.magicplayer.core.BukkitMagicPlayer;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
-
 import java.util.regex.Pattern;
 
 /**
@@ -13,42 +11,30 @@ import java.util.regex.Pattern;
  * @Desc 玩家数据部分变量
  * @date 2025-05-10
  */
+@SuppressWarnings("unused")
 public class AvatarPapi extends AbstractPaPiHolder {
     private static final String ID_PATTERN = "^\\d+$";
     private static final String PLAYER_ID_PATTERN = "^(\\S+)_(\\d+)$";
 
-    public AvatarPapi() {
+    public AvatarPapi(BukkitMagicPlayer plugin) {
         super("avatar", "Ryan0916", "1.0");
+        this.register();
     }
 
     @Override
-    public String onRequest(OfflinePlayer player, @NotNull String params) {
-        if (player == null || params.isEmpty()) {
-            return null;
-        }
-        try {
-            if (isNumericId(params)) {
-                return handleSelfAvatarRequest(player.getName(), params);
-            }
-        } catch (Exception e) {
-            System.err.println("Error processing avatar request: " + e.getMessage());
+    protected String onOffline(OfflinePlayer player, String params) {
+        if (isNumericId(params)) {
+            return handleSelfAvatarRequest(player.getName(), params);
         }
         return null;
     }
 
     @Override
-    public String onPlaceholderRequest(Player player, @NotNull String params) {
-        if (player == null || params.isEmpty()) {
-            return null;
-        }
-        try {
-            if (isNumericId(params)) {
-                return handleSelfAvatarRequest(player.getName(), params);
-            } else if (isPlayerIdFormat(params)) {
-                return handleOtherPlayerAvatarRequest(params);
-            }
-        } catch (Exception e) {
-            System.err.println("Error processing avatar request: " + e.getMessage());
+    protected String onOnline(Player player, String params) {
+        if (isNumericId(params)) {
+            return handleSelfAvatarRequest(player.getName(), params);
+        } else if (isPlayerIdFormat(params)) {
+            return handleOtherPlayerAvatarRequest(params);
         }
         return null;
     }

@@ -100,6 +100,10 @@ PlayerMessage:
 Menu:
   FrameMenu:
     PreviewLock: '您未解锁此头像框'
+    PreviewUnlock: '关闭菜单后将自动替换'
+  BgMenu:
+    PreviewLock: '您未解锁此背景框'
+    PreviewUnlock: '关闭菜单后将自动替换'
 ConsoleMessage:
   Error:
     NotPlayer: "此命令仅玩家可用"

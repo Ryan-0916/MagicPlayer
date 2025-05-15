@@ -30,7 +30,7 @@ public class SettingRegistry implements ISettingRegistry {
         sort();
     }
 
-    private void sort() {
+    public void sort() {
         settings.sort(Comparator.comparingInt(Setting::getWeight));
     }
 

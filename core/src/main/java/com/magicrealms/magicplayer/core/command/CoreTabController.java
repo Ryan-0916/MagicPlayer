@@ -20,7 +20,7 @@ import java.util.stream.Stream;
 public class CoreTabController {
 
     private static final Supplier<Stream<String>> fileNames
-            = () -> Stream.of("all", "config", "language", "redis", "avatar", "avatarFrame", "playerMenu", "profileMenu", "settingMenu");
+            = () -> Stream.of("all", "config", "language", "redis", "avatar", "avatarFrame", "bgFrame", "playerMenu", "profileMenu", "settingMenu");
 
     @TabComplete(text = "^\\s?$", permissionType = PermissionType.CONSOLE_OR_PERMISSION,
             permission = "magic.command.magicplayer.all||magic.command.magicplayer.reload", label = "^magicPlayer$")

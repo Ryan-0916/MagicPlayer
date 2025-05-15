@@ -62,6 +62,12 @@ public class PlayerData {
     /* 时装 */
     @MongoField(recursive = true)
     private PlayerCosmetic cosmetic;
+    /* 头像框 */
+    @MongoField
+    private Integer avatarFrameId;
+    /* 背景框 */
+    @MongoField
+    private Integer backgroundFrameId;
 
     public PlayerData() {
         armor = new PlayerArmor();
