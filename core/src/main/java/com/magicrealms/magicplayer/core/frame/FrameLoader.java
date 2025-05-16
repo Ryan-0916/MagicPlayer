@@ -9,7 +9,6 @@ import com.magicrealms.magicplayer.core.BukkitMagicPlayer;
 import lombok.Getter;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -52,7 +51,6 @@ public class FrameLoader {
     private void loadAllTemplate() {
         configManager.getYmlSubKeys(configPath, "Template", false)
                 .ifPresent(keys -> keys.forEach(this::loadTemplate));
-        frames.sort(Comparator.comparingInt(FrameTemplate::getWeight));
     }
 
     private void loadTemplate(String configKey) {
@@ -61,7 +59,6 @@ public class FrameLoader {
         String profilePath = basePath + ".Profile";
         String settingPath = basePath + ".Setting";
         String framePath = basePath + ".Frame";
-        String weightPath = basePath + ".Weight";
         String permission = basePath + ".Permission";
         String unlockDisplayPath = basePath + ".UnlockDisplay";
         String lockDisplayPath = basePath + ".LockDisplay";
@@ -73,7 +70,6 @@ public class FrameLoader {
                     .profileFrame(configManager.getYmlValue(configPath, profilePath))
                     .settingFrame(configManager.getYmlValue(configPath, settingPath))
                     .frame(configManager.getYmlValue(configPath, framePath))
-                    .weight(configManager.getYmlValue(configPath, weightPath, 0, ParseType.INTEGER))
                     .permission(configManager.getYmlValue(configPath, permission))
                     .unlockItem(ItemUtil.getItemStackByConfig(configManager, configPath, unlockDisplayPath))
                     .lockItem(ItemUtil.getItemStackByConfig(configManager, configPath, lockDisplayPath))

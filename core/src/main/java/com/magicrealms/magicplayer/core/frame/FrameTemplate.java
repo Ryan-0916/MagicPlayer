@@ -22,8 +22,6 @@ public class FrameTemplate {
     private String profileFrame;
     /* 设置模块头像框 */
     private String settingFrame;
-    /* 权重 */
-    private int weight;
     /* 拥有该权限的玩家才可以解锁 */
     private String permission;
     /* 解锁后菜单中显示的物品 */

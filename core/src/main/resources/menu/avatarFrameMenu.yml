@@ -67,12 +67,42 @@ Icons:
       Lore:
         - '&6&L关闭'
   B:
-    Display:
+    NewestDisplay:
       Mats: GLASS_PANE
       ModelData: 0
-      Name: '&E&L排序'
+      Name: '&E&L出品时间 - 新'
       Lore:
-        - '&6&L排序'
+        - '&6&L出品时间 - 新'
+        - '&6&L出品时间 - 旧'
+        - '&6&L已解锁'
+        - '&6&L未解锁'
+    OldestDisplay:
+      Mats: GLASS_PANE
+      ModelData: 0
+      Name: '&E&L出品时间 - 旧'
+      Lore:
+        - '&6&L出品时间 - 新'
+        - '&6&L出品时间 - 旧'
+        - '&6&L已解锁'
+        - '&6&L未解锁'
+    UnlockDisplay:
+      Mats: GLASS_PANE
+      ModelData: 0
+      Name: '&E&L已解锁'
+      Lore:
+        - '&6&L出品时间 - 新'
+        - '&6&L出品时间 - 旧'
+        - '&6&L已解锁'
+        - '&6&L未解锁'
+    LockDisplay:
+      Mats: GLASS_PANE
+      ModelData: 0
+      Name: '&E&L未解锁'
+      Lore:
+        - '&6&L出品时间 - 新'
+        - '&6&L出品时间 - 旧'
+        - '&6&L已解锁'
+        - '&6&L未解锁'
   C:
     Display:
       ModelData: 0

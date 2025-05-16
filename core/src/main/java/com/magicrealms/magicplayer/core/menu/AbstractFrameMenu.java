@@ -7,10 +7,12 @@ import com.magicrealms.magicplayer.api.setting.AbstractSubSettingMenu;
 import com.magicrealms.magicplayer.api.setting.SettingParam;
 import com.magicrealms.magicplayer.core.BukkitMagicPlayer;
 import com.magicrealms.magicplayer.core.frame.FrameTemplate;
+import com.magicrealms.magicplayer.core.menu.sort.FrameSort;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Comparator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -39,6 +41,8 @@ public abstract class AbstractFrameMenu extends AbstractSubSettingMenu {
 
     protected final String ICON_DISPLAY = "Icons.%s.Display";
 
+    protected FrameSort sort = FrameSort.PUBLISH_TIME_OLDEST;
+
     public AbstractFrameMenu(SettingParam param,
                              String configPath,
                              String defLayout,
@@ -48,6 +52,7 @@ public abstract class AbstractFrameMenu extends AbstractSubSettingMenu {
                 defLayout,
                 param);
         this.FRAMES = frames;
+        sortFrames();
         this.previewPrompt = StringUtils.EMPTY;
         /* 获取菜单布局中每页显示的设置数量 */
         this.PAGE_COUNT = StringUtils
@@ -58,6 +63,19 @@ public abstract class AbstractFrameMenu extends AbstractSubSettingMenu {
                 .queryByPlayer(param.player());
     }
 
+    public void sortFrames() {
+        switch (sort) {
+            case PUBLISH_TIME_NEWEST -> FRAMES.sort((t1, t2) -> Integer.compare(t2.getId(), t1.getId()));
+            case PUBLISH_TIME_OLDEST -> FRAMES.sort(Comparator.comparingInt(FrameTemplate::getId));
+            case UNLOCKED -> FRAMES.sort(Comparator
+                        .comparing((FrameTemplate f) -> !f.isUnlocked(getPlayer()))
+                        .thenComparingInt(FrameTemplate::getId));
+            case LOCKED -> FRAMES.sort(Comparator
+                        .comparing((FrameTemplate f) -> f.isUnlocked(getPlayer()))
+                        .thenComparingInt(FrameTemplate::getId));
+        }
+    }
+
     @Override
     protected void handleMenuUnCache(String layout) {
         int size =  layout.length();
@@ -66,6 +84,7 @@ public abstract class AbstractFrameMenu extends AbstractSubSettingMenu {
         for (int i = 0; i < size; i++){
             switch (layout.charAt(i)) {
                 case 'A' -> super.setCheckBoxSlot(i, super.getBackMenuRunnable() != null);
+                case 'B' -> super.setItemSlot(i, sort.getItemSlot(super.getPlugin().getConfigManager(), super.getConfigPath(), 'B'));
                 case 'E' -> {
                     if (FRAMES.size() > ++appearIndex) {
                         setFrame(i, FRAMES.get(appearIndex));
@@ -121,15 +140,21 @@ public abstract class AbstractFrameMenu extends AbstractSubSettingMenu {
 
     @Override
     public void topInventoryClickEvent(InventoryClickEvent event, int slot) {
-        if (!super.tryCooldown(slot, super.getPlugin().getConfigManager()
-                .getYmlValue(YML_LANGUAGE,
-                        "PlayerMessage.Error.ButtonCooldown"))) {
+        if (!super.tryCooldown(slot, super.getPlugin().getConfigManager().getYmlValue(YML_LANGUAGE,"PlayerMessage.Error.ButtonCooldown"))) {
             return;
         }
         char c = super.getLayout().charAt(slot);
         asyncPlaySound("Icons." + c + ".Display.Sound");
         switch (c) {
             case 'A'-> super.backMenu();
+            case 'B' -> {
+                super.cleanItemCache();
+                sort = sort.next();
+                sortFrames();
+                super.goToFirstPage();
+                super.handleMenu(super.getLayout());
+                super.asyncUpdateTitle();
+            }
             case 'F', 'J' -> super.changePage(- 1, b -> {
                 asyncPlaySound(b ? "Icons." + c + ".ActiveDisplay.Sound" : "Icons." + c + ".DisabledDisplay.Sound");
                 if (!b) return;

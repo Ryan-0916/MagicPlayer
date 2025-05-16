@@ -14,8 +14,6 @@ Template:
     Setting: 'Setting Frame'
     # 在 Frame 里的文本
     Frame: 'Frame Frame'
-    # 权重越靠后
-    Weight: 0
     # 空则为每个人都可以穿戴
     Permission: ''
     # 拥有的时候在 Gui 里的样子
