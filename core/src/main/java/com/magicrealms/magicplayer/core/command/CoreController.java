@@ -20,12 +20,7 @@ import static com.magicrealms.magicplayer.common.MagicPlayerConstant.*;
 @SuppressWarnings("unused")
 public class CoreController {
 
-    @Command(text = "^Reload$",
-            permissionType = PermissionType.CONSOLE_OR_PERMISSION,
-            permission = "magic.command.magicplayer.all||magic.command.magicplayer.reload", label = "^magicPlayer$")
-    public void reload(CommandSender sender, String[] args){
-        BukkitMagicPlayer.getInstance().getConfigManager()
-                .reloadConfig(YML_REDIS, YML_MONGODB);
+    private void setupCommon() {
         /* 重置 Avatar 部分 */
         BukkitMagicPlayer.getInstance().setupAvatar();
         /* 重置 头像框 部分 */
@@ -34,6 +29,15 @@ public class CoreController {
         /* 重置 背景框 部分 */
         BukkitMagicPlayer.getInstance().destroyBackgroundFrame();
         BukkitMagicPlayer.getInstance().setupBackgroundFrame();
+    }
+
+    @Command(text = "^Reload$",
+            permissionType = PermissionType.CONSOLE_OR_PERMISSION,
+            permission = "magic.command.magicplayer.all||magic.command.magicplayer.reload", label = "^magicPlayer$")
+    public void reload(CommandSender sender, String[] args){
+        BukkitMagicPlayer.getInstance().getConfigManager()
+                .reloadConfig(YML_REDIS, YML_MONGODB);
+        setupCommon();
         MessageDispatcher.getInstance()
                 .sendMessage(BukkitMagicPlayer.getInstance(), sender,
                         BukkitMagicPlayer.getInstance().getConfigManager()
@@ -50,14 +54,7 @@ public class CoreController {
         BukkitMagicPlayer.getInstance().setupRedisStore();
         /* 重置 MongoDB 部分 */
         BukkitMagicPlayer.getInstance().setupMongoDB();
-        /* 重置 Avatar 部分 */
-        BukkitMagicPlayer.getInstance().setupAvatar();
-        /* 重置 头像框 部分 */
-        BukkitMagicPlayer.getInstance().destroyAvatarFrame();
-        BukkitMagicPlayer.getInstance().setupAvatarFrame();
-        /* 重置 背景框 部分 */
-        BukkitMagicPlayer.getInstance().destroyBackgroundFrame();
-        BukkitMagicPlayer.getInstance().setupBackgroundFrame();
+        setupCommon();
         MessageDispatcher.getInstance()
                 .sendMessage(BukkitMagicPlayer.getInstance(), sender,
                         BukkitMagicPlayer.getInstance().getConfigManager()
