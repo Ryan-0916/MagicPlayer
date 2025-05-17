@@ -118,39 +118,43 @@ public class SettingMenu extends PageMenuHolder {
                         -> StringUtil.replacePlaceholders(entry.getValue(), createPlaceholders()), (oldVal, newVal) -> oldVal, LinkedHashMap::new));
     }
 
+    @SuppressWarnings("DuplicatedCode")
     private Map<String, String> createPlaceholders() {
         Map<String, String> map = new HashMap<>(PAGE_COUNT * 2);
         /* 设置的 Title */
         final String SETTING_TITLE = "setting_title_%s";
         /* 是否拥有设置 */
         final String HAS_SETTING = "has_setting_%s";
+        /* 设置 Format */
+        final String SETTING_Format = "setting_format_%s";
         /* 拥有设置的 YML 自定义 Papi Path */
         final String CUSTOM_PAPI_HAS_SETTING_PATH = "CustomPapi" +
                 ".HasSetting_%s.%s";
-
+        /* 设置的 Format YML 自定义 Papi Path */
+        final String CUSTOM_PAPI_SETTING_FORMAT_PATH = "CustomPapi" +
+                ".SettingFormat_%s.%s";
         int pageOffset = (super.getPage() - 1) * PAGE_COUNT;
         for (int i = 0; i < PAGE_COUNT; i++) {
             /* 设置的下标 */
             int index = i + pageOffset;
             /* 文件地址 */
             String configPath = getConfigPath();
-
             /* setting_title 部分变量 */
             boolean hasSetting =
                     index < SETTINGS.size();
-
             /* 变量部分 */
             String papiTitle = String.format(SETTING_TITLE, (i + 1));
             String papiHas = String.format(HAS_SETTING, (i + 1));
-
+            String papiFormat = String.format(SETTING_Format, (i + 1));
             if (!hasSetting) {
                 map.put(papiTitle, StringUtils.EMPTY);
                 map.put(papiHas, getPlugin().getConfigManager().getYmlValue(configPath, String.format(CUSTOM_PAPI_HAS_SETTING_PATH, (i + 1), "UnEnable")));
+                map.put(papiFormat, getPlugin().getConfigManager().getYmlValue(configPath, String.format(CUSTOM_PAPI_SETTING_FORMAT_PATH, (i + 1), "UnEnable")));
                 continue;
             }
-
             map.put(papiTitle, SETTINGS.get(index).getTitle());
             map.put(papiHas, getPlugin().getConfigManager().getYmlValue(configPath, String.format(CUSTOM_PAPI_HAS_SETTING_PATH, (i + 1), "Enable")));
+            map.put(papiFormat, getPlugin().getConfigManager().getYmlValue(configPath, String.format(CUSTOM_PAPI_SETTING_FORMAT_PATH, (i + 1), "Enable")));
         }
         return map;
     }

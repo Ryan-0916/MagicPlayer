@@ -15,9 +15,8 @@ Title:
     Text: '%select_setting_N%'
     Offset: 0
   SettingTitle_N:
-    Text: '%setting_title_N%'
+    Text: '%setting_format_N%%setting_title_N%'
     Offset: 0
-
 
 CustomPapi:
   PrePage:
@@ -32,7 +31,9 @@ CustomPapi:
   SelectedSetting_N:
     Enable: '选中'
     UnEnable: '不选择'
-
+  SettingFormat_N:
+    Enable: '<font: minecraft:default>'
+    UnEnable: ''
 
 # # 默认材质
 # A 返回 / 关闭

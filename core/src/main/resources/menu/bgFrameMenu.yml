@@ -15,9 +15,8 @@ Title:
     Text: '%select_setting_N%'
     Offset: 0
   SettingTitle_N:
-    Text: '%setting_title_N%'
+    Text: '%setting_format_N%%setting_title_N%'
     Offset: 0
-
 
 CustomPapi:
   PrePage:
