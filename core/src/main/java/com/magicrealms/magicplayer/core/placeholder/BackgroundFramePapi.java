@@ -10,12 +10,15 @@ import java.util.Optional;
 /**
  * @author Ryan-0916
  * @Desc 背景框部分变量
+ * %bgframe_setting% 设置菜单部分支持的背景框尺寸
+ * %bgframe_profile% 明信片菜单部分支持的背景框尺寸
+ * %bgframe_default% 默认支持的背景框尺寸
  * @date 2025-05-16
  */
 public class BackgroundFramePapi extends AbstractFramePapi{
 
     public BackgroundFramePapi(BukkitMagicPlayer plugin) {
-        super(plugin, "bgFrame", "Ryan0916", "1.0");
+        super(plugin, "BgFrame", "Ryan0916", "1.0");
     }
 
     private Optional<FrameTemplate> getFrameTemplate(int frameId) {
@@ -26,38 +29,26 @@ public class BackgroundFramePapi extends AbstractFramePapi{
 
     @Override
     protected String getSettingFrame(PlayerData data) {
-        if (data.getBackgroundFrameId() == null) {
-            return StringUtils.EMPTY;
-        }
-        Optional<FrameTemplate> template = getFrameTemplate(data.getBackgroundFrameId());
-        if (template.isEmpty()) {
-            return StringUtils.EMPTY;
-        }
-        return template.get().getSettingFrame();
+        if (data.getBackgroundFrameId() == null) { return StringUtils.EMPTY; }
+        return getFrameTemplate(data.getBackgroundFrameId())
+                .map(FrameTemplate::getSettingFrame)
+                .orElse(StringUtils.EMPTY);
     }
 
     @Override
     protected String getDefaultFrame(PlayerData data) {
-        if (data.getBackgroundFrameId() == null) {
-            return StringUtils.EMPTY;
-        }
-        Optional<FrameTemplate> template = getFrameTemplate(data.getBackgroundFrameId());
-        if (template.isEmpty()) {
-            return StringUtils.EMPTY;
-        }
-        return template.get().getFrame();
+        if (data.getBackgroundFrameId() == null) { return StringUtils.EMPTY; }
+        return getFrameTemplate(data.getBackgroundFrameId())
+                .map(FrameTemplate::getFrame)
+                .orElse(StringUtils.EMPTY);
     }
 
     @Override
     protected String getProfileFrame(PlayerData data) {
-        if (data.getBackgroundFrameId() == null) {
-            return StringUtils.EMPTY;
-        }
-        Optional<FrameTemplate> template = getFrameTemplate(data.getBackgroundFrameId());
-        if (template.isEmpty()) {
-            return StringUtils.EMPTY;
-        }
-        return template.get().getProfileFrame();
+        if (data.getBackgroundFrameId() == null) { return StringUtils.EMPTY; }
+        return getFrameTemplate(data.getBackgroundFrameId())
+                .map(FrameTemplate::getProfileFrame)
+                .orElse(StringUtils.EMPTY);
     }
 
 }

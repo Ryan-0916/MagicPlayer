@@ -11,6 +11,7 @@ import java.util.regex.Pattern;
 /**
  * @author Ryan-0916
  * @Desc 玩家数据相关变量
+ * %playerdata_name_up% 大写格式的玩家名称
  * @date 2025-05-10
  */
 @SuppressWarnings("unused")
