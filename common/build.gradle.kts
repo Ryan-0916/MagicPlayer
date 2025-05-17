@@ -7,8 +7,7 @@ java {
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:${rootProject.properties["paper_version"]}-R0.1-SNAPSHOT")
-    compileOnly("com.magicrealms:magiclib:${rootProject.properties["magic_lib_velocity_version"]}")
+    compileOnly("com.magicrealms:magiclib:${rootProject.properties["magic_lib_version"]}")
     compileOnly("org.apache.commons:commons-lang3:${rootProject.properties["apache_lang3_version"]}")
 }
 
