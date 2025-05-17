@@ -29,6 +29,7 @@ public class CoreController {
         /* 重置 背景框 部分 */
         BukkitMagicPlayer.getInstance().destroyBackgroundFrame();
         BukkitMagicPlayer.getInstance().setupBackgroundFrame();
+        BukkitMagicPlayer.getInstance().setupPlayerDataRepository();
     }
 
     @Command(text = "^Reload$",
@@ -74,8 +75,15 @@ public class CoreController {
                 return;
             }
             switch (args[1].toLowerCase(Locale.ROOT)) {
-                case "redis" ->  BukkitMagicPlayer.getInstance().setupRedisStore();
-                case "mongodb" -> BukkitMagicPlayer.getInstance().setupMongoDB();
+                case "config" -> BukkitMagicPlayer.getInstance().setupPlayerDataRepository();
+                case "redis" ->  {
+                    BukkitMagicPlayer.getInstance().setupRedisStore();
+                    BukkitMagicPlayer.getInstance().setupPlayerDataRepository();
+                }
+                case "mongodb" -> {
+                    BukkitMagicPlayer.getInstance().setupMongoDB();
+                    BukkitMagicPlayer.getInstance().setupPlayerDataRepository();
+                }
                 case "avatar" ->  BukkitMagicPlayer.getInstance().setupAvatar();
                 case "avatarframe" -> {
                     BukkitMagicPlayer.getInstance().destroyAvatarFrame();
