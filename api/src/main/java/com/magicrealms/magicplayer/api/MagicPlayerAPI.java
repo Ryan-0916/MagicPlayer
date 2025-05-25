@@ -2,6 +2,8 @@ package com.magicrealms.magicplayer.api;
 
 import com.magicrealms.magicplayer.api.avatar.IAvatarManager;
 import com.magicrealms.magicplayer.api.exception.UnknownAvatarTemplate;
+import com.magicrealms.magicplayer.api.player.PlayerData;
+import com.magicrealms.magicplayer.api.player.repository.PlayerDataRepository;
 import com.magicrealms.magicplayer.api.setting.ISettingRegistry;
 import com.magicrealms.magicplayer.api.setting.Setting;
 import com.magicrealms.magicplayer.api.skin.ISkinManager;
@@ -92,6 +94,14 @@ public record MagicPlayerAPI(MagicPlayer plugin) {
      */
     public void destroySetting(Setting setting) {
         plugin.getSettingRegistry().destroy(setting);
+    }
+
+    /**
+     * query player data
+     * {@link PlayerDataRepository#queryByPlayer(Player)}
+     */
+    public PlayerData queryPlayerData(Player player) {
+        return plugin.getPlayerDataRepository().queryByPlayer(player);
     }
 
 }

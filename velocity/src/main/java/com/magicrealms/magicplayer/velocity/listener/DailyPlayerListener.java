@@ -108,22 +108,34 @@ public class DailyPlayerListener {
         });
     }
 
-    private void updateDisconnectSession(PlayerSession session) {
-        session.setStatus(PlayerStatus.OFFLINE);
-        session.setServerName(null);
-        session.setStartAfkTime(0);
-        session.setOffTime(System.currentTimeMillis());
-        session.setPlayTime(session.getPlayTime() + (session.getOffTime() - session.getUpTime()));
-    }
-
     @Subscribe()
     public EventTask onDisconnectEvent(DisconnectEvent event) {
         return EventTask.async(() -> {
             Player player = event.getPlayer();
             String subKey = StringUtils.upperCase(player.getUsername());
             RedisStore store = MagicPlayer.getINSTANCE().getRedisStore();
-            if (store.hExists(DAILY_PLAYERS_HASH_KEY, subKey)) {
-                updatePlayerSession(player, this::updateDisconnectSession);
+            long offTime = System.currentTimeMillis();
+            Optional<PlayerSession> playerSession
+                    = PlayerSessionStorage.getPlayerSession(store, subKey);
+            if (playerSession.isPresent()) {
+                updatePlayerSession(player, session -> {
+                    session.setStatus(PlayerStatus.OFFLINE);
+                    session.setServerName(null);
+                    session.setStartAfkTime(0);
+                    session.setOffTime(offTime);
+                    session.setPlayTime(session.getPlayTime() + (offTime - session.getUpTime()));
+                });
+                MagicPlayer.getINSTANCE().getPlayerDataRepository().updateById(
+                        player.getUsername(), e -> {
+                            e.setOffTime(offTime);
+                            e.setPlaytime(e.getPlaytime() + offTime -
+                                    playerSession.get().getUpTime());
+                        }
+                );
+            } else {
+                MagicPlayer.getINSTANCE().getPlayerDataRepository().updateById(
+                        player.getUsername(), e -> e.setOffTime(offTime)
+                );
             }
         });
     }
