@@ -89,7 +89,7 @@ public abstract class AbstractFrameMenu extends AbstractSubSettingMenu {
                     if (FRAMES.size() > ++appearIndex) {
                         setFrame(i, FRAMES.get(appearIndex));
                     } else {
-                        super.setItemSlot(i, ItemUtil.AIR);
+                        super.setItemSlot(i);
                     }
                 }
                 case 'C', 'D' -> setHead(i, layout.charAt(i));

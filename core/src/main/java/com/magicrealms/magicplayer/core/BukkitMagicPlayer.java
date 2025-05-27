@@ -202,8 +202,6 @@ public class BukkitMagicPlayer extends MagicPlayer {
     }
 
     @Override
-    protected void registerPacketListener(PacketManager packetManager) {
-        packetManager.registerListeners();
-    }
+    protected void registerPacketListener(PacketManager packetManager) {}
 
 }

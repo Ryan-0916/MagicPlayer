@@ -15,9 +15,10 @@ Title:
     Text: '%setting_format_N%%setting_title_N%'
     Offset: 0
 
+# N 为你每页的个数 1 - N 例如你每页有 4个设置配置(J)
+# 那么请你为 CustomPapi 设置 HasSetting_1 - HasSetting_4
+# SettingFormat_N 同理
 CustomPapi:
-  # N 为你每页的个数 1 - N 例如你每页有 4个设置配置(J)
-  # 那么请你为 CustomPapi 设置 Title_1 - Title_4
   PrePage:
     Enable: '可以上一页'
     UnEnable: '不可以上一页'
@@ -25,8 +26,8 @@ CustomPapi:
     Enable: '可以下一页'
     UnEnable: '不可以下一页'
   HasSetting_N:
-    Enable: '存在 Setting'
-    UnEnable: '不存在 Setting'
+    Enable: '存在第 N 个设置'
+    UnEnable: '不存在第 N 个设置'
   SettingFormat_N:
     Enable: '<font: minecraft:default>'
     UnEnable: ''

@@ -68,14 +68,14 @@ public class SettingMenu extends PageMenuHolder {
                     if (SETTINGS.size() > ++appearIndex) {
                         setSetting(i, layout.charAt(i), SETTINGS.get(appearIndex));
                     } else {
-                        super.setItemSlot(i, ItemUtil.AIR);
+                        super.setItemSlot(i);
                     }
                 }
                 case 'K' -> {
                     if (SETTINGS.size() > appearIndex) {
                         setSetting(i, layout.charAt(i), SETTINGS.get(appearIndex));
                     } else {
-                        super.setItemSlot(i, ItemUtil.AIR);
+                        super.setItemSlot(i);
                     }
                 }
                 case 'B', 'C' -> setHead(i, layout.charAt(i));

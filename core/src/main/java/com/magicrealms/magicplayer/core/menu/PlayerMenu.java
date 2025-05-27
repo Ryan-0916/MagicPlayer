@@ -99,7 +99,7 @@ public class PlayerMenu extends PageMenuHolder {
                     if (DATA.size() > ++appearIndex) {
                         setHead(i, DATA.get(appearIndex));
                     } else {
-                        super.setItemSlot(i, ItemUtil.AIR);
+                        super.setItemSlot(i);
                     }
                 }
                 case 'B', 'C' -> super.setButtonSlot(i, !(super.getPage() > 1));
