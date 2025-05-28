@@ -1,5 +1,6 @@
 package com.magicrealms.magicplayer.core.menu;
 
+import com.magicrealms.magiclib.bukkit.manage.ConfigManager;
 import com.magicrealms.magiclib.common.utils.StringUtil;
 import com.magicrealms.magiclib.core.holder.PageMenuHolder;
 import com.magicrealms.magiclib.core.utils.ItemUtil;
@@ -62,23 +63,17 @@ public class SettingMenu extends PageMenuHolder {
         /* 当前显示的下标 */
         int appearIndex = ((super.getPage() - 1) * PAGE_COUNT) - 1;
         for (int i = 0; i < size; i++){
-            switch (layout.charAt(i)) {
+            char c = layout.charAt(i);
+            switch (c) {
                 case 'A' -> super.setCheckBoxSlot(i, super.getBackMenuRunnable() != null);
-                case 'J' -> {
-                    if (SETTINGS.size() > ++appearIndex) {
-                        setSetting(i, layout.charAt(i), SETTINGS.get(appearIndex));
+                case 'J', 'K' -> {
+                    if (SETTINGS.size() > (c == 'J' ? ++appearIndex : appearIndex)) {
+                        setSetting(i, c, SETTINGS.get(appearIndex));
                     } else {
                         super.setItemSlot(i);
                     }
                 }
-                case 'K' -> {
-                    if (SETTINGS.size() > appearIndex) {
-                        setSetting(i, layout.charAt(i), SETTINGS.get(appearIndex));
-                    } else {
-                        super.setItemSlot(i);
-                    }
-                }
-                case 'B', 'C' -> setHead(i, layout.charAt(i));
+                case 'B', 'C' -> setHead(i, c);
                 case 'H' -> super.setButtonSlot(i, !(super.getPage() > 1));
                 case 'I' -> super.setButtonSlot(i, !(super.getPage() < super.getMaxPage()));
                 default -> super.setItemSlot(i);
@@ -86,10 +81,10 @@ public class SettingMenu extends PageMenuHolder {
         }
     }
 
-    private void setHead(int slot, Character key) {
+    private void setHead(int slot, char key) {
         CompletableFuture.runAsync(() -> {
             String path = String.format(ICON_DISPLAY, key);
-            ItemStack itemStack = key.equals('B') ?
+            ItemStack itemStack = key == 'B' ?
                     ItemUtil.setItemStackByConfig(HOLDER_DATA.getHeadStack().clone(),
                             super.getPlugin().getConfigManager(),
                             super.getConfigPath(), path
@@ -101,9 +96,9 @@ public class SettingMenu extends PageMenuHolder {
         });
     }
 
-    private void setSetting(int i, char c, Setting setting) {
+    private void setSetting(int i, char key, Setting setting) {
         super.setItemSlot(i, ItemUtil.getItemStackByConfig(getPlugin().getConfigManager()
-            , getConfigPath(), String.format(ICON_DISPLAY, c), Map.of(
+            , getConfigPath(), String.format(ICON_DISPLAY, key), Map.of(
                         "setting_name", setting.getName(),
                         "setting_desc", setting.getDescription())
         ));
@@ -120,41 +115,38 @@ public class SettingMenu extends PageMenuHolder {
 
     @SuppressWarnings("DuplicatedCode")
     private Map<String, String> createPlaceholders() {
-        Map<String, String> map = new HashMap<>(PAGE_COUNT * 2);
-        /* 设置的 Title */
-        final String SETTING_TITLE = "setting_title_%s";
-        /* 是否拥有设置 */
-        final String HAS_SETTING = "has_setting_%s";
-        /* 设置 Format */
-        final String SETTING_Format = "setting_format_%s";
-        /* 拥有设置的 YML 自定义 Papi Path */
-        final String CUSTOM_PAPI_HAS_SETTING_PATH = "CustomPapi" +
-                ".HasSetting_%s.%s";
-        /* 设置的 Format YML 自定义 Papi Path */
-        final String CUSTOM_PAPI_SETTING_FORMAT_PATH = "CustomPapi" +
-                ".SettingFormat_%s.%s";
+        Map<String, String> map = new HashMap<>();
+        /* 变量部分处理 */
+        final String TITLE = "setting_title_%s",  // 邮件主题
+                HAS = "has_setting_%s", // 存在邮件
+                TITLE_FORMAT = "title_format_%s"; // 邮件主题格式化
+        /* 自定义 Papi Path */
+        final String CUSTOM_PAPI_HAS = "CustomPapi.HasMail_%s.%s", // 存在邮件,
+                CUSTOM_PAPI_TITLE_FORMAT = "CustomPapi.TitleFormat_%s.%s"; // 邮件主题格式化
         int pageOffset = (super.getPage() - 1) * PAGE_COUNT;
         for (int i = 0; i < PAGE_COUNT; i++) {
-            /* 设置的下标 */
-            int index = i + pageOffset;
+            int index = i + pageOffset // 设置的下标
+                    , settingSort = index + 1; // 设置的顺序;
+            /* 文件管理器 */
+            ConfigManager configManager = super.getPlugin().getConfigManager();
             /* 文件地址 */
             String configPath = getConfigPath();
-            /* setting_title 部分变量 */
-            boolean hasSetting =
-                    index < SETTINGS.size();
-            /* 变量部分 */
-            String papiTitle = String.format(SETTING_TITLE, (i + 1));
-            String papiHas = String.format(HAS_SETTING, (i + 1));
-            String papiFormat = String.format(SETTING_Format, (i + 1));
-            if (!hasSetting) {
-                map.put(papiTitle, StringUtils.EMPTY);
-                map.put(papiHas, getPlugin().getConfigManager().getYmlValue(configPath, String.format(CUSTOM_PAPI_HAS_SETTING_PATH, (i + 1), "UnEnable")));
-                map.put(papiFormat, getPlugin().getConfigManager().getYmlValue(configPath, String.format(CUSTOM_PAPI_SETTING_FORMAT_PATH, (i + 1), "UnEnable")));
-                continue;
-            }
-            map.put(papiTitle, SETTINGS.get(index).getTitle());
-            map.put(papiHas, getPlugin().getConfigManager().getYmlValue(configPath, String.format(CUSTOM_PAPI_HAS_SETTING_PATH, (i + 1), "Enable")));
-            map.put(papiFormat, getPlugin().getConfigManager().getYmlValue(configPath, String.format(CUSTOM_PAPI_SETTING_FORMAT_PATH, (i + 1), "Enable")));
+            /* 是否存在此下标的邮件 */
+            boolean hasSetting = index < SETTINGS.size();
+            /* 变量部分处理 */
+            String papiTitle = String.format(TITLE, settingSort),
+                    papiHas = String.format(HAS, settingSort),
+                    papiTitleFormat = String.format(TITLE_FORMAT, settingSort);
+            /* 启用变量 */
+            String enablePath = hasSetting ? "Enable" : "UnEnable";
+            /* 是否存在变量 */
+            map.put(papiHas, configManager.getYmlValue(configPath,
+                    String.format(CUSTOM_PAPI_HAS, settingSort, enablePath)));
+            /* Title格式化变量 */
+            map.put(papiTitleFormat, configManager.getYmlValue(configPath,
+                    String.format(CUSTOM_PAPI_TITLE_FORMAT, settingSort, enablePath)));
+            /* Title部分变量 */
+            map.put(papiTitle, hasSetting ? SETTINGS.get(index).getTitle() : StringUtils.EMPTY);
         }
         return map;
     }

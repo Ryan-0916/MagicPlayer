@@ -12,7 +12,7 @@ Title:
     Text: '%has_setting_N%'
     Offset: 0
   SettingTitle_N:
-    Text: '%setting_format_N%%setting_title_N%'
+    Text: '%title_format_N%%setting_title_N%'
     Offset: 0
 
 # N 为你每页的个数 1 - N 例如你每页有 4个设置配置(J)
@@ -28,9 +28,13 @@ CustomPapi:
   HasSetting_N:
     Enable: '存在第 N 个设置'
     UnEnable: '不存在第 N 个设置'
-  SettingFormat_N:
+  SelectedSetting_N:
+    Enable: '选中第 N 个设置'
+    UnEnable: '未选中第 N 个设置'
+  TitleFormat_N:
     Enable: '<font: minecraft:default>'
     UnEnable: ''
+
 
 # # 默认材质
 # A 返回 / 关闭
@@ -44,7 +48,6 @@ CustomPapi:
 # I 下一页
 # J 个人设置
 # K 个人设置预留
-
 Layout:
   - 'A########'
   - 'BC##HJKKK'

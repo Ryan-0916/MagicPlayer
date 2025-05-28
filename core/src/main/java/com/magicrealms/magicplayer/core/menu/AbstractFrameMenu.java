@@ -65,7 +65,7 @@ public abstract class AbstractFrameMenu extends AbstractSubSettingMenu {
 
     public void sortFrames() {
         switch (sort) {
-            case PUBLISH_TIME_NEWEST -> FRAMES.sort((t1, t2) -> Integer.compare(t2.getId(), t1.getId()));
+            case PUBLISH_TIME_NEWEST -> FRAMES.sort(Comparator.comparingInt(FrameTemplate::getId).reversed());
             case PUBLISH_TIME_OLDEST -> FRAMES.sort(Comparator.comparingInt(FrameTemplate::getId));
             case UNLOCKED -> FRAMES.sort(Comparator
                         .comparing((FrameTemplate f) -> !f.isUnlocked(getPlayer()))

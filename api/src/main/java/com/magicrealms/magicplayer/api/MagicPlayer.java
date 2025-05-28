@@ -19,6 +19,9 @@ public abstract class MagicPlayer extends MagicRealmsPlugin {
     protected MagicPlayerAPI api;
 
     @Getter
+    private static MagicPlayer instance;
+
+    @Getter
     protected RedisStore redisStore;
 
     @Getter
@@ -36,4 +39,7 @@ public abstract class MagicPlayer extends MagicRealmsPlugin {
     @Getter
     protected PlayerDataRepository playerDataRepository;
 
+    public MagicPlayer() {
+        instance = this;
+    }
 }

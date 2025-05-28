@@ -15,13 +15,9 @@ Title:
     Text: '%selected_setting_N%'
     Offset: 0
   SettingTitle_N:
-    Text: '%setting_format_N%%setting_title_N%'
+    Text: '%title_format_N%%setting_title_N%'
     Offset: 0
 
-# N 为你每页的个数 1 - N 例如你每页有 4个设置配置(J)
-# 那么请你为 CustomPapi 设置 HasSetting_1 - HasSetting_4
-# SettingFormat_N 同理
-# SelectedSetting_N 同理
 CustomPapi:
   PrePage:
     Enable: '可以上一页'
@@ -29,15 +25,6 @@ CustomPapi:
   NextPage:
     Enable: '可以下一页'
     UnEnable: '不可以下一页'
-  HasSetting_N:
-    Enable: '存在第 N 个设置'
-    UnEnable: '不存在第 N 个设置'
-  SelectedSetting_N:
-    Enable: '选中第 N 个设置'
-    UnEnable: '未选择第 N 个设置'
-  SettingFormat_N:
-    Enable: '<font: minecraft:default>'
-    UnEnable: ''
 
 # # 默认材质
 # A 返回 / 关闭
@@ -49,7 +36,6 @@ CustomPapi:
 # G 预留上一页
 # H 下一页
 # I 预留下一页
-
 Layout:
   - 'A#####B##'
   - 'CDD#EEE##'

@@ -1,12 +1,16 @@
 package com.magicrealms.magicplayer.api.setting;
 
 import com.magicrealms.magiclib.bukkit.MagicRealmsPlugin;
+import com.magicrealms.magiclib.bukkit.manage.ConfigManager;
 import com.magicrealms.magiclib.core.holder.PageMenuHolder;
+import com.magicrealms.magicplayer.api.MagicPlayer;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static com.magicrealms.magicplayer.common.MagicPlayerConstant.YML_SETTING_MENU;
 
 /**
  * @author Ryan-0916
@@ -39,49 +43,42 @@ public abstract class AbstractSubSettingMenu extends PageMenuHolder {
     @SuppressWarnings("DuplicatedCode")
     protected Map<String, String> createPlaceholders() {
         Map<String, String> map = new HashMap<>();
-        /* 设置的 Title */
-        final String SETTING_TITLE = "setting_title_%s";
-        /* 是否拥有设置 */
-        final String HAS_SETTING = "has_setting_%s";
-        /* 是否选中设置 */
-        final String SELECT_SETTING = "selected_setting_%s";
-        /* 设置 Format */
-        final String SETTING_Format = "setting_format_%s";
-        /* 拥有设置的 YML 自定义 Papi Path */
-        final String CUSTOM_PAPI_HAS_SETTING_PATH = "CustomPapi" +
-                ".HasSetting_%s.%s";
-        /* 选中设置的 YML 自定义 Papi Path */
-        final String CUSTOM_PAPI_SELECT_SETTING_PATH = "CustomPapi" +
-                ".SelectedSetting_%s.%s";
-        /* 设置的 Format YML 自定义 Papi Path */
-        final String CUSTOM_PAPI_SETTING_FORMAT_PATH = "CustomPapi" +
-                ".SettingFormat_%s.%s";
+        /* 变量部分处理 */
+        final String TITLE = "setting_title_%s",  // 邮件主题
+                HAS = "has_setting_%s", // 存在邮件
+                SELECTED = "selected_setting_%s",
+                TITLE_FORMAT = "title_format_%s"; // 邮件主题格式化
+        /* 自定义 Papi Path */
+        final String CUSTOM_PAPI_HAS = "CustomPapi.HasMail_%s.%s", // 存在邮件,
+                CUSTOM_PAPI_SELECTED = "CustomPapi.Selected_%s.%s",
+                CUSTOM_PAPI_TITLE_FORMAT = "CustomPapi.TitleFormat_%s.%s"; // 邮件主题格式化
         int pageOffset = (SETTING_PAGE - 1) * SETTING_PAGE_COUNT;
         for (int i = 0; i < SETTING_PAGE_COUNT; i++) {
-            /* 设置的下标 */
-            int index = i + pageOffset;
+            int index = i + pageOffset // 设置的下标
+                    , settingSort = index + 1; // 设置的顺序;
+            /* 文件管理器 */
+            ConfigManager configManager = MagicPlayer.getInstance().getConfigManager();
             /* 文件地址 */
-            String configPath = getConfigPath();
-            /* setting_title 部分变量 */
-            boolean hasSetting =
-                    index < SETTINGS.size();
-            /* 变量部分 */
-            String papiTitle = String.format(SETTING_TITLE, (i + 1));
-            String papiHas = String.format(HAS_SETTING, (i + 1));
-            String papiSelected = String.format(SELECT_SETTING, (i + 1));
-            String papiFormat = String.format(SETTING_Format, (i + 1));
-            if (!hasSetting) {
-                map.put(papiTitle, StringUtils.EMPTY);
-                map.put(papiHas, getPlugin().getConfigManager().getYmlValue(configPath, String.format(CUSTOM_PAPI_HAS_SETTING_PATH, (i + 1), "UnEnable")));
-                map.put(papiSelected, StringUtils.EMPTY);
-                map.put(papiFormat, getPlugin().getConfigManager().getYmlValue(configPath, String.format(CUSTOM_PAPI_SETTING_FORMAT_PATH, (i + 1), "UnEnable")));
-                continue;
-            }
-            map.put(papiTitle, SETTINGS.get(index).getTitle());
-            map.put(papiHas, getPlugin().getConfigManager().getYmlValue(configPath, String.format(CUSTOM_PAPI_HAS_SETTING_PATH, (i + 1), "Enable")));
-            map.put(papiSelected, getPlugin().getConfigManager().getYmlValue(configPath,
-                    String.format(CUSTOM_PAPI_SELECT_SETTING_PATH, (i + 1), index == SELECT_SETTING_INDEX ? "Enable": "UnEnable")));
-            map.put(papiFormat, getPlugin().getConfigManager().getYmlValue(configPath, String.format(CUSTOM_PAPI_SETTING_FORMAT_PATH, (i + 1), "Enable")));
+            String configPath = YML_SETTING_MENU;
+            /* 是否存在此下标的邮件 */
+            boolean hasSetting = index < SETTINGS.size();
+            /* 变量部分处理 */
+            String papiTitle = String.format(TITLE, settingSort),
+                    papiHas = String.format(HAS, settingSort),
+                    papiSelected = String.format(SELECTED, settingSort),
+                    papiTitleFormat = String.format(TITLE_FORMAT, settingSort);
+            /* 启用变量 */
+            String enablePath = hasSetting ? "Enable" : "UnEnable";
+            /* 是否存在变量 */
+            map.put(papiHas, configManager.getYmlValue(configPath,
+                    String.format(CUSTOM_PAPI_HAS, settingSort, enablePath)));
+            /* Title格式化变量 */
+            map.put(papiTitleFormat, configManager.getYmlValue(configPath,
+                    String.format(CUSTOM_PAPI_TITLE_FORMAT, settingSort, enablePath)));
+            /* Title部分变量 */
+            map.put(papiTitle, hasSetting ? SETTINGS.get(index).getTitle() : StringUtils.EMPTY);
+            /* 是否选中部分变量 */
+            map.put(papiSelected, configManager.getYmlValue(configPath, String.format(CUSTOM_PAPI_SELECTED, settingSort, index == SELECT_SETTING_INDEX ? "Enable": "UnEnable")));
         }
         return map;
     }
