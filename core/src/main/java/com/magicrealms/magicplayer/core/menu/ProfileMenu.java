@@ -106,11 +106,12 @@ public class ProfileMenu extends BaseMenuHolder {
 
     @Override
     protected LinkedHashMap<String, String> handleTitle(LinkedHashMap<String, String> title) {
+        Map<String, String> map = createPlaceholders();
         return title
                 .entrySet()
                 .stream()
                 .collect(Collectors.toMap(Map.Entry::getKey, (entry)
-                        -> StringUtil.replacePlaceholders(entry.getValue(), createPlaceholders()), (oldVal, newVal) -> oldVal, LinkedHashMap::new));
+                        -> StringUtil.replacePlaceholders(entry.getValue(), map), (oldVal, newVal) -> oldVal, LinkedHashMap::new));
     }
 
     private Map<String, String> createPlaceholders() {

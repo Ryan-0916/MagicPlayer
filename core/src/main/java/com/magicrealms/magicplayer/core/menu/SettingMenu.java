@@ -70,7 +70,7 @@ public class SettingMenu extends PageMenuHolder {
                     if (SETTINGS.size() > (c == 'J' ? ++appearIndex : appearIndex)) {
                         setSetting(i, c, SETTINGS.get(appearIndex));
                     } else {
-                        super.setItemSlot(i);
+                        super.setItemSlot(i, ItemUtil.AIR);
                     }
                 }
                 case 'B', 'C' -> setHead(i, c);
@@ -106,27 +106,28 @@ public class SettingMenu extends PageMenuHolder {
 
     @Override
     protected LinkedHashMap<String, String> processHandTitle(LinkedHashMap<String, String> title) {
+        Map<String, String> map = createPlaceholders();
         return title
                 .entrySet()
                 .stream()
                 .collect(Collectors.toMap(Map.Entry::getKey, (entry)
-                        -> StringUtil.replacePlaceholders(entry.getValue(), createPlaceholders()), (oldVal, newVal) -> oldVal, LinkedHashMap::new));
+                        -> StringUtil.replacePlaceholders(entry.getValue(), map), (oldVal, newVal) -> oldVal, LinkedHashMap::new));
     }
 
     @SuppressWarnings("DuplicatedCode")
     private Map<String, String> createPlaceholders() {
         Map<String, String> map = new HashMap<>();
         /* 变量部分处理 */
-        final String TITLE = "setting_title_%s",  // 邮件主题
-                HAS = "has_setting_%s", // 存在邮件
-                TITLE_FORMAT = "title_format_%s"; // 邮件主题格式化
+        final String TITLE = "setting_title_%s",  // 设置标题
+                HAS = "has_setting_%s", // 存在设置
+                TITLE_FORMAT = "title_format_%s"; // 设置标题格式化
         /* 自定义 Papi Path */
-        final String CUSTOM_PAPI_HAS = "CustomPapi.HasMail_%s.%s", // 存在邮件,
-                CUSTOM_PAPI_TITLE_FORMAT = "CustomPapi.TitleFormat_%s.%s"; // 邮件主题格式化
+        final String CUSTOM_PAPI_HAS = "CustomPapi.HasSetting_%s.%s", // 存在设置,
+                CUSTOM_PAPI_TITLE_FORMAT = "CustomPapi.TitleFormat_%s.%s"; // 设置标题格式化
         int pageOffset = (super.getPage() - 1) * PAGE_COUNT;
         for (int i = 0; i < PAGE_COUNT; i++) {
             int index = i + pageOffset // 设置的下标
-                    , settingSort = index + 1; // 设置的顺序;
+                    , settingSort = i + 1; // 设置的顺序;
             /* 文件管理器 */
             ConfigManager configManager = super.getPlugin().getConfigManager();
             /* 文件地址 */

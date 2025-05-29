@@ -20,7 +20,7 @@ import java.util.List;
 @SuppressWarnings("unused")
 public class ProfileTabController {
 
-    @TabComplete(text = "^\\s?$", permissionType = PermissionType.PLAYER,
+    @TabComplete(text = "^\\s?$", permissionType = PermissionType.PERMISSION,
             permission = "magic.command.magicplayer.all||magic.command.magicplayer.profile.see",
             label = "^profile$")
     public List<String> first(CommandSender sender, String[] args) {
@@ -29,7 +29,7 @@ public class ProfileTabController {
                 .getRedisStore());
     }
 
-    @TabComplete(text = "^\\S+$", permissionType = PermissionType.CONSOLE_OR_PERMISSION,
+    @TabComplete(text = "^\\S+$", permissionType = PermissionType.PERMISSION,
             permission = "magic.command.magicplayer.all||magic.command.magicplayer.profile.see", label = "^profile$")
     public List<String> firstTab(CommandSender sender, String[] args) {
         return PlayerSessionStorage.getOnlinePlayerNames(BukkitMagicPlayer

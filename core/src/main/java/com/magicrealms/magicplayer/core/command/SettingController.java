@@ -14,7 +14,7 @@ import org.bukkit.entity.Player;
 @CommandListener
 @SuppressWarnings("unused")
 public class SettingController {
-    @Command(text = "^\\s?$", permissionType = PermissionType.PLAYER,
+    @Command(text = "^\\s?$", permissionType = PermissionType.PERMISSION,
             permission = "magic.command.magicplayer.all||magic.command.magicplayer.setting", label = "^setting$")
     public void online(Player sender, String[] args) {
         new SettingMenu(sender, null);

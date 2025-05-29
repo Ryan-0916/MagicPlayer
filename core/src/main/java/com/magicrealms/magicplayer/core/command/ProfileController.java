@@ -19,7 +19,7 @@ import static com.magicrealms.magicplayer.common.MagicPlayerConstant.YML_LANGUAG
 @CommandListener
 @SuppressWarnings("unused")
 public class ProfileController {
-    @Command(text = "^\\s?$", permissionType = PermissionType.PLAYER,
+    @Command(text = "^\\s?$", permissionType = PermissionType.PERMISSION,
             permission = "magic.command.magicplayer.all||magic.command.magicplayer.profile", label = "^profile$")
     public void profile(Player sender, String[] args) {
         new ProfileMenu(sender, BukkitMagicPlayer.getInstance()
@@ -27,7 +27,7 @@ public class ProfileController {
                 .queryByPlayer(sender));
     }
 
-    @Command(text = "^\\S+$", permissionType = PermissionType.PLAYER,
+    @Command(text = "^\\S+$", permissionType = PermissionType.PERMISSION,
             permission = "magic.command.magicplayer.all||magic.command.magicplayer.profile.see", label = "^profile$")
     public void profileSee(Player sender, String[] args) {
         PlayerData profileData = BukkitMagicPlayer.getInstance()

@@ -26,7 +26,7 @@ import static com.magicrealms.magicplayer.common.MagicPlayerConstant.DAILY_PLAYE
 @SuppressWarnings("unused")
 public class OnlineController {
 
-    @Command(text = "^\\s?$", permissionType = PermissionType.PLAYER,
+    @Command(text = "^\\s?$", permissionType = PermissionType.PERMISSION,
             permission = "magic.command.magicplayer.all||magic.command.magicplayer.online", label = "^online$")
     public void online(Player sender, String[] args) {
         Optional<List<PlayerData>> data = BukkitMagicPlayer.getInstance().getRedisStore()

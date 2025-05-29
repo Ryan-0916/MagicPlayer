@@ -44,18 +44,18 @@ public abstract class AbstractSubSettingMenu extends PageMenuHolder {
     protected Map<String, String> createPlaceholders() {
         Map<String, String> map = new HashMap<>();
         /* 变量部分处理 */
-        final String TITLE = "setting_title_%s",  // 邮件主题
-                HAS = "has_setting_%s", // 存在邮件
-                SELECTED = "selected_setting_%s",
-                TITLE_FORMAT = "title_format_%s"; // 邮件主题格式化
+        final String TITLE = "setting_title_%s",  // 设置标题
+                HAS = "has_setting_%s", // 存在设置
+                SELECTED = "selected_setting_%s", // 选中设置
+                TITLE_FORMAT = "title_format_%s"; // 设置标题格式化
         /* 自定义 Papi Path */
-        final String CUSTOM_PAPI_HAS = "CustomPapi.HasMail_%s.%s", // 存在邮件,
-                CUSTOM_PAPI_SELECTED = "CustomPapi.Selected_%s.%s",
-                CUSTOM_PAPI_TITLE_FORMAT = "CustomPapi.TitleFormat_%s.%s"; // 邮件主题格式化
+        final String CUSTOM_PAPI_HAS = "CustomPapi.HasSetting_%s.%s", // 存在设置,
+                CUSTOM_PAPI_SELECTED = "CustomPapi.SelectedSetting_%s.%s", // 选中设置
+                CUSTOM_PAPI_TITLE_FORMAT = "CustomPapi.TitleFormat_%s.%s"; // 设置标题格式化
         int pageOffset = (SETTING_PAGE - 1) * SETTING_PAGE_COUNT;
         for (int i = 0; i < SETTING_PAGE_COUNT; i++) {
             int index = i + pageOffset // 设置的下标
-                    , settingSort = index + 1; // 设置的顺序;
+                    , settingSort = i + 1; // 设置的顺序;
             /* 文件管理器 */
             ConfigManager configManager = MagicPlayer.getInstance().getConfigManager();
             /* 文件地址 */

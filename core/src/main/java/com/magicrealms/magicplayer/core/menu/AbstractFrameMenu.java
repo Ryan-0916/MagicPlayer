@@ -89,7 +89,7 @@ public abstract class AbstractFrameMenu extends AbstractSubSettingMenu {
                     if (FRAMES.size() > ++appearIndex) {
                         setFrame(i, FRAMES.get(appearIndex));
                     } else {
-                        super.setItemSlot(i);
+                        super.setItemSlot(i, ItemUtil.AIR);
                     }
                 }
                 case 'C', 'D' -> setHead(i, layout.charAt(i));
@@ -121,13 +121,13 @@ public abstract class AbstractFrameMenu extends AbstractSubSettingMenu {
     }
 
     @Override
-    protected LinkedHashMap<String, String>
-    processHandTitle(LinkedHashMap<String, String> title) {
+    protected LinkedHashMap<String, String> processHandTitle(LinkedHashMap<String, String> title) {
+        Map<String, String> map = createPlaceholders();
         return title
                 .entrySet()
                 .stream()
                 .collect(Collectors.toMap(Map.Entry::getKey, (entry)
-                        -> StringUtil.replacePlaceholders(entry.getValue(), createPlaceholders()), (oldVal, newVal) -> oldVal, LinkedHashMap::new));
+                        -> StringUtil.replacePlaceholders(entry.getValue(), map), (oldVal, newVal) -> oldVal, LinkedHashMap::new));
     }
 
     protected Map<String, String> createPlaceholders() {
