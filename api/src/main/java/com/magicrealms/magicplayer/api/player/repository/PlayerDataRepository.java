@@ -30,21 +30,21 @@ public class PlayerDataRepository extends BaseRepository<PlayerData> {
 
     public PlayerData queryByPlayer(Player player) {
         String id = StringUtils.upperCase(player.getName());
-        Optional<PlayerData> cachedData = super.getRedisStore().
-                hGetObject(super.getCacheHkey(), id, PlayerData.class);
+        Optional<PlayerData> cachedData = getRedisStore().
+                hGetObject(getCacheHkey(), id, PlayerData.class);
         if (cachedData.isPresent()) {
             return cachedData.get();
         }
-        try (MongoCursor<Document> cursor = super.getMongoDBStore()
-                .find(super.getTableName(), super.getIdFilter(id))) {
+        try (MongoCursor<Document> cursor = getMongoDBStore()
+                .find(getTableName(), getIdFilter(id))) {
             PlayerData data;
             if (cursor.hasNext()) {
                 data = MongoDBUtil.toObject(cursor.next(), PlayerData.class);
             } else {
                 data = new PlayerData(player);
-                super.insert(data);
+                insert(data);
             }
-            super.cacheEntity(id, data);
+            cacheEntity(id, data);
             return data;
         }
     }

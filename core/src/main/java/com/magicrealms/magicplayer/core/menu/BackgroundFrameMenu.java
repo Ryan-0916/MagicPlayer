@@ -32,15 +32,17 @@ public class BackgroundFrameMenu extends AbstractFrameMenu {
         asyncOpenMenu();
     }
 
+    @Override
     public void closeEvent(InventoryCloseEvent e) {
+        super.closeEvent(e);
         if (previewFrame != null
-                && previewFrame.isUnlocked(super.getPlayer())
+                && previewFrame.isUnlocked(getPlayer())
                 && !Integer.valueOf(previewFrame.getId()).equals(HOLDER_DATA
                 .getBackgroundFrameId())
         ) {
             BukkitMagicPlayer.getInstance().getPlayerDataRepository().
-                    updateByPlayer(super.getPlayer(), data -> data.setBackgroundFrameId(previewFrame.getId()));
-            super.backMenu();
+                    updateByPlayer(getPlayer(), data -> data.setBackgroundFrameId(previewFrame.getId()));
+            backMenu();
         }
     }
 
@@ -48,6 +50,6 @@ public class BackgroundFrameMenu extends AbstractFrameMenu {
     protected void handlePreviewPrompt(FrameTemplate preview) {
         previewPrompt = getPlugin().getConfigManager()
                 .getYmlValue(YML_LANGUAGE, this.previewFrame
-                        .isUnlocked(super.getPlayer()) ? "Menu.BgMenu.PreviewUnlock": "Menu.BgMenu.PreviewLock");
+                        .isUnlocked(getPlayer()) ? "Menu.BgMenu.PreviewUnlock": "Menu.BgMenu.PreviewLock");
     }
 }

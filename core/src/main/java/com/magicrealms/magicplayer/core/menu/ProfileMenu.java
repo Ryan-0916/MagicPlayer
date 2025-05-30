@@ -54,15 +54,15 @@ public class ProfileMenu extends BaseMenuHolder {
         for (int i = 0; i < size; i++){
             char c = layout.charAt(i);
             switch (c) {
-                case 'A' -> super.setItemSlot(i, PROFILE_DATA.getArmor().getHelmet());
-                case 'B' -> super.setItemSlot(i, PROFILE_DATA.getArmor().getChestplate());
-                case 'C' -> super.setItemSlot(i, PROFILE_DATA.getArmor().getLeggings());
-                case 'D' -> super.setItemSlot(i, PROFILE_DATA.getArmor().getBoots());
-                case 'E' -> super.setItemSlot(i, PROFILE_DATA.getCosmetic().getHat());
-                case 'F' -> super.setItemSlot(i, PROFILE_DATA.getCosmetic().getBag());
-                case 'G' -> super.setItemSlot(i, PROFILE_DATA.getCosmetic().getWalkingStick());
-                case 'H' -> super.setItemSlot(i, PROFILE_DATA.getCosmetic().getBalloon());
-                case 'I' -> super.setItemSlot(i, ItemUtil
+                case 'A' -> setItemSlot(i, PROFILE_DATA.getArmor().getHelmet());
+                case 'B' -> setItemSlot(i, PROFILE_DATA.getArmor().getChestplate());
+                case 'C' -> setItemSlot(i, PROFILE_DATA.getArmor().getLeggings());
+                case 'D' -> setItemSlot(i, PROFILE_DATA.getArmor().getBoots());
+                case 'E' -> setItemSlot(i, PROFILE_DATA.getCosmetic().getHat());
+                case 'F' -> setItemSlot(i, PROFILE_DATA.getCosmetic().getBag());
+                case 'G' -> setItemSlot(i, PROFILE_DATA.getCosmetic().getWalkingStick());
+                case 'H' -> setItemSlot(i, PROFILE_DATA.getCosmetic().getBalloon());
+                case 'I' -> setItemSlot(i, ItemUtil
                         .getItemStackByConfig(
                                 BukkitMagicPlayer.getInstance().getConfigManager(), YML_PROFILE_MENU,
                                 PROFILE_SESSION == null
@@ -71,7 +71,7 @@ public class ProfileMenu extends BaseMenuHolder {
                                         ? "Icons.I.AfkDisplay"
                                         : "Icons.I.OnlineDisplay"));
                 case 'Q', 'R' -> setHead(i, c);
-                default -> super.setItemSlot(i);
+                default -> setItemSlot(i);
             }
         }
     }
@@ -82,11 +82,11 @@ public class ProfileMenu extends BaseMenuHolder {
             String path = String.format("Icons.%s.Display", key);
             ItemStack itemStack = key.equals('Q') ?
                     ItemUtil.setItemStackByConfig(PROFILE_DATA.getHeadStack().clone(),
-                            super.getPlugin().getConfigManager(),
-                            super.getConfigPath(), path
+                            getPlugin().getConfigManager(),
+                            getConfigPath(), path
                             , player) :
-                    ItemUtil.getItemStackByConfig(super.getPlugin().getConfigManager(),
-                    super.getConfigPath(), path
+                    ItemUtil.getItemStackByConfig(getPlugin().getConfigManager(),
+                    getConfigPath(), path
                     , player);
             setItemSlot(slot, itemStack);
         });
@@ -141,12 +141,12 @@ public class ProfileMenu extends BaseMenuHolder {
 
     @Override
     public void topInventoryClickEvent(InventoryClickEvent event, int slot) {
-        if (!super.tryCooldown(slot, super.getPlugin().getConfigManager()
+        if (!tryCooldown(slot, getPlugin().getConfigManager()
                 .getYmlValue(YML_LANGUAGE,
                         "PlayerMessage.Error.ButtonCooldown"))) {
             return;
         }
-        char c = super.getLayout().charAt(slot);
+        char c = getLayout().charAt(slot);
         asyncPlaySound("Icons." + c + ".Display.Sound");
         switch (c) {
             case 'S'-> new SettingMenu(getPlayer(), this::asyncOpenMenu);

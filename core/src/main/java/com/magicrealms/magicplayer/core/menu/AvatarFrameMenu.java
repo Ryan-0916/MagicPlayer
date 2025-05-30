@@ -32,21 +32,23 @@ public class AvatarFrameMenu extends AbstractFrameMenu {
         asyncOpenMenu();
     }
 
+    @Override
     public void closeEvent(InventoryCloseEvent e) {
+        super.closeEvent(e);
         if (previewFrame != null
-                && previewFrame.isUnlocked(super.getPlayer())
+                && previewFrame.isUnlocked(getPlayer())
                 && !Integer.valueOf(previewFrame.getId()).equals(HOLDER_DATA
                 .getAvatarFrameId())
         ) {
             BukkitMagicPlayer.getInstance().getPlayerDataRepository().
-                    updateByPlayer(super.getPlayer(), data -> data.setAvatarFrameId(previewFrame.getId()));
-            super.backMenu();
+                    updateByPlayer(getPlayer(), data -> data.setAvatarFrameId(previewFrame.getId()));
+            backMenu();
         }
     }
 
     @Override
     protected void handlePreviewPrompt(FrameTemplate preview) {
         previewPrompt = getPlugin().getConfigManager()
-                .getYmlValue(YML_LANGUAGE, this.previewFrame.isUnlocked(super.getPlayer()) ? "Menu.FrameMenu.PreviewUnlock": "Menu.FrameMenu.PreviewLock");
+                .getYmlValue(YML_LANGUAGE, this.previewFrame.isUnlocked(getPlayer()) ? "Menu.FrameMenu.PreviewUnlock": "Menu.FrameMenu.PreviewLock");
     }
 }

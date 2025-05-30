@@ -46,12 +46,12 @@ public class SettingMenu extends PageMenuHolder {
                 .getSettingRegistry().getSettings();
         /* 获取菜单布局中每页显示的设置数量 */
         this.PAGE_COUNT = StringUtils
-                .countMatches(super.getLayout(), "J");
+                .countMatches(getLayout(), "J");
         /* 玩家的个人信息 */
         this.HOLDER_DATA = BukkitMagicPlayer.getInstance()
                 .getPlayerDataRepository()
                 .queryByPlayer(player);
-        super.setMaxPage(PAGE_COUNT <= 0 ? 1 :
+        setMaxPage(PAGE_COUNT <= 0 ? 1 :
                 this.SETTINGS.size() % PAGE_COUNT == 0 ?
                         this.SETTINGS.size() / PAGE_COUNT : this.SETTINGS.size() / PAGE_COUNT + 1);
         asyncOpenMenu();
@@ -61,22 +61,22 @@ public class SettingMenu extends PageMenuHolder {
     protected void handleMenuUnCache(String layout) {
         int size =  layout.length();
         /* 当前显示的下标 */
-        int appearIndex = ((super.getPage() - 1) * PAGE_COUNT) - 1;
+        int appearIndex = ((getPage() - 1) * PAGE_COUNT) - 1;
         for (int i = 0; i < size; i++){
             char c = layout.charAt(i);
             switch (c) {
-                case 'A' -> super.setCheckBoxSlot(i, super.getBackMenuRunnable() != null);
+                case 'A' -> setCheckBoxSlot(i, getBackMenuRunnable() != null);
                 case 'J', 'K' -> {
                     if (SETTINGS.size() > (c == 'J' ? ++appearIndex : appearIndex)) {
                         setSetting(i, c, SETTINGS.get(appearIndex));
                     } else {
-                        super.setItemSlot(i, ItemUtil.AIR);
+                        setItemSlot(i, ItemUtil.AIR);
                     }
                 }
                 case 'B', 'C' -> setHead(i, c);
-                case 'H' -> super.setButtonSlot(i, !(super.getPage() > 1));
-                case 'I' -> super.setButtonSlot(i, !(super.getPage() < super.getMaxPage()));
-                default -> super.setItemSlot(i);
+                case 'H' -> setButtonSlot(i, !(getPage() > 1));
+                case 'I' -> setButtonSlot(i, !(getPage() < getMaxPage()));
+                default -> setItemSlot(i);
             }
         }
     }
@@ -86,18 +86,18 @@ public class SettingMenu extends PageMenuHolder {
             String path = String.format(ICON_DISPLAY, key);
             ItemStack itemStack = key == 'B' ?
                     ItemUtil.setItemStackByConfig(HOLDER_DATA.getHeadStack().clone(),
-                            super.getPlugin().getConfigManager(),
-                            super.getConfigPath(), path
+                            getPlugin().getConfigManager(),
+                            getConfigPath(), path
                             , getPlayer()) :
-                    ItemUtil.getItemStackByConfig(super.getPlugin().getConfigManager(),
-                            super.getConfigPath(), path
+                    ItemUtil.getItemStackByConfig(getPlugin().getConfigManager(),
+                            getConfigPath(), path
                             , getPlayer());
             setItemSlot(slot, itemStack);
         });
     }
 
     private void setSetting(int i, char key, Setting setting) {
-        super.setItemSlot(i, ItemUtil.getItemStackByConfig(getPlugin().getConfigManager()
+        setItemSlot(i, ItemUtil.getItemStackByConfig(getPlugin().getConfigManager()
             , getConfigPath(), String.format(ICON_DISPLAY, key), Map.of(
                         "setting_name", setting.getName(),
                         "setting_desc", setting.getDescription())
@@ -124,12 +124,12 @@ public class SettingMenu extends PageMenuHolder {
         /* 自定义 Papi Path */
         final String CUSTOM_PAPI_HAS = "CustomPapi.HasSetting_%s.%s", // 存在设置,
                 CUSTOM_PAPI_TITLE_FORMAT = "CustomPapi.TitleFormat_%s.%s"; // 设置标题格式化
-        int pageOffset = (super.getPage() - 1) * PAGE_COUNT;
+        int pageOffset = (getPage() - 1) * PAGE_COUNT;
         for (int i = 0; i < PAGE_COUNT; i++) {
             int index = i + pageOffset // 设置的下标
                     , settingSort = i + 1; // 设置的顺序;
             /* 文件管理器 */
-            ConfigManager configManager = super.getPlugin().getConfigManager();
+            ConfigManager configManager = getPlugin().getConfigManager();
             /* 文件地址 */
             String configPath = getConfigPath();
             /* 是否存在此下标的邮件 */
@@ -154,26 +154,26 @@ public class SettingMenu extends PageMenuHolder {
 
     @Override
     public void topInventoryClickEvent(InventoryClickEvent event, int slot) {
-        if (!super.tryCooldown(slot, super.getPlugin().getConfigManager()
+        if (!tryCooldown(slot, getPlugin().getConfigManager()
                 .getYmlValue(YML_LANGUAGE,
                         "PlayerMessage.Error.ButtonCooldown"))) {
             return;
         }
-        char c = super.getLayout().charAt(slot);
+        char c = getLayout().charAt(slot);
         asyncPlaySound("Icons." + c + ".Display.Sound");
         switch (c) {
-            case 'A'-> super.backMenu();
-            case 'H' -> super.changePage(- 1, b -> {
+            case 'A'-> backMenu();
+            case 'H' -> changePage(- 1, b -> {
                 asyncPlaySound(b ? "Icons." + c + ".ActiveDisplay.Sound" : "Icons." + c + ".DisabledDisplay.Sound");
                 if (!b) return;
-                super.handleMenu(super.getLayout());
-                super.asyncUpdateTitle();
+                handleMenu(getLayout());
+                asyncUpdateTitle();
             });
-            case 'I' -> super.changePage(1, b -> {
+            case 'I' -> changePage(1, b -> {
                 asyncPlaySound(b ? "Icons." + c + ".ActiveDisplay.Sound" : "Icons." + c + ".DisabledDisplay.Sound");
                 if (!b) return;
-                super.handleMenu(super.getLayout());
-                super.asyncUpdateTitle();
+                handleMenu(getLayout());
+                asyncUpdateTitle();
             });
             case 'J', 'K' -> clickSetting(slot, c);
         }
@@ -181,16 +181,16 @@ public class SettingMenu extends PageMenuHolder {
 
     private void clickSetting(int slot, Character key) {
         int index = StringUtils
-                .countMatches(super.getLayout().substring(0, slot), "J");
+                .countMatches(getLayout().substring(0, slot), "J");
         if (key.equals('K')) {
             index--;
         }
         if (index < 0) return;
-        int selectedIndex = (super.getPage() - 1) * PAGE_COUNT + index;
+        int selectedIndex = (getPage() - 1) * PAGE_COUNT + index;
         SETTINGS.get(selectedIndex).getClickAction().accept(
-                SettingParam.of(super.getPlayer(),
+                SettingParam.of(getPlayer(),
                         SETTINGS,
-                super.getPage(),
+                getPage(),
                 PAGE_COUNT,
                 selectedIndex, this::asyncOpenMenu));
     }

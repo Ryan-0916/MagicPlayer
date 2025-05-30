@@ -54,13 +54,16 @@ public abstract class AbstractFrameMenu extends AbstractSubSettingMenu {
         this.FRAMES = frames;
         sortFrames();
         this.previewPrompt = StringUtils.EMPTY;
-        /* 获取菜单布局中每页显示的设置数量 */
-        this.PAGE_COUNT = StringUtils
-                .countMatches(super.getLayout(), "E");
         /* 玩家的个人信息 */
         this.HOLDER_DATA = BukkitMagicPlayer.getInstance()
                 .getPlayerDataRepository()
                 .queryByPlayer(param.player());
+        /* 获取菜单布局中每页显示的设置数量 */
+        this.PAGE_COUNT = StringUtils
+                .countMatches(getLayout(), "E");
+        setMaxPage(PAGE_COUNT <= 0 || FRAMES.isEmpty() ? 1 :
+                FRAMES.size() % PAGE_COUNT == 0 ?
+                        FRAMES.size() / PAGE_COUNT : FRAMES.size() / PAGE_COUNT + 1);
     }
 
     public void sortFrames() {
@@ -80,28 +83,28 @@ public abstract class AbstractFrameMenu extends AbstractSubSettingMenu {
     protected void handleMenuUnCache(String layout) {
         int size =  layout.length();
         /* 当前显示的下标 */
-        int appearIndex = ((super.getPage() - 1) * PAGE_COUNT) - 1;
+        int appearIndex = ((getPage() - 1) * PAGE_COUNT) - 1;
         for (int i = 0; i < size; i++){
             switch (layout.charAt(i)) {
-                case 'A' -> super.setCheckBoxSlot(i, super.getBackMenuRunnable() != null);
-                case 'B' -> super.setItemSlot(i, sort.getItemSlot(super.getPlugin().getConfigManager(), super.getConfigPath(), 'B'));
+                case 'A' -> setCheckBoxSlot(i, getBackMenuRunnable() != null);
+                case 'B' -> setItemSlot(i, sort.getItemSlot(getPlugin().getConfigManager(), getConfigPath(), 'B'));
                 case 'E' -> {
                     if (FRAMES.size() > ++appearIndex) {
                         setFrame(i, FRAMES.get(appearIndex));
                     } else {
-                        super.setItemSlot(i, ItemUtil.AIR);
+                        setItemSlot(i, ItemUtil.AIR);
                     }
                 }
                 case 'C', 'D' -> setHead(i, layout.charAt(i));
-                case 'F', 'G' -> super.setButtonSlot(i, !(super.getPage() > 1));
-                case 'H', 'I' -> super.setButtonSlot(i, !(super.getPage() < super.getMaxPage()));
-                default -> super.setItemSlot(i);
+                case 'F', 'G' -> setButtonSlot(i, !(getPage() > 1));
+                case 'H', 'I' -> setButtonSlot(i, !(getPage() < getMaxPage()));
+                default -> setItemSlot(i);
             }
         }
     }
 
     private void setFrame(int i, FrameTemplate frame) {
-        super.setItemSlot(i, frame.isUnlocked(super.getPlayer()) ?
+        setItemSlot(i, frame.isUnlocked(getPlayer()) ?
                 frame.getUnlockItem() : frame.getLockItem());
     }
 
@@ -110,11 +113,11 @@ public abstract class AbstractFrameMenu extends AbstractSubSettingMenu {
             String path = String.format(ICON_DISPLAY, key);
             ItemStack itemStack = key.equals('C') ?
                     ItemUtil.setItemStackByConfig(HOLDER_DATA.getHeadStack().clone(),
-                            super.getPlugin().getConfigManager(),
-                            super.getConfigPath(), path
+                            getPlugin().getConfigManager(),
+                            getConfigPath(), path
                             , getPlayer()) :
-                    ItemUtil.getItemStackByConfig(super.getPlugin().getConfigManager(),
-                            super.getConfigPath(), path
+                    ItemUtil.getItemStackByConfig(getPlugin().getConfigManager(),
+                            getConfigPath(), path
                             , getPlayer());
             setItemSlot(slot, itemStack);
         });
@@ -140,32 +143,32 @@ public abstract class AbstractFrameMenu extends AbstractSubSettingMenu {
 
     @Override
     public void topInventoryClickEvent(InventoryClickEvent event, int slot) {
-        if (!super.tryCooldown(slot, super.getPlugin().getConfigManager().getYmlValue(YML_LANGUAGE,"PlayerMessage.Error.ButtonCooldown"))) {
+        if (!tryCooldown(slot, getPlugin().getConfigManager().getYmlValue(YML_LANGUAGE,"PlayerMessage.Error.ButtonCooldown"))) {
             return;
         }
-        char c = super.getLayout().charAt(slot);
+        char c = getLayout().charAt(slot);
         asyncPlaySound("Icons." + c + ".Display.Sound");
         switch (c) {
-            case 'A'-> super.backMenu();
+            case 'A'-> backMenu();
             case 'B' -> {
-                super.cleanItemCache();
+                cleanItemCache();
                 sort = sort.next();
                 sortFrames();
-                super.goToFirstPage();
-                super.handleMenu(super.getLayout());
-                super.asyncUpdateTitle();
+                goToFirstPage();
+                handleMenu(getLayout());
+                asyncUpdateTitle();
             }
-            case 'F', 'J' -> super.changePage(- 1, b -> {
+            case 'F', 'J' -> changePage(- 1, b -> {
                 asyncPlaySound(b ? "Icons." + c + ".ActiveDisplay.Sound" : "Icons." + c + ".DisabledDisplay.Sound");
                 if (!b) return;
-                super.handleMenu(super.getLayout());
-                super.asyncUpdateTitle();
+                handleMenu(getLayout());
+                asyncUpdateTitle();
             });
-            case 'H', 'I' -> super.changePage(1, b -> {
+            case 'H', 'I' -> changePage(1, b -> {
                 asyncPlaySound(b ? "Icons." + c + ".ActiveDisplay.Sound" : "Icons." + c + ".DisabledDisplay.Sound");
                 if (!b) return;
-                super.handleMenu(super.getLayout());
-                super.asyncUpdateTitle();
+                handleMenu(getLayout());
+                asyncUpdateTitle();
             });
             case 'E' -> clickFrame(slot);
         }
@@ -173,8 +176,8 @@ public abstract class AbstractFrameMenu extends AbstractSubSettingMenu {
 
     private void clickFrame(int slot) {
         int index = StringUtils
-                .countMatches(super.getLayout().substring(0, slot), "E");
-        this.previewFrame = FRAMES.get((super.getPage() - 1) * PAGE_COUNT + index);
+                .countMatches(getLayout().substring(0, slot), "E");
+        this.previewFrame = FRAMES.get((getPage() - 1) * PAGE_COUNT + index);
         handlePreviewPrompt(previewFrame);
         asyncUpdateTitle();
     }

@@ -3,7 +3,6 @@ package com.magicrealms.magicplayer.core.menu;
 import com.magicrealms.magiclib.bukkit.message.helper.AdventureHelper;
 import com.magicrealms.magiclib.core.utils.ItemUtil;
 import com.magicrealms.magiclib.common.utils.StringUtil;
-import com.magicrealms.magiclib.core.dispatcher.MessageDispatcher;
 import com.magicrealms.magiclib.core.holder.PageMenuHolder;
 import com.magicrealms.magicplayer.core.BukkitMagicPlayer;
 import com.magicrealms.magicplayer.core.menu.click.ClickAction;
@@ -69,17 +68,10 @@ public class PlayerMenu extends PageMenuHolder {
         this.CLICK_LORE = setupClickLore();
         /* 获取菜单布局中每页显示的玩家数量 */
         this.PAGE_COUNT = StringUtils
-                .countMatches(super.getLayout(), "A");
-        /* 如果为空，提醒玩家 */
-        if (this.DATA.isEmpty()) {
-            MessageDispatcher.getInstance().sendMessage(super.getPlugin()
-                    , builder.player, super.getPlugin().getConfigManager().getYmlValue(YML_LANGUAGE,
-                            "PlayerMessage.Error.NoAnyPlayer"));
-            return;
-        }
-        super.setMaxPage(PAGE_COUNT <= 0 ? 1 :
-                this.DATA.size() % PAGE_COUNT == 0 ?
-                        this.DATA.size() / PAGE_COUNT : this.DATA.size() / PAGE_COUNT + 1);
+                .countMatches(getLayout(), "A");
+        setMaxPage(PAGE_COUNT <= 0 || DATA.isEmpty() ? 1 :
+                DATA.size() % PAGE_COUNT == 0 ?
+                        DATA.size() / PAGE_COUNT : DATA.size() / PAGE_COUNT + 1);
         asyncOpenMenu();
     }
 
@@ -92,19 +84,19 @@ public class PlayerMenu extends PageMenuHolder {
     protected void handleMenuUnCache(String layout) {
         int size =  layout.length();
         /* 当前显示的下标 */
-        int appearIndex = ((super.getPage() - 1) * PAGE_COUNT) - 1;
+        int appearIndex = ((getPage() - 1) * PAGE_COUNT) - 1;
         for (int i = 0; i < size; i++){
             switch (layout.charAt(i)) {
                 case 'A' -> {
                     if (DATA.size() > ++appearIndex) {
                         setHead(i, DATA.get(appearIndex));
                     } else {
-                        super.setItemSlot(i, ItemUtil.AIR);
+                        setItemSlot(i, ItemUtil.AIR);
                     }
                 }
-                case 'B', 'C' -> super.setButtonSlot(i, !(super.getPage() > 1));
-                case 'D', 'E' -> super.setButtonSlot(i, !(super.getPage() < super.getMaxPage()));
-                default -> super.setItemSlot(i);
+                case 'B', 'C' -> setButtonSlot(i, !(getPage() > 1));
+                case 'D', 'E' -> setButtonSlot(i, !(getPage() < getMaxPage()));
+                default -> setItemSlot(i);
             }
         }
     }
@@ -113,8 +105,8 @@ public class PlayerMenu extends PageMenuHolder {
         CompletableFuture.runAsync(() -> {
             OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(playerData.getUniqueId());
             ItemStack head = ItemUtil.setItemStackByConfig(playerData.getHeadStack().clone(),
-                    super.getPlugin().getConfigManager(),
-                    super.getConfigPath(),
+                    getPlugin().getConfigManager(),
+                    getConfigPath(),
                     "Icons.A.Display",
                     offlinePlayer);
             ItemMeta meta = head.getItemMeta();
@@ -136,26 +128,26 @@ public class PlayerMenu extends PageMenuHolder {
 
     @Override
     public void topInventoryClickEvent(InventoryClickEvent event, int slot) {
-        if (!super.tryCooldown(slot, super.getPlugin().getConfigManager()
+        if (!tryCooldown(slot, getPlugin().getConfigManager()
                 .getYmlValue(YML_LANGUAGE,
                         "PlayerMessage.Error.ButtonCooldown"))) {
             return;
         }
-        char c = super.getLayout().charAt(slot);
+        char c = getLayout().charAt(slot);
         asyncPlaySound("Icons." + c + ".Display.Sound");
         switch (c) {
             case 'X'-> asyncCloseMenu();
-            case 'B', 'C' -> super.changePage(- 1, b -> {
+            case 'B', 'C' -> changePage(- 1, b -> {
                 asyncPlaySound(b ? "Icons." + c + ".ActiveDisplay.Sound" : "Icons." + c + ".DisabledDisplay.Sound");
                 if (!b) return;
-                super.handleMenu(super.getLayout());
-                super.asyncUpdateTitle();
+                handleMenu(getLayout());
+                asyncUpdateTitle();
             });
-            case 'D', 'E' -> super.changePage(1, b -> {
+            case 'D', 'E' -> changePage(1, b -> {
                 asyncPlaySound(b ? "Icons." + c + ".ActiveDisplay.Sound" : "Icons." + c + ".DisabledDisplay.Sound");
                 if (!b) return;
-                super.handleMenu(super.getLayout());
-                super.asyncUpdateTitle();
+                handleMenu(getLayout());
+                asyncUpdateTitle();
             });
             case 'A' -> clickHead(event, slot);
         }
@@ -171,24 +163,24 @@ public class PlayerMenu extends PageMenuHolder {
                 .filter(entry -> entry.getValue() != null)
                 .forEach(entry ->
                         getPlugin().getConfigManager().getYmlListValue(getConfigPath(), entry.getKey())
-                        .map(lore -> lore.stream()
-                                .map(l -> ItemUtil.UN_ITALIC.append(AdventureHelper.deserializeComponent(
-                                        StringUtil.replacePlaceholder(l, "desc", getDescribe(entry.getValue())))
-                                ))
-                                .collect(Collectors.toList())
-                        )
-                        .ifPresent(components::addAll));
+                                .map(lore -> lore.stream()
+                                        .map(l -> ItemUtil.UN_ITALIC.append(AdventureHelper.deserializeComponent(
+                                                StringUtil.replacePlaceholder(l, "desc", getDescribe(entry.getValue())))
+                                        ))
+                                        .collect(Collectors.toList())
+                                )
+                                .ifPresent(components::addAll));
         return components;
     }
 
     private void clickHead(InventoryClickEvent event, int slot) {
-        int index = StringUtils.countMatches(super.getLayout().substring(0, slot), "A");
-        PlayerData playerData = DATA.get((super.getPage() - 1) * PAGE_COUNT + index);
+        int index = StringUtils.countMatches(getLayout().substring(0, slot), "A");
+        PlayerData playerData = DATA.get((getPage() - 1) * PAGE_COUNT + index);
         ClickAction clickAction = event.isShiftClick() ? event.isLeftClick() ? SHIFT_LEFT_ACTION : SHIFT_RIGHT_ACTION : event.isLeftClick() ? LEFT_ACTION : RIGHT_ACTION;
         Optional.ofNullable(clickAction).ifPresent(
                 action -> {
-                    super.asyncCloseMenu();
-                    action.handler().accept(ClickHandler.of(super.getPlayer(), playerData));
+                    asyncCloseMenu();
+                    action.handler().accept(ClickHandler.of(getPlayer(), playerData));
                 }
         );
     }
