@@ -95,7 +95,7 @@ public class AvatarManager implements IAvatarManager {
             Color color = new Color(avatar.getRGB(x, y));
             String hexColor = String.format("%02x%02x%02x",
                     color.getRed(), color.getGreen(), color.getBlue());
-            avatarBuilder.append("<reset>");
+            avatarBuilder.append("<reset><shadow:#00000000>");
             if (i != 0 && x == 0) {
                 avatarBuilder.append(magicLib.getOffsetManager()
                         .format(template.getOffset(), StringUtils.EMPTY));

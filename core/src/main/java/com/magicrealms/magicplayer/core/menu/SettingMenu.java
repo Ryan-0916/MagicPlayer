@@ -1,6 +1,5 @@
 package com.magicrealms.magicplayer.core.menu;
 
-import com.magicrealms.magiclib.bukkit.manage.ConfigManager;
 import com.magicrealms.magiclib.common.utils.StringUtil;
 import com.magicrealms.magiclib.core.holder.PageMenuHolder;
 import com.magicrealms.magiclib.core.utils.ItemUtil;
@@ -121,31 +120,20 @@ public class SettingMenu extends PageMenuHolder {
         final String TITLE = "setting_title_%s",  // 设置标题
                 HAS = "has_setting_%s", // 存在设置
                 TITLE_FORMAT = "title_format_%s"; // 设置标题格式化
-        /* 自定义 Papi Path */
-        final String CUSTOM_PAPI_HAS = "CustomPapi.HasSetting_%s.%s", // 存在设置,
-                CUSTOM_PAPI_TITLE_FORMAT = "CustomPapi.TitleFormat_%s.%s"; // 设置标题格式化
         int pageOffset = (getPage() - 1) * PAGE_COUNT;
         for (int i = 0; i < PAGE_COUNT; i++) {
             int index = i + pageOffset // 设置的下标
                     , settingSort = i + 1; // 设置的顺序;
-            /* 文件管理器 */
-            ConfigManager configManager = getPlugin().getConfigManager();
-            /* 文件地址 */
-            String configPath = getConfigPath();
             /* 是否存在此下标的邮件 */
             boolean hasSetting = index < SETTINGS.size();
             /* 变量部分处理 */
             String papiTitle = String.format(TITLE, settingSort),
                     papiHas = String.format(HAS, settingSort),
                     papiTitleFormat = String.format(TITLE_FORMAT, settingSort);
-            /* 启用变量 */
-            String enablePath = hasSetting ? "Enable" : "UnEnable";
             /* 是否存在变量 */
-            map.put(papiHas, configManager.getYmlValue(configPath,
-                    String.format(CUSTOM_PAPI_HAS, settingSort, enablePath)));
+            map.put(papiHas, getCustomPapiText("HasSetting_" + settingSort, hasSetting));
             /* Title格式化变量 */
-            map.put(papiTitleFormat, configManager.getYmlValue(configPath,
-                    String.format(CUSTOM_PAPI_TITLE_FORMAT, settingSort, enablePath)));
+            map.put(papiTitleFormat, getCustomPapiText("TitleFormat_" + settingSort, hasSetting));
             /* Title部分变量 */
             map.put(papiTitle, hasSetting ? SETTINGS.get(index).getTitle() : StringUtils.EMPTY);
         }
