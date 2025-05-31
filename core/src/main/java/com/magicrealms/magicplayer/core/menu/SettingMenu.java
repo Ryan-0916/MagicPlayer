@@ -105,7 +105,7 @@ public class SettingMenu extends PageMenuHolder {
 
     @Override
     protected LinkedHashMap<String, String> processHandTitle(LinkedHashMap<String, String> title) {
-        Map<String, String> map = createPlaceholders();
+        Map<String, String> map = createPlaceholders(null);
         return title
                 .entrySet()
                 .stream()
@@ -113,12 +113,12 @@ public class SettingMenu extends PageMenuHolder {
                         -> StringUtil.replacePlaceholders(entry.getValue(), map), (oldVal, newVal) -> oldVal, LinkedHashMap::new));
     }
 
-    @SuppressWarnings("DuplicatedCode")
-    private Map<String, String> createPlaceholders() {
+    private Map<String, String> createPlaceholders(Integer selectedIndex) {
         Map<String, String> map = new HashMap<>();
         /* 变量部分处理 */
         final String TITLE = "setting_title_%s",  // 设置标题
                 HAS = "has_setting_%s", // 存在设置
+                SELECTED = "selected_setting_%s", // 选中设置
                 TITLE_FORMAT = "title_format_%s"; // 设置标题格式化
         int pageOffset = (getPage() - 1) * PAGE_COUNT;
         for (int i = 0; i < PAGE_COUNT; i++) {
@@ -129,9 +129,12 @@ public class SettingMenu extends PageMenuHolder {
             /* 变量部分处理 */
             String papiTitle = String.format(TITLE, settingSort),
                     papiHas = String.format(HAS, settingSort),
+                    papiSelected = String.format(SELECTED, settingSort),
                     papiTitleFormat = String.format(TITLE_FORMAT, settingSort);
             /* 是否存在变量 */
             map.put(papiHas, getCustomPapiText("HasSetting_" + settingSort, hasSetting));
+            /* 是否选中变量 */
+            map.put(papiSelected, getCustomPapiText("SelectedSetting_" + settingSort, selectedIndex != null && selectedIndex == index));
             /* Title格式化变量 */
             map.put(papiTitleFormat, getCustomPapiText("TitleFormat_" + settingSort, hasSetting));
             /* Title部分变量 */
@@ -176,10 +179,6 @@ public class SettingMenu extends PageMenuHolder {
         if (index < 0) return;
         int selectedIndex = (getPage() - 1) * PAGE_COUNT + index;
         SETTINGS.get(selectedIndex).getClickAction().accept(
-                SettingParam.of(getPlayer(),
-                        SETTINGS,
-                getPage(),
-                PAGE_COUNT,
-                selectedIndex, this::asyncOpenMenu));
+                SettingParam.of(getPlayer(), createPlaceholders(selectedIndex), this::asyncOpenMenu));
     }
 }
