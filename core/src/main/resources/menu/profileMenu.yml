@@ -83,59 +83,59 @@ Layout:
 Icons:
   I:
     OnlineDisplay:
-      Mats: GLASS_PANE
-      ModelData: 0
+      Mats: PAPER
+      ModelData: 10000
       Name: '&E&L在线'
       Lore:
         - '&6&L在线'
     OfflineDisplay:
-      Mats: GLASS_PANE
-      ModelData: 0
+      Mats: PAPER
+      ModelData: 10000
       Name: '&E&L离线'
       Lore:
         - '&6&L离线'
     AfkDisplay:
-      Mats: GLASS_PANE
-      ModelData: 0
+      Mats: PAPER
+      ModelData: 10000
       Name: '&E&L挂机'
       Lore:
         - '&6&L挂机'
   J:
     ActiveDisplay:
-      Mats: GLASS_PANE
-      ModelData: 0
+      Mats: PAPER
+      ModelData: 10000
       Name: '&E&L家园'
       Lore:
         - '&6&L家园'
     DisabledDisplay:
-      Mats: GLASS_PANE
-      ModelData: 0
+      Mats: PAPER
+      ModelData: 10000
       Name: '&E&L家园'
       Lore:
         - '&6&L家园'
   K:
     ActiveDisplay:
-      Mats: GLASS_PANE
-      ModelData: 0
+      Mats: PAPER
+      ModelData: 10000
       Name: '&E&L组队'
       Lore:
         - '&6&L组队'
     DisabledDisplay:
-      Mats: GLASS_PANE
-      ModelData: 0
+      Mats: PAPER
+      ModelData: 10000
       Name: '&E&L组队'
       Lore:
         - '&6&L组队'
   L:
     HolderDisplay:
-      Mats: GLASS_PANE
-      ModelData: 0
+      Mats: PAPER
+      ModelData: 10000
       Name: '&E&L好友菜单'
       Lore:
         - '&6&L好友菜单'
     FriendDisplay:
-      Mats: GLASS_PANE
-      ModelData: 0
+      Mats: PAPER
+      ModelData: 10000
       Name: '&E&L删除好友'
       Lore:
         - '&6&L点击移除好友'
@@ -154,27 +154,27 @@ Icons:
           - '&6&L对方拒绝好友申请'
   M:
     ActiveDisplay:
-      Mats: GLASS_PANE
-      ModelData: 0
+      Mats: PAPER
+      ModelData: 10000
       Name: '&E&L单挑'
       Lore:
         - '&6&L单挑'
     DisabledDisplay:
-      Mats: GLASS_PANE
-      ModelData: 0
+      Mats: PAPER
+      ModelData: 10000
       Name: '&E&L组队'
       Lore:
         - '&6&L组队'
   N:
     HolderDisplay:
-      Mats: GLASS_PANE
-      ModelData: 0
+      Mats: PAPER
+      ModelData: 10000
       Name: '&E&L交易菜单'
       Lore:
         - '&6&L交易菜单'
     ActiveDisplay:
-      Mats: GLASS_PANE
-      ModelData: 0
+      Mats: PAPER
+      ModelData: 10000
       Name: '&E&L交易请求'
       Lore:
         - '&6&L点击发送交易请求'
@@ -193,14 +193,14 @@ Icons:
           - '&6&L对方拒绝交易请求'
   O:
     HolderDisplay:
-      Mats: GLASS_PANE
-      ModelData: 0
+      Mats: PAPER
+      ModelData: 10000
       Name: '&E&L邮箱菜单'
       Lore:
         - '&6&L邮箱菜单'
     ActiveDisplay:
-      Mats: GLASS_PANE
-      ModelData: 0
+      Mats: PAPER
+      ModelData: 10000
       Name: '&E&L发送邮件'
       Lore:
         - '&6&L点击发送邮件'
@@ -219,14 +219,14 @@ Icons:
           - '&6&L对方拒绝接收邮件'
   P:
     ActiveDisplay:
-      Mats: GLASS_PANE
-      ModelData: 0
+      Mats: PAPER
+      ModelData: 10000
       Name: '&E&L拍卖'
       Lore:
         - '&6&L拍卖'
     DisabledDisplay:
-      Mats: GLASS_PANE
-      ModelData: 0
+      Mats: PAPER
+      ModelData: 10000
       Name: '&E&L禁止拍卖'
       Lore:
         - '&6&L禁止拍卖'
@@ -238,28 +238,28 @@ Icons:
         - '&6&L头像'
   R:
     Display:
-      Mats: GLASS_PANE
-      ModelData: 0
+      Mats: PAPER
+      ModelData: 10000
       Name: '&E&L头像变量'
       Lore:
         - '&6&L头像变量'
   S:
     Display:
-      Mats: GLASS_PANE
-      ModelData: 0
+      Mats: PAPER
+      ModelData: 10000
       Name: '&E&L设置'
       Lore:
         - '&6&L设置'
   T:
     ActiveDisplay:
-      Mats: GLASS_PANE
-      ModelData: 0
+      Mats: PAPER
+      ModelData: 10000
       Name: '&E&L勋章'
       Lore:
         - '&6&L勋章'
     DisabledDisplay:
-      Mats: GLASS_PANE
-      ModelData: 0
+      Mats: PAPER
+      ModelData: 10000
       Name: '&E&L禁止'
       Lore:
         - '&6&L禁止'

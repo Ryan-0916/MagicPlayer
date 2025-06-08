@@ -59,14 +59,14 @@ Layout:
 Icons:
   A:
     OpenDisplay:
-      Mats: GLASS_PANE
-      ModelData: 0
+      Mats: PAPER
+      ModelData: 10000
       Name: '&E&L返回'
       Lore:
         - '&6&L返回'
     CloseDisplay:
-      Mats: GLASS_PANE
-      ModelData: 0
+      Mats: PAPER
+      ModelData: 10000
       Name: '&E&L关闭'
       Lore:
         - '&6&L关闭'
@@ -78,49 +78,49 @@ Icons:
         - '&6&L头像'
   C:
     Display:
-      Mats: GLASS_PANE
-      ModelData: 0
+      Mats: PAPER
+      ModelData: 10000
       Name: '&E&L头像变量'
       Lore:
         - '&6&L头像变量'
   H:
     ActiveDisplay:
-      Mats: GLASS_PANE
-      ModelData: 0
+      Mats: PAPER
+      ModelData: 10000
       Name: '&E&L上一页'
       Lore:
         - '&6&L上一页'
     DisabledDisplay:
-      Mats: GLASS_PANE
-      ModelData: 0
+      Mats: PAPER
+      ModelData: 10000
       Name: '&E&L上一页'
       Lore:
         - '&6&L上一页'
   I:
     ActiveDisplay:
-      Mats: GLASS_PANE
-      ModelData: 0
+      Mats: PAPER
+      ModelData: 10000
       Name: '&E&L下一页'
       Lore:
         - '&6&L下一页'
     DisabledDisplay:
-      Mats: GLASS_PANE
-      ModelData: 0
+      Mats: PAPER
+      ModelData: 10000
       Name: '&E&L下一页'
       Lore:
         - '&6&L下一页'
   J:
     Display:
-      Mats: GLASS_PANE
-      ModelData: 0
+      Mats: PAPER
+      ModelData: 10000
       Name: '&E&L%setting_name%'
       Lore:
         - '&6&L%setting_desc%'
         - '&6&L点击打开%setting_name%'
   K:
     Display:
-      Mats: GLASS_PANE
-      ModelData: 0
+      Mats: PAPER
+      ModelData: 10000
       Name: '&E&L%setting_name%'
       Lore:
         - '&6&L%setting_desc%'

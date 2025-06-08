@@ -18,15 +18,15 @@ Template:
     Permission: ''
     # 拥有的时候在 Gui 里的样子
     UnlockDisplay:
-      Mats: GLASS_PANE
-      ModelData: 0
+      Mats: PAPER
+      ModelData: 10000
       Name: '&E&L拥有'
       Lore:
         - '&6&L拥有'
     # 未用有的时候在 Gui 里的样子
     LockDisplay:
-      Mats: GLASS_PANE
-      ModelData: 0
+      Mats: PAPER
+      ModelData: 10000
       Name: '&E&L未拥有'
       Lore:
         - '&6&L未拥有'

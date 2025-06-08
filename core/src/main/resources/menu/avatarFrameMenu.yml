@@ -46,21 +46,21 @@ Layout:
 Icons:
   A:
     OpenDisplay:
-      Mats: GLASS_PANE
-      ModelData: 0
+      Mats: PAPER
+      ModelData: 10000
       Name: '&E&L返回'
       Lore:
         - '&6&L返回'
     CloseDisplay:
-      Mats: GLASS_PANE
-      ModelData: 0
+      Mats: PAPER
+      ModelData: 10000
       Name: '&E&L关闭'
       Lore:
         - '&6&L关闭'
   B:
     NewestDisplay:
-      Mats: GLASS_PANE
-      ModelData: 0
+      Mats: PAPER
+      ModelData: 10000
       Name: '&E&L出品时间 - 新'
       Lore:
         - '&6&L出品时间 - 新'
@@ -68,8 +68,8 @@ Icons:
         - '&6&L已解锁'
         - '&6&L未解锁'
     OldestDisplay:
-      Mats: GLASS_PANE
-      ModelData: 0
+      Mats: PAPER
+      ModelData: 10000
       Name: '&E&L出品时间 - 旧'
       Lore:
         - '&6&L出品时间 - 新'
@@ -77,8 +77,8 @@ Icons:
         - '&6&L已解锁'
         - '&6&L未解锁'
     UnlockDisplay:
-      Mats: GLASS_PANE
-      ModelData: 0
+      Mats: PAPER
+      ModelData: 10000
       Name: '&E&L已解锁'
       Lore:
         - '&6&L出品时间 - 新'
@@ -86,8 +86,8 @@ Icons:
         - '&6&L已解锁'
         - '&6&L未解锁'
     LockDisplay:
-      Mats: GLASS_PANE
-      ModelData: 0
+      Mats: PAPER
+      ModelData: 10000
       Name: '&E&L未解锁'
       Lore:
         - '&6&L出品时间 - 新'
@@ -102,60 +102,60 @@ Icons:
         - '&6&L头像'
   D:
     Display:
-      Mats: GLASS_PANE
-      ModelData: 0
+      Mats: PAPER
+      ModelData: 10000
       Name: '&E&L头像变量'
       Lore:
         - '&6&L头像变量'
   F:
     ActiveDisplay:
-      Mats: GLASS_PANE
-      ModelData: 0
+      Mats: PAPER
+      ModelData: 10000
       Name: '&E&L上一页'
       Lore:
         - '&6&L上一页'
     DisabledDisplay:
-      Mats: GLASS_PANE
-      ModelData: 0
+      Mats: PAPER
+      ModelData: 10000
       Name: '&E&L上一页'
       Lore:
         - '&6&L上一页'
   J:
     ActiveDisplay:
-      Mats: GLASS_PANE
-      ModelData: 0
+      Mats: PAPER
+      ModelData: 10000
       Name: '&E&L上一页'
       Lore:
         - '&6&L上一页'
     DisabledDisplay:
-      Mats: GLASS_PANE
-      ModelData: 0
+      Mats: PAPER
+      ModelData: 10000
       Name: '&E&L上一页'
       Lore:
         - '&6&L上一页'
   H:
     ActiveDisplay:
-      Mats: GLASS_PANE
-      ModelData: 0
+      Mats: PAPER
+      ModelData: 10000
       Name: '&E&L下一页'
       Lore:
         - '&6&L下一页'
     DisabledDisplay:
-      Mats: GLASS_PANE
-      ModelData: 0
+      Mats: PAPER
+      ModelData: 10000
       Name: '&E&L下一页'
       Lore:
         - '&6&L下一页'
   I:
     ActiveDisplay:
-      Mats: GLASS_PANE
-      ModelData: 0
+      Mats: PAPER
+      ModelData: 10000
       Name: '&E&L下一页'
       Lore:
         - '&6&L下一页'
     DisabledDisplay:
-      Mats: GLASS_PANE
-      ModelData: 0
+      Mats: PAPER
+      ModelData: 10000
       Name: '&E&L下一页'
       Lore:
         - '&6&L下一页'
