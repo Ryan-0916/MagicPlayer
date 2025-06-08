@@ -95,18 +95,15 @@ public class AvatarManager implements IAvatarManager {
             Color color = new Color(avatar.getRGB(x, y));
             String hexColor = String.format("%02x%02x%02x",
                     color.getRed(), color.getGreen(), color.getBlue());
-            avatarBuilder.append("<reset><shadow:#00000000>");
             if (i != 0 && x == 0) {
                 avatarBuilder.append(magicLib.getOffsetManager()
                         .format(template.getOffset(), StringUtils.EMPTY));
             }
             /* 添加样式和字符 */
-            avatarBuilder.append(String.format("<#%s>", hexColor))
-                    .append(String.format("<font:%s>", template.getFont()))
-                    .append(layout.charAt(i))
-                    .append("</reset>");
+            avatarBuilder.append(String.format("<#%s>", hexColor)).append(layout.charAt(i));
         }
-        return avatarBuilder.toString();
+        String AVATAR_FORMAT = "<reset><font:%s><shadow:#00000000>%s</shadow></font></reset>";
+        return String.format(AVATAR_FORMAT, template.getFont(), avatarBuilder);
     }
 
 }
