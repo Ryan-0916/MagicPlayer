@@ -1,10 +1,11 @@
-package com.magicrealms.magicplayer.api.player.repository;
+package com.magicrealms.magicplayer.core.repository;
 
 import com.magicrealms.magiclib.common.repository.BaseRepository;
 import com.magicrealms.magiclib.common.store.MongoDBStore;
 import com.magicrealms.magiclib.common.store.RedisStore;
 import com.magicrealms.magiclib.common.utils.MongoDBUtil;
 import com.magicrealms.magicplayer.api.player.PlayerData;
+import com.magicrealms.magicplayer.api.repository.IPlayerDataRepository;
 import com.mongodb.client.MongoCursor;
 import org.apache.commons.lang3.StringUtils;
 import org.bson.Document;
@@ -19,7 +20,7 @@ import java.util.function.Consumer;
  * @Desc 玩家数据存储类
  * @date 2025-05-06
  */
-public class PlayerDataRepository extends BaseRepository<PlayerData> {
+public class PlayerDataRepository extends BaseRepository<PlayerData> implements IPlayerDataRepository {
 
     public PlayerDataRepository(MongoDBStore mongoDBStore,
                                 String tableName,
@@ -30,13 +31,13 @@ public class PlayerDataRepository extends BaseRepository<PlayerData> {
 
     public PlayerData queryByPlayer(Player player) {
         String id = StringUtils.upperCase(player.getName());
-        Optional<PlayerData> cachedData = getRedisStore().
-                hGetObject(getCacheHkey(), id, PlayerData.class);
+        Optional<PlayerData> cachedData = redisStore.
+                hGetObject(cacheHkey, id, PlayerData.class);
         if (cachedData.isPresent()) {
             return cachedData.get();
         }
-        try (MongoCursor<Document> cursor = getMongoDBStore()
-                .find(getTableName(), getIdFilter(id))) {
+        try (MongoCursor<Document> cursor = mongoDBStore
+                .find(tableName, getIdFilter(id))) {
             PlayerData data;
             if (cursor.hasNext()) {
                 data = MongoDBUtil.toObject(cursor.next(), PlayerData.class);
@@ -58,7 +59,5 @@ public class PlayerDataRepository extends BaseRepository<PlayerData> {
         updateById(queryByPlayer(player)
                 .getName(), consumer);
     }
-
-
 
 }

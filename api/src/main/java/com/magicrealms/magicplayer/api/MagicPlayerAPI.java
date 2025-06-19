@@ -3,12 +3,16 @@ package com.magicrealms.magicplayer.api;
 import com.magicrealms.magicplayer.api.avatar.IAvatarManager;
 import com.magicrealms.magicplayer.api.exception.UnknownAvatarTemplate;
 import com.magicrealms.magicplayer.api.player.PlayerData;
-import com.magicrealms.magicplayer.api.player.repository.PlayerDataRepository;
+import com.magicrealms.magicplayer.api.repository.IPlayerDataRepository;
 import com.magicrealms.magicplayer.api.setting.ISettingRegistry;
 import com.magicrealms.magicplayer.api.setting.Setting;
 import com.magicrealms.magicplayer.api.skin.ISkinManager;
+import com.magicrealms.magicplayer.common.storage.PlayerSessionStorage;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 /**
  * @author Ryan-0916
@@ -98,10 +102,26 @@ public record MagicPlayerAPI(MagicPlayer plugin) {
 
     /**
      * query player data
-     * {@link PlayerDataRepository#queryByPlayer(Player)}
+     * {@link IPlayerDataRepository#queryByPlayer(Player)}
      */
     public PlayerData queryPlayerData(Player player) {
         return plugin.getPlayerDataRepository().queryByPlayer(player);
+    }
+
+    /**
+     * query player data
+     * {@link IPlayerDataRepository#queryById(Object)}
+     */
+    public @Nullable PlayerData queryPlayerData(String playerName) {
+        return plugin.getPlayerDataRepository().queryById(playerName);
+    }
+
+    /**
+     * query all OnlinePlayer Names
+     * {@link IPlayerDataRepository#queryById(Object)}
+     */
+    public List<String> getOnlinePlayerNames() {
+        return PlayerSessionStorage.getOnlinePlayerNames(MagicPlayer.getInstance().getRedisStore());
     }
 
 }

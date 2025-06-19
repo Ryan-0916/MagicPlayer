@@ -20,7 +20,7 @@ import com.magicrealms.magicplayer.core.placeholder.AvatarFramePapi;
 import com.magicrealms.magicplayer.core.placeholder.AvatarPapi;
 import com.magicrealms.magicplayer.core.placeholder.BackgroundFramePapi;
 import com.magicrealms.magicplayer.core.placeholder.PlayerDataPapi;
-import com.magicrealms.magicplayer.api.player.repository.PlayerDataRepository;
+import com.magicrealms.magicplayer.core.repository.PlayerDataRepository;
 import com.magicrealms.magicplayer.core.setting.SettingRegistry;
 import com.magicrealms.magicplayer.core.skin.SkinManager;
 import lombok.Getter;

@@ -15,7 +15,7 @@ pluginManagement {
         /* Rtag */
         maven("https://jitpack.io")
         /* PlaceholderApi */
-        maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
+        maven("https://repo.extendedclip.com/releases/")
     }
 }
 

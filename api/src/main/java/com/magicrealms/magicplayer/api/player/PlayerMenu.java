@@ -1,13 +1,12 @@
-package com.magicrealms.magicplayer.core.menu;
+package com.magicrealms.magicplayer.api.player;
 
 import com.magicrealms.magiclib.bukkit.message.helper.AdventureHelper;
 import com.magicrealms.magiclib.core.utils.ItemUtil;
 import com.magicrealms.magiclib.common.utils.StringUtil;
 import com.magicrealms.magiclib.core.holder.PageMenuHolder;
-import com.magicrealms.magicplayer.core.BukkitMagicPlayer;
-import com.magicrealms.magicplayer.core.menu.click.ClickAction;
-import com.magicrealms.magicplayer.core.menu.click.ClickHandler;
-import com.magicrealms.magicplayer.api.player.PlayerData;
+import com.magicrealms.magicplayer.api.MagicPlayer;
+import com.magicrealms.magicplayer.api.player.click.ClickAction;
+import com.magicrealms.magicplayer.api.player.click.ClickHandler;
 import net.kyori.adventure.text.Component;
 import org.apache.commons.lang3.StringUtils;
 import org.bukkit.Bukkit;
@@ -50,7 +49,7 @@ public class PlayerMenu extends PageMenuHolder {
     private final List<Component> CLICK_LORE;
 
     public PlayerMenu(Builder builder) {
-        super(BukkitMagicPlayer.getInstance(), builder.player, YML_PLAYER_MENU,
+        super(MagicPlayer.getInstance(), builder.player, YML_PLAYER_MENU,
                 "O######FXAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABC#####DE");
         /* 玩家数据 */
         this.DATA = builder.data.stream()

@@ -5,8 +5,8 @@ import com.magicrealms.magiclib.bukkit.command.annotations.CommandListener;
 import com.magicrealms.magiclib.bukkit.command.enums.PermissionType;
 import com.magicrealms.magicplayer.common.player.PlayerSession;
 import com.magicrealms.magicplayer.core.BukkitMagicPlayer;
-import com.magicrealms.magicplayer.core.menu.click.ClickAction;
-import com.magicrealms.magicplayer.core.menu.PlayerMenu;
+import com.magicrealms.magicplayer.api.player.click.ClickAction;
+import com.magicrealms.magicplayer.api.player.PlayerMenu;
 import com.magicrealms.magicplayer.api.player.PlayerData;
 import org.bukkit.entity.Player;
 
